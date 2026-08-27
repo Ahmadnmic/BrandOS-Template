@@ -33,9 +33,10 @@ intake input.**
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against
-  that URL with output directed to `intake/crawl/`. Follow that skill's own
-  SKILL.md for flags (`--url`, `--out`, `--max-pages`, `--asset-hosts`,
-  `--direct`). All seven stages: map → scrape → assets → components → brand →
+  that URL with output directed to `intake/crawl/` and `--max-pages 500`
+  (default cap — a sufficient sample; raise only if the user asks). Follow
+  that skill's own SKILL.md for the other flags (`--url`, `--out`,
+  `--asset-hosts`, `--direct`). All seven stages: map → scrape → assets → components → brand →
   offline rewrite → AI index.
 - When it completes, scaffold `intake/components-inventory.md` from
   `intake/crawl/components.json`: one row per component (name, source pages,

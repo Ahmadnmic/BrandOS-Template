@@ -45,8 +45,9 @@ skill's direct mode — never hand-scrape.
 
 **Q1, immediately** — "What is the client's site URL?"
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
-to `intake/crawl/`: map → scrape → assets → components → brand → offline
-rewrite → AI index. Output: the offline mirror, full-res `assets/`,
+to `intake/crawl/` and `--max-pages 500` (the default cap — a big enough
+sample; raise it only if the user explicitly asks): map → scrape → assets →
+components → brand → offline rewrite → AI index. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
