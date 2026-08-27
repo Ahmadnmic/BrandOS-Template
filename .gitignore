@@ -3,9 +3,17 @@
 .env.*
 !.env.example
 
-# per-client intake inputs (site captures + CVI documents)
-intake/
+# per-client intake bulk (site captures + CVI documents) — but KEEP the
+# audit trail: reconciliation decisions, component inventory, cvi rule map
+intake/crawl/
+intake/cvi/
+!intake/reconciliation.md
+!intake/components-inventory.md
+!intake/cvi-rules.json
 molslinjen/
+
+# per-client access allowlist (PII — provisioned to the edge, never committed)
+access.config.json
 
 # build + deps
 node_modules/

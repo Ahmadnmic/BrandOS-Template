@@ -1,6 +1,25 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Load KEY=VALUE pairs from the nearest .env (cwd upward) into process.env
+// so secrets never have to be exported on a logged shell command line.
+(function loadDotEnv() {
+  let dir = process.cwd();
+  for (let i = 0; i < 6; i++) {
+    const p = path.join(dir, '.env');
+    if (fs.existsSync(p)) {
+      for (const line of fs.readFileSync(p, 'utf8').split(/\r?\n/)) {
+        const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
+        if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+      }
+      return;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) return;
+    dir = parent;
+  }
+})();
+
 export const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 
 export function parseArgs(argv = process.argv.slice(2)) {

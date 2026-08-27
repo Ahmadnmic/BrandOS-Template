@@ -1,9 +1,9 @@
-# BrandOS — rebuild instructions for AI agents
+# BrandOS, rebuild instructions for AI agents
 
 This repo is a TEMPLATE for living brand portals: CVI + brand guide +
 component library + code handoff in one static React site, generated per
 client brand. To produce a new client's Brand OS you edit ONLY `brand/` and
-`content/`. Never restyle components directly — everything visual flows from
+`content/`. Never restyle components directly, everything visual flows from
 `brand/tokens.json`.
 
 Build status: the template app (Vite + React Router 7 + Tailwind 4) is being
@@ -14,64 +14,79 @@ built per the plan (see README). Intake and this contract are live now.
 - Answering questions about this brand → use `.claude/skills/brand/` and the
   guide; never touch `intake/`.
 - Building for a NEW brand → build mode below. Fastest entry in Claude Code:
-  the `/brandos` command (`.claude/skills/brandos/`) — `/brandos
+  the `/brandos` command (`.claude/skills/brandos/`), `/brandos
   https://client.dk` starts build mode with Q1 already answered.
 
 AGENT PORTABILITY: this file is the contract and works in ANY agent that
 reads AGENTS.md (Codex, Cursor, Copilot, Gemini CLI, …). The `/brandos`
-slash command is only a Claude Code convenience — in other agents, the user
+slash command is only a Claude Code convenience, in other agents, the user
 saying "rebuild for https://client.dk" (or similar) enters the exact same
 flow: treat the URL as Q1 answered and proceed. The skill files under
 `.claude/skills/` are plain Markdown with spec-only frontmatter
-(agentskills.io) — if your tool does not auto-load them, READ them as files:
+(agentskills.io), if your tool does not auto-load them, READ them as files:
 before the intake step, read `.claude/skills/fetch-site/SKILL.md` and run its
 scripts with plain node; before any brand work, read
 `.claude/skills/brand/SKILL.md` if it exists.
 
-DOCTRINE: when you are not 100% sure about any brand fact or decision — ask.
+DOCTRINE: when you are not 100% sure about any brand fact or decision, ask.
 Questions are cheap; wrong brand facts are not. Never invent a value found in
 neither intake input.
 
-You ask exactly TWO questions; everything between them is automatic:
+You ask two brand questions (plus a one-time environment check); everything
+between them is automatic:
 
-**Q0, only if needed** — check `.env` for `FIRECRAWL_API_KEY`. Missing? Ask:
-"Paste your Firecrawl API key (fc-…) — I'll store it in `.env`, which is
-gitignored." Write it there yourself (`FIRECRAWL_API_KEY=fc-…`).
-Key hygiene, non-negotiable: the key lives ONLY in `.env` — never in code,
-`brand.config.ts`, chat output, logs, or commits. `.env` is gitignored;
-`.env.example` is the committed empty template. Before any git commit, verify
-`.env` is untracked. No key? Static/SSR sites run keyless in the fetch-site
-skill's direct mode — never hand-scrape.
+**Q0, only if needed**, check that `.env` exists and contains
+`FIRECRAWL_API_KEY`. Missing? Say: "Copy `.env.example` to `.env` and paste
+your Firecrawl key into it yourself (`FIRECRAWL_API_KEY=fc-…`), then tell me
+'done'." NEVER ask the user to paste the key into chat, and never echo,
+export or log it, you only verify the file exists; you never read the value
+aloud. Key hygiene, non-negotiable: the key lives ONLY in `.env`, never in
+code, `brand.config.ts`, chat output, logs, or commits. Before any git
+commit, verify `.env` is untracked. No key? Static/SSR sites run keyless in
+the fetch-site skill's direct mode, never hand-scrape.
 
-**Q1, immediately** — "What is the client's site URL?"
+**Q1, immediately**, "What is the client's site URL?"
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
-to `intake/crawl/` and `--max-pages 500` (the default cap — a big enough
+to `intake/crawl/` and `--max-pages 500` (the default cap, a big enough
 sample; raise it only if the user explicitly asks): map → scrape → assets →
 components → brand → offline rewrite → AI index. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
 
-**Q2, when intake completes** — "Hand me the CVI / brand guide."
-→ place it in `intake/cvi/`. From here run steps 1–6 AUTONOMOUSLY — the only
-permitted stops are a reconciliation conflict and the doctrine above.
+**Q2, when intake completes**, "Hand me the CVI / brand guide."
+→ place it in `intake/cvi/`. From here run steps 1-6 AUTONOMOUSLY, the only
+permitted stops are: (a) a reconciliation conflict, (b) the ask-when-unsure
+doctrine above, (c) the one-time personality-profile confirmation in step 2.
 
 ## Rebuild recipe
 
 1. **Extract & reconcile.**
    From the CRAWL: finalize the component inventory (every distinct UI
    pattern in production), de facto colors/fonts/spacing, real copy for voice
-   analysis, the site's IA — and the TYPESETTING IDIOM: alignment,
+   analysis, the site's IA, and the TYPESETTING IDIOM: alignment,
    containment (boxes vs hairline rules vs whitespace), corner language,
    density, image framing → the `sys.composition` profile.
    From the CVI: official palette, typefaces + licenses, logo rules,
-   clearspace, tone of voice — and PRINT TRUTH: authoritative PMS-C/PMS-U,
+   clearspace, tone of voice, and PRINT TRUTH: authoritative PMS-C/PMS-U,
    CMYK and RAL per core color into `tokens.json` `$extensions` (if the CVI
-   lacks them, flag in `intake/reconciliation.md` — never soft-convert from
+   lacks them, flag in `intake/reconciliation.md`, never soft-convert from
    hex).
-   Reconcile: the CVI is law for rules; the crawl is evidence of what exists.
-   Write every conflict to `intake/reconciliation.md` and get a human
-   decision. Never silently pick a side.
+   Reconcile by WEIGHING EVIDENCE. When the guide and the site disagree on
+   an element, ask the builder, "should I use this element from the site or
+   from the guide?", showing both values and the evidence for each (how
+   consistently the site uses it across pages; how explicit and recent the
+   guide is). Exception: with OVERWHELMING evidence against one side (e.g. a
+   value used consistently across hundreds of live pages while the guide's
+   variant appears nowhere in production, or a guide that explicitly
+   supersedes the old site), you may decide yourself. Either way, record
+   every conflict, the evidence weights, and who decided in
+   `intake/reconciliation.md`. Never decide silently.
+   Also produce `intake/cvi-rules.json`, every rule in the CVI as
+   {id, verbatim rule, assigned chapter}, so the coverage check in step 5
+   is mechanical, not self-assessed. reconciliation.md,
+   components-inventory.md and cvi-rules.json ARE committed (they are the
+   audit trail); the bulk capture and the CVI files are not.
 
 2. **Generate the theme.** Derive the personality profile from the brand
    platform (skarp/blød · tæt/luftig · teknisk/menneskelig · rolig/kinetisk ·
@@ -82,41 +97,74 @@ permitted stops are a reconciliation conflict and the doctrine above.
    route before moving on.
 
 3. **Bind identity.** Fonts + logos into `brand/assets/`; fill
-   `brand.config.ts` (chapters on/off, version "1.0", contacts, partner
-   allowlist, langs, campaign overlays).
+   `brand.config.ts` (chapters on/off, gated-chapter list, version "1.0",
+   role-alias contacts, langs, campaign overlays). The partner access
+   allowlist (external emails = PII) goes in the gitignored
+   `access.config.json`, NEVER in brand.config.ts or git, the deploy script
+   provisions it to the edge access layer. Public pages use role aliases
+   only (brand@client.dk); personal contacts live in the gated area.
 
-4. **Write chapters.** One MDX per chapter. Follow each chapter's REQUIRED
+4. **Write chapters.** One MDX per chapter. The 16-chapter map is a FLOOR,
+   not a ceiling: if the CVI contains a section no chapter accounts for
+   (vehicle livery, uniforms, packaging, sonic DNA, wayfinding, whatever the
+   guide holds), ADD a chapter for it in brand.config.ts and build it with
+   the same skeleton. Never drop or shoehorn CVI content; every entry in
+   cvi-rules.json must map to a chapter, adding chapters as needed.
+   The inverse rule: if you evaluate that the GUIDE is missing a standard
+   chapter (no motion rules, no co-branding, no imagery direction), build
+   it ONLY when the intake data supports it (site evidence, generated
+   tokens), and label it "derived from site evidence, not in the official
+   guide, pending client sign-off". No supporting data means NO new
+   section. Never pad with speculative content.
+   Follow each chapter's REQUIRED
    blocks (Princip → Regler → Eksempler → Misbrug → Downloads). Rules must be
-   testable: exact values, ratios, approved phrases — never adjectives. Write
+   testable: exact values, ratios, approved phrases, never adjectives. Write
    in the brand's own voice (`brand/voice.md`) and language. Every component
    in the inventory gets rebuilt in Komponenter with the 4-tab contract.
    For every marketing application: generate its native program template(s)
-   (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup —
+   (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup, 
    the brand composited into phone/feed/print/OOH scenes from the template,
    the tokens and the crawl assets. Every template ships with an embedded AI
-   instruction — `{name}.instructions.md`: purpose, slots/placeholders, what
-   may change, what must never change — embedded in the file where the
+   instruction, `{name}.instructions.md`: purpose, slots/placeholders, what
+   may change, what must never change, embedded in the file where the
    format allows (deck notes master, registry docs field) and aggregated
    into the brand skill's `references/templates.md` and llms.txt.
 
-5. **Validate.** `npm run validate` —
-   - WCAG 2.2 AA: contrast on all sys pairs + axe-core and keyboard-nav
-     smoke tests on every library component
+5. **Validate.** `npm run validate`, 
+   - WCAG 2.2 AA: contrast on all sys pairs; axe via vitest-axe
+     (component-level, contrast rules disabled in jsdom) plus an
+     @axe-core/playwright + keyboard-tab pass over the prerendered output/
+     HTML. The a11y/keyboard specs live in src/ (template, written once), 
+     a brand build never authors tests.
    - token lint (no raw hex outside tokens.json); an exported token name may
      never disappear without a deprecation alias (rename = major)
    - print truth: every core palette color carries PMS/CMYK from the CVI
-   - assets: none missing, none past license expiry; fonts carry license
-     notes; deprecated assets flagged, not silently served
+     (DTCG $extensions under the `com.nm.brandos.print` key)
+   - assets: none missing, none past license expiry (30-day warnings);
+     deprecated assets flagged, not silently served; NO font binary in
+     public output unless its license is explicitly open (OFL/Apache), 
+     licensed font packs default to the gated area
    - applications: every scenario in Ch.10 (deck, offer, signature, SoMe
      formats, OOH) has a matching downloadable native template in Ch.13
      (with its `{name}.instructions.md` sidecar) AND a generated in-situ
-     mockup on its page
+     mockup on its page (.idml is designer-supplied and presence-checked;
+     mockups are Playwright screenshots of token-styled scene templates)
+   - GATING LEAK SCAN: no gated-chapter slug, content canary string, or
+     personal email appears anywhere in the public output (llms*.txt, .md
+     twins, sitemap, Pagefind index, JS chunks), gated chapters build into
+     the /gated/ subtree only
    - COVERAGE: every component in `intake/components-inventory.md` exists in
-     the library; every CVI rule has a home chapter
+     the library; every rule in `intake/cvi-rules.json` maps to a chapter
    Fix until green.
 
-6. **Publish.** `npm run build` → deploy `build/client`. Stamp the version
-   and add a changelog entry in `brand.config.ts`.
+6. **Publish.** `npm run build` → the finished portal lands in `output/` as
+   a static React site, as light and few-file as the stack allows
+   (prerendered HTML per route, one CSS file, minimal JS chunks, the AI
+   files). Deploy that folder. Then `npm run release`, it bumps the version
+   stamp, the changelog and the tokens export version atomically and refuses
+   on mismatch. Token exports ship as versioned tarballs under
+   /exports/ (URL-installable); npm publishing is an explicit opt-in via CI
+   under the NM org, never a default.
 
 ## Hard rules
 
@@ -124,18 +172,34 @@ permitted stops are a reconciliation conflict and the doctrine above.
 - Every color shown in the guide must exist in `tokens.json`.
 - `brand/voice.md` is law for all copy this repo produces, including commit
   messages.
+- WRITING: never use em or en dashes as pause marks; use commas, colons and
+  periods. Banned AI-tell phrases in any generated copy: "delve", "dive
+  into", "unlock", "unleash", "elevate", "seamless", "robust", "leverage",
+  "game-changer", "cutting-edge", "in today's fast-paced world",
+  "landscape" (figurative), "tapestry", "testament to", "it's not just X,
+  it's Y", "not only X but also Y", "Moreover"/"Furthermore" chains, "It's
+  worth noting", "In conclusion", "Let's dive in", exclamation-mark
+  enthusiasm, emoji in headings, rule-of-three sentence padding. Write like
+  the brand's own people: concrete nouns, short sentences, exact values.
+  validate greps generated copy for the banned list.
 - NEVER the generic AI look: rounded-card grids, centered-everything,
   gradient heroes, uniform radius, emoji headers. Containment, radius and
   alignment must cite evidence from `intake/` (the `sys.composition`
-  profile). A brand that boxes nothing gets a portal that boxes nothing —
+  profile). A brand that boxes nothing gets a portal that boxes nothing, 
   default to rules and whitespace, not cards.
+- Builds are reproducible from the committed lockfile: never update
+  dependencies during a brand build; `engines`/.nvmrc pin Node.
+- The template is versioned: `brand.config.ts` carries `templateVersion`;
+  template upgrades happen only via `npm run upgrade-template` (overlays
+  src/ + scripts/, runs migrations, re-runs validate), never by hand-editing
+  src/ in a brand repo.
 
 ## Repo map
 
-- `.claude/skills/brandos/` — the /brandos startup command
-- `.claude/skills/fetch-site/` — bundled intake engine (7 stages)
-- `.claude/skills/brand/` — per-brand knowledge skill (generated in step 4)
-- `intake/` — the two rebuild inputs (per client; never committed)
-- `brand/` + `content/` — the ONLY rebrand surface
-- `src/` — invariant template machinery (shell, guide components, UI library)
-- `scripts/` — intake / generate-theme / build-tokens / build-ai / validate
+- `.claude/skills/brandos/`, the /brandos startup command
+- `.claude/skills/fetch-site/`, bundled intake engine (7 stages)
+- `.claude/skills/brand/`, per-brand knowledge skill (generated in step 4)
+- `intake/`, the two rebuild inputs (per client; never committed)
+- `brand/` + `content/`, the ONLY rebrand surface
+- `src/`, invariant template machinery (shell, guide components, UI library)
+- `scripts/`, intake / generate-theme / build-tokens / build-ai / validate
