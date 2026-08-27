@@ -49,7 +49,10 @@ the fetch-site skill's direct mode, never hand-scrape.
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
 to `intake/crawl/` and `--max-pages 500` (the default cap, a big enough
 sample; raise it only if the user explicitly asks): map → scrape → assets →
-components → brand → offline rewrite → AI index. Output: the offline mirror, full-res `assets/`,
+components → brand → offline rewrite → AI index. When the map exceeds the
+cap, STRATIFY the sample across page types (see the fetch-site skill's
+stage 1 note); never take the first N, and record the sampling decision in
+the audit trail. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.

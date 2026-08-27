@@ -42,7 +42,7 @@ Turns any public website into:
    themselves; NEVER export it on a shell command line (shell commands are logged) and never
    write it into output files. Only extend `--asset-hosts` to hosts the client confirms they
    own/control, and never harvest font binaries from foundry CDNs (Adobe Fonts/Typekit etc.)
- , record those as licensed-elsewhere instead. Without a key the pipeline still works via direct fetch,
+   , record those as licensed-elsewhere instead. Without a key the pipeline still works via direct fetch,
    but **only for SSR/static sites**, a client-rendered SPA will yield empty shells, so check
    the first page's HTML and warn the user if it has no real content.
 
@@ -73,6 +73,14 @@ that's normal, keep waiting.
 Firecrawl `/v2/map`. Normalizes to one host, strips query/hash, drops binary URLs. Review the
 count: hundreds is normal; tens of thousands means ask the user about scope or use
 `--max-pages`.
+CRITICAL when capping: never take the first N URLs. Large sites (e-commerce especially) map
+to 95%+ product/detail pages, which poisons the component inventory with one template.
+STRATIFY the sample across page types first: harvest the site's own HTML sitemap page and
+the nav of the main hub pages to recover the real structure, then spread the cap across
+every page type found (categories, content/magazine, customer service, corporate, stores,
+campaigns, brand pages, B2B, services, plus products across their categories). Record the
+sampling decision and the strata in the output's `_meta/` so the audit trail shows how the
+sample was built.
 
 **2. scrape**, Firecrawl batch scrape (rawHtml + markdown per page) with per-URL direct-fetch
 fallback; `--direct` skips Firecrawl entirely. Check the final counts line: every URL should be
@@ -88,15 +96,16 @@ registrable domain) are downloaded, the log lists skipped external hosts with co
 is clearly the site's CDN (e.g. `cdn.example-media.net`), re-run with `--asset-hosts`.
 
 **4. components**, two modes, auto-detected:
-- *Named mode* (Nuxt/Vite builds that code-split CSS per component as `Name.hash.css`): each
+
+- _Named mode_ (Nuxt/Vite builds that code-split CSS per component as `Name.hash.css`): each
   CSS file defines a component; its rendered HTML instances are found across all pages by
   class match (outermost element, deduped by DOM-structure hash, up to 4 variants). This is
   the high-quality path, the site's own component boundaries.
-- *Generic mode* (monolithic CSS): extracts `header`/`footer`/`nav` plus top-level page
+- _Generic mode_ (monolithic CSS): extracts `header`/`footer`/`nav` plus top-level page
   sections, grouped by root class signature.
-Components that only mount client-side (booking flows, logged-in areas) get CSS-only folders
-with a README. Output: `components/<Name>/` with scoped CSS, `variant-N.html` files, and a
-standalone `index.html` preview; `components/index.html` is the gallery.
+  Components that only mount client-side (booking flows, logged-in areas) get CSS-only folders
+  with a README. Output: `components/<Name>/` with scoped CSS, `variant-N.html` files, and a
+  standalone `index.html` preview; `components/index.html` is the gallery.
 
 **5. brand**, `:root` custom properties + `@font-face` → `brand/tokens.css`; color usage
 audit → `brand/colors.html`; font stacks → `typography.md`; logo-named images, favicons and
