@@ -69,6 +69,7 @@ builds the rest itself, stopping only when it isn't 100% sure.
 ```bash
 git clone https://github.com/Ahmadnmic/BrandOS-Template.git brandos-client
 cd brandos-client
+npm install
 claude
 ```
 
@@ -78,11 +79,18 @@ Then type:
 /brandos https://client.dk
 ```
 
+Two setup rules that trip people up: start the agent **from inside the
+cloned folder** (if the session is rooted one level up, `/brandos` and the
+repo's AGENTS.md never register), and run `npm install` before the first
+build (the agent will do it for you if you forget, but it's faster up
+front).
+
 ### Codex CLI (and other agents)
 
 ```bash
 git clone https://github.com/Ahmadnmic/BrandOS-Template.git brandos-client
 cd brandos-client
+npm install
 codex
 ```
 

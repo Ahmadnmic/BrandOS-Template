@@ -19,7 +19,12 @@ intake input.**
 ## Flow
 
 ### 0. Preflight
+
 - Read `AGENTS.md` (root). Confirm you are in build mode, not read mode.
+- Confirm the session is rooted in this repo (AGENTS.md and this skill must
+  be at the root). If the user opened a parent folder, tell them to restart
+  the agent from inside the repo before continuing.
+- If `node_modules/` is missing, run `npm install` before anything else.
 - Check that `.env` exists and contains `FIRECRAWL_API_KEY`.
   - Missing → say: "Copy `.env.example` to `.env` and paste your Firecrawl
     key into it yourself (`FIRECRAWL_API_KEY=fc-…`), then tell me 'done'.
@@ -31,6 +36,7 @@ intake input.**
     is untracked before any commit.
 
 ### 1. Q1, the site
+
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against
@@ -45,12 +51,15 @@ intake input.**
 - Report a one-paragraph capture summary (pages, assets, components found).
 
 ### 2. Q2, the CVI
+
 - Ask exactly: "Hand me the CVI / brand guide (PDF, deck or files), I'll put
   it in `intake/cvi/`." Wait for it. Do not proceed without it.
 
 ### 3. Build autonomously
+
 From here, run the `AGENTS.md` rebuild recipe steps 1-6 without further
 questions, with exactly three exceptions:
+
 - a **reconciliation conflict** (crawl vs CVI disagree) → write it to
   `intake/reconciliation.md` and ask for a decision;
 - the **not-100%-sure doctrine** above;
@@ -64,6 +73,7 @@ homed, ADDING new chapters for CVI sections the 16-chapter map doesn't
 cover) → `npm run validate` until green → build & report.
 
 ### 4. Hand over
+
 Finish with: what was built, the reconciliation decisions made, validation
 results, and the preview/build location. Never claim green checks you did not
 run.
