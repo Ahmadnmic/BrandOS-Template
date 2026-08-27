@@ -47,21 +47,28 @@ the fetch-site skill's direct mode, never hand-scrape.
 
 **Q1, immediately**, "What is the client's site URL?"
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
-to `intake/crawl/` and `--max-pages 150` (the default cap; raise it only if
-the user explicitly asks): map → scrape → assets → components → brand →
-offline rewrite → AI index. STRATIFICATION IS MANDATORY EVERY TIME: before
-scraping, recover the site's real structure (its HTML sitemap page plus the
-navs of the main hub pages) and spread the 150 so EVERY page type found is
-represented: categories, content/magazine, customer service, corporate,
-stores, campaigns, brand pages, B2B, services, and products across their
-categories. Never 150 of one type, never the map's first N. Record the
-strata and counts in the audit trail. Output: the offline mirror, full-res `assets/`,
+to `intake/crawl/`. THE SCRAPE RUNS IN TWO STAGES:
+
+FAST PASS (blocking, minutes): map the site and recover its real structure
+(its HTML sitemap page plus the navs of the main hub pages), enumerate the
+page TYPES (home, hubs, listings, products, customer service, magazine,
+corporate, stores, campaigns, brand pages, B2B, services, ...), then scrape
+ONE representative page per type (~15-25 pages) and run assets → components
+→ brand → AI index on that subset. This yields the provisional component
+inventory and capture summary. Proceed to Q2 and the build on this basis.
+
+DEEP PASS (background): AFTER the fast pass finishes (never in parallel
+with it, they share rate limits), launch the full stratified crawl with
+`--max-pages 150` (default cap; raise only if the user explicitly asks),
+spread so every page type is represented in proportion. Never 150 of one
+type, never the map's first N. It runs while you build. Record strata and
+counts for both passes in the audit trail. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
 
 **Q2, when intake completes**, "Hand me the CVI / brand guide."
-→ place it in `intake/cvi/`. From here run steps 1-6 AUTONOMOUSLY, the only
+→ place it in `intake/cvi/`. From here run steps 1-7 AUTONOMOUSLY, the only
 permitted stops are: (a) a reconciliation conflict, (b) the ask-when-unsure
 doctrine above, (c) the one-time personality-profile confirmation in step 2.
 
@@ -163,7 +170,21 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      the library; every rule in `intake/cvi-rules.json` maps to a chapter
      Fix until green.
 
-6. **Publish.** `npm run build` → the finished portal lands in `output/` as
+6. **Deep verification.** Until the deep pass has been checked, the portal
+   is PROVISIONAL: stamp it "foreløbig, verificeret på fast-set" and say so
+   in your handover. When the deep crawl completes, diff it against what
+   you built:
+   - components in the deep set missing from the inventory → add and build
+     them (coverage re-check);
+   - de facto token values whose at-scale frequencies contradict a
+     fast-pass reading → reconcile with the standard evidence rules;
+   - page types the fast pass missed → new chapters per the floor-not-
+     ceiling rule (and only with supporting data).
+     Record every adjustment in the audit trail, re-run `npm run validate`
+     against the FULL inventory, and update the stamp to "verificeret på N
+     sider". A brand build is not done before this step.
+
+7. **Publish.** `npm run build` → the finished portal lands in `output/` as
    a static React site, as light and few-file as the stack allows
    (prerendered HTML per route, one CSS file, minimal JS chunks, the AI
    files). Deploy that folder. Then `npm run release`, it bumps the version

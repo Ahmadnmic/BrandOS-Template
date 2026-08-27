@@ -40,11 +40,13 @@ intake input.**
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against
-  that URL with output directed to `intake/crawl/` and `--max-pages 150`
-  (default cap; raise only if the user asks). Stratification is mandatory
-  every time: the 150 must cover every page type the site has (recover the
-  structure from its HTML sitemap and hub navs first), never 150 of one
-  type. Follow
+  that URL with output directed to `intake/crawl/`, in TWO stages per
+  AGENTS.md Q1: first the blocking FAST PASS (one page per discovered page
+  type, ~15-25 pages, full extraction on the subset → provisional
+  inventory), then, after it finishes, the background DEEP PASS
+  (`--max-pages 150`, stratified across all page types, never 150 of one
+  type). Build starts on the fast pass; the deep pass is the verification
+  backstop consumed in recipe step 6. Follow
   that skill's own SKILL.md for the other flags (`--url`, `--out`,
   `--asset-hosts`, `--direct`). All seven stages: map → scrape → assets → components → brand →
   offline rewrite → AI index.
@@ -60,7 +62,7 @@ intake input.**
 
 ### 3. Build autonomously
 
-From here, run the `AGENTS.md` rebuild recipe steps 1-6 without further
+From here, run the `AGENTS.md` rebuild recipe steps 1-7 without further
 questions, with exactly three exceptions:
 
 - a **reconciliation conflict** (crawl vs CVI disagree) → write it to
@@ -73,7 +75,10 @@ and print truth PMS/CMYK from the CVI) → generate theme (seeds + personality
 profile; confirm the profile with the user before generating) → bind identity
 → author chapters (every inventoried component rebuilt; every CVI rule
 homed, ADDING new chapters for CVI sections the 16-chapter map doesn't
-cover) → `npm run validate` until green → build & report.
+cover) → `npm run validate` until green → build, stamped "foreløbig" →
+when the background deep pass completes: deep verification (recipe step 6:
+diff, add missed components, reconcile at-scale token evidence, re-validate
+against the full inventory, update the stamp) → report.
 
 ### 4. Hand over
 

@@ -27,6 +27,50 @@ only when it is not 100% sure.
 
 **Two inputs. Two questions. One validated Brand OS.**
 
+## The logic
+
+Every design decision in BrandOS follows from a handful of rules:
+
+1. **One source, two audiences.** A brand now serves people and AI. Both are
+   fed from the same `brand/` + `content/` source at build time, so the
+   human guide and the machine layer can never drift apart.
+2. **Two inputs, everything else derived.** The live site is _evidence of
+   reality_ (the components actually in production, the values actually
+   used, the real voice). The CVI is _the official rules_. A build needs
+   exactly these two; no value may come from anywhere else.
+3. **Capture in two stages.** A fast pass scrapes one page per page type
+   (minutes) so the build starts immediately; the deep stratified crawl
+   (150 pages, every page type represented, never 150 of one kind) runs in
+   the background as the verification backstop. The portal is stamped
+   provisional until it has been verified against the deep set.
+4. **Conflicts are decided by evidence, recorded forever.** When site and
+   guide disagree, the builder is shown both values and chooses. The agent
+   decides alone only on overwhelming evidence. Every conflict, the
+   evidence and who decided lands in a committed audit trail.
+5. **The theme is a design language, not a color swap.** A personality
+   profile drives radius, density, casing, motion, borders and composition
+   alongside color and type. Layout idiom is read from the brand's own
+   material; the generic AI look (rounded card grids, centered heroes,
+   uniform radius) is banned outright.
+6. **The chapter map is a floor, not a ceiling.** A CVI section with no
+   home gets a new chapter. The inverse holds too: a missing standard
+   chapter is built only when the intake data supports it. No data, no
+   section, never speculation.
+7. **One content, four lenses.** Generel, Design, Dev and HR re-weight what
+   is zero clicks away versus one click away. Nothing is hidden, nothing is
+   forked, so audience versions cannot drift.
+8. **On-brand is a test, not an opinion.** Rules are exact values, never
+   adjectives. Styling flows only through tokens. `npm run validate` checks
+   contrast and accessibility, print truth, coverage (every crawled
+   component rebuilt, every CVI rule homed, every application backed by a
+   template and mockup) and scans for gated-content leaks.
+9. **The output governs its own future.** The built portal ships its own
+   AGENTS.md (rules for any AI that edits it after deploy) and an
+   append-only `changes.json` journal, so what one agent changes, the next
+   agent reads.
+10. **Ask when not 100% sure.** Questions are cheap. Wrong brand facts are
+    not.
+
 ## What a finished portal contains
 
 - **16 chapters** across four layers, Brandet (journey + platform),

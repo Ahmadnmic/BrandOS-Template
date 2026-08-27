@@ -73,6 +73,11 @@ that's normal, keep waiting.
 Firecrawl `/v2/map`. Normalizes to one host, strips query/hash, drops binary URLs. Review the
 count: hundreds is normal; tens of thousands means ask the user about scope or use
 `--max-pages`.
+TWO-STAGE PATTERN (the BrandOS default): run a blocking FAST PASS first, one page per
+discovered page type (~15-25 pages), and take stages 2-7 through on that subset so
+downstream work can start in minutes; then launch the full stratified crawl as a background
+DEEP PASS. Never run the two in parallel, they share rate limits. The stages are idempotent,
+so re-running them on the full set extends the fast-pass output in place.
 CRITICAL, and this applies EVERY time a cap is in play (BrandOS default: `--max-pages 150`):
 never take the first N URLs. Large sites (e-commerce especially) map to 95%+ product/detail
 pages, which poisons the component inventory with one template. The capped sample must
