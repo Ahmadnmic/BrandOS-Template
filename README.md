@@ -55,15 +55,75 @@ only when it is not 100% sure.
   every CVI rule homed, every application scenario backed by a downloadable
   artifact).
 
-## Quickstart
+## Build a Brand OS with an AI agent
 
-1. Clone this repo and open it in an AI coding agent (Claude Code, Cursor,
-   Codex — anything that reads `AGENTS.md`).
-2. Create your env file: copy `.env.example` to `.env` and paste your
-   Firecrawl API key (optional for static/SSR sites — direct mode works
-   keyless). The key never leaves `.env`.
-3. Type `/brandos https://client.dk` (or just say "rebuild for a new brand").
-4. Hand over the CVI when asked. Decide any reconciliation conflicts the
+Works with Claude Code, Codex, Cursor, Copilot, Gemini CLI — anything that
+reads `AGENTS.md`. The agent asks two questions (site URL, then the CVI) and
+builds the rest itself, stopping only when it isn't 100% sure.
+
+### Claude Code
+
+```bash
+git clone https://github.com/Ahmadnmic/BrandOS-Template.git brandos-client
+cd brandos-client
+claude
+```
+
+Then type:
+
+```
+/brandos https://client.dk
+```
+
+### Codex CLI (and other agents)
+
+```bash
+git clone https://github.com/Ahmadnmic/BrandOS-Template.git brandos-client
+cd brandos-client
+codex
+```
+
+Then paste:
+
+```
+Read AGENTS.md and start a Brand OS build for https://client.dk.
+Ask me for anything you need — never guess a brand fact.
+```
+
+### One-shot prompts
+
+Paste into any agent, from an empty folder — it downloads the system and
+starts the build itself:
+
+```
+Clone https://github.com/Ahmadnmic/BrandOS-Template.git into ./brandos-client
+and open it. Read AGENTS.md, then start a Brand OS build for
+https://client.dk. I'll hand you the CVI / brand guide when you ask, and my
+Firecrawl API key if you need it (store it only in .env). Ask me whenever
+you are not 100% sure — never guess.
+```
+
+Already inside a cloned repo:
+
+```
+Read AGENTS.md. Rebuild for https://client.dk.
+```
+
+Using a finished portal as brand context (any AI tool, no repo needed):
+
+```
+Before producing anything for this brand, fetch <portal-url>/llms.txt and
+follow it. Colors and typography only from tokens.json; tone from voice.md;
+templates per their .instructions.md files.
+```
+
+### By hand
+
+1. Clone, then copy `.env.example` to `.env` and paste your Firecrawl API
+   key (optional — static/SSR sites work keyless in direct mode). The key
+   never leaves `.env`.
+2. `/brandos https://client.dk` (or "rebuild for a new brand").
+3. Hand over the CVI when asked; decide any reconciliation conflicts the
    agent surfaces. Done.
 
 Full operator walkthrough: [docs/GUIDE.md](docs/GUIDE.md).
