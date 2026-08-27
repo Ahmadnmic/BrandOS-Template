@@ -40,8 +40,11 @@ intake input.**
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against
-  that URL with output directed to `intake/crawl/` and `--max-pages 500`
-  (default cap, a sufficient sample; raise only if the user asks). Follow
+  that URL with output directed to `intake/crawl/` and `--max-pages 150`
+  (default cap; raise only if the user asks). Stratification is mandatory
+  every time: the 150 must cover every page type the site has (recover the
+  structure from its HTML sitemap and hub navs first), never 150 of one
+  type. Follow
   that skill's own SKILL.md for the other flags (`--url`, `--out`,
   `--asset-hosts`, `--direct`). All seven stages: map → scrape → assets → components → brand →
   offline rewrite → AI index.

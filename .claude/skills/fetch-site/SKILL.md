@@ -73,9 +73,11 @@ that's normal, keep waiting.
 Firecrawl `/v2/map`. Normalizes to one host, strips query/hash, drops binary URLs. Review the
 count: hundreds is normal; tens of thousands means ask the user about scope or use
 `--max-pages`.
-CRITICAL when capping: never take the first N URLs. Large sites (e-commerce especially) map
-to 95%+ product/detail pages, which poisons the component inventory with one template.
-STRATIFY the sample across page types first: harvest the site's own HTML sitemap page and
+CRITICAL, and this applies EVERY time a cap is in play (BrandOS default: `--max-pages 150`):
+never take the first N URLs. Large sites (e-commerce especially) map to 95%+ product/detail
+pages, which poisons the component inventory with one template. The capped sample must
+represent every page type the site has, never N of one type. STRATIFY across page types
+first: harvest the site's own HTML sitemap page and
 the nav of the main hub pages to recover the real structure, then spread the cap across
 every page type found (categories, content/magazine, customer service, corporate, stores,
 campaigns, brand pages, B2B, services, plus products across their categories). Record the
