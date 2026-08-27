@@ -89,9 +89,31 @@ campaigns, brand pages, B2B, services, plus products across their categories). R
 sampling decision and the strata in the output's `_meta/` so the audit trail shows how the
 sample was built.
 
-**2. scrape**, Firecrawl batch scrape (rawHtml + markdown per page) with per-URL direct-fetch
-fallback; `--direct` skips Firecrawl entirely. Check the final counts line: every URL should be
-`firecrawl` or `direct`, not `failed`.
+**2. scrape**, CREDIT-OPTIMIZED HYBRID by default: (a) pages already captured on disk are
+skipped (0 credits, the deep pass never re-bills fast-pass pages); (b) everything else is
+plain-HTTP fetched first (0 credits) and classified; (c) only JS-shell pages and blocked
+fetches (403/429/network) escalate to Firecrawl batch (1 credit/page); dead URLs (404/410)
+are never escalated because Firecrawl bills processed error pages. `--direct` never calls
+Firecrawl; `--force-firecrawl` bills every page (pre-hybrid behavior); `--fresh` ignores the
+local capture. The final counts line shows `cached-local` / `direct` / `firecrawl` / `failed`
+plus an estimated credit spend.
+
+### Credit economics (verified against docs.firecrawl.dev/billing, Aug 2026)
+
+- Scrape/crawl: 1 credit per page. Map: 1 credit per call. Batch status polling: free.
+- Bundled formats (rawHtml + markdown + links) cost nothing extra; surcharges only for
+  json/LLM extraction (+4/page), PDF parsing (+1/PDF page, disabled here via `parsers: []`),
+  prompt-injection check (+4/page), zero-data-retention (+1/page). This pipeline uses none.
+- Firecrawl's maxAge cache makes re-scrapes faster but NOT cheaper: cache hits still bill
+  1 credit. The local capture skip is the only real re-run saver, which is why it is the
+  default.
+- Pages Firecrawl processes that return 403/404 still bill; the hybrid pass filters dead
+  URLs out before escalation and never blind-retries consistently blocked URLs.
+- Enhanced (formerly stealth) proxies no longer carry a surcharge; the default auto mode is
+  fine. Ignore third-party posts citing 5 credits per stealth request, that pricing ended.
+- Expected spend per BrandOS build: 1 (map) + only the JS-rendered share of the fast pass
+  (~0-25) + only the JS-rendered share of the deep pass minus everything already captured.
+  SSR/static sites: ~1 credit total.
 
 **3. assets**, three harvest rounds: (a) everything referenced in page HTML, stylesheets,
 scripts, module preloads, `img`/`source`/`srcset`, video+poster, og:image, favicons, inline

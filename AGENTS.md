@@ -62,7 +62,13 @@ with it, they share rate limits), launch the full stratified crawl with
 `--max-pages 150` (default cap; raise only if the user explicitly asks),
 spread so every page type is represented in proportion. Never 150 of one
 type, never the map's first N. It runs while you build. Record strata and
-counts for both passes in the audit trail. Output: the offline mirror, full-res `assets/`,
+counts for both passes in the audit trail.
+CREDIT POSTURE: the scrape stage is hybrid by default. Free plain-HTTP
+fetch first, Firecrawl only for pages that prove they need JS rendering,
+already-captured pages never re-billed, dead URLs never escalated. Never
+use Firecrawl's json format, PDF parsing or prompt-injection check (all
+surcharged); extraction happens locally. Report the credit estimate the
+scrape stage prints in your capture summary. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
