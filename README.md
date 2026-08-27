@@ -134,6 +134,10 @@ Smaller/faster tiers produce plausible-but-wrong brand facts, exactly what
 the validate gate exists to catch, so start with the strong model instead of
 paying for the retries.
 
+Tested on: Claude Code with Haiku 4.5 (ultracode), Sonnet 5 (low, medium,
+high and ultracode), Opus 5 (medium, high and ultracode) and Fable 5
+(ultracode), plus Cursor Pro.
+
 ### By hand
 
 1. Clone, then copy `.env.example` to `.env` and paste your Firecrawl API
