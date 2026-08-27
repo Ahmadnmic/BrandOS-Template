@@ -24,3 +24,7 @@ dist/
 # OS noise
 .DS_Store
 Thumbs.db
+
+# generated
+.react-router/
+output/

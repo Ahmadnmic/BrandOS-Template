@@ -1,0 +1,31 @@
+import { ChapterHead, TypeSpecimen, TokenTable } from "../components/guide/Guide";
+
+export function meta() {
+  return [{ title: "Typografi · Odense Basket BrandOS" }];
+}
+
+export default function Typografi() {
+  return (
+    <div className="mx-auto max-w-4xl">
+      <ChapterHead num="04" title="Typografi" steps="PRINCIP → REGLER → EKSEMPLER → MISBRUG → DOWNLOADS" />
+      <p className="mb-8 max-w-xl text-sm text-dim">
+        Overskrifter sættes i JetBrains Mono, versaler, med fast tracking. Brødtekst i Public Sans.
+        Ingen andre snit. Fallbacks er en del af reglen, ikke en nødløsning.
+      </p>
+      <div className="grid gap-4 md:grid-cols-2">
+        <TypeSpecimen face="DISPLAY · JETBRAINS MONO · 700 · VERSALER" sample="ALL IN. AA BB 09" />
+        <TypeSpecimen face="BRØDTEKST · PUBLIC SANS · 400-700" sample="Aa Bb Cc 0123" />
+      </div>
+      <div className="mt-8">
+        <TokenTable
+          rows={[
+            { token: "--sys-font-display", role: "Overskrifter", light: "JetBrains Mono", dark: "JetBrains Mono" },
+            { token: "--sys-font-body", role: "Brødtekst", light: "Public Sans", dark: "Public Sans" },
+            { token: "--sys-tracking-display", role: "Display-tracking", light: "0.08em", dark: "0.08em" },
+            { token: "--sys-case-display", role: "Display-versaler", light: "uppercase", dark: "uppercase" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}

@@ -36,7 +36,7 @@ only when it is not 100% sure.
 - **A generated global design language**, not a color swap. A personality
   profile (skarp/blød, tæt/luftig, teknisk/menneskelig, rolig/kinetisk,
   rå/poleret, bokset/åben) drives radius, density, casing, motion, borders
-  and composition. Layout idiom is read from the brand's own material, 
+  and composition. Layout idiom is read from the brand's own material,
   never the generic "AI look".
 - **Brand-true light & dark themes**, a Figma-style collapsible sidebar,
   a ⚙ Settings panel (lens: Generel/Design/Dev/HR · theme · language), and an
@@ -119,6 +119,20 @@ Before producing anything for this brand, fetch <portal-url>/llms.txt and
 follow it. Colors and typography only from tokens.json; tone from voice.md;
 templates per their .instructions.md files.
 ```
+
+### Recommended model
+
+BrandOS builds are long, judgment-heavy agent runs (extraction, reconciliation,
+theme generation, 16+ chapters). Use a frontier model with real reasoning
+headroom:
+
+- **Claude:** Opus 5 (or Fable 5) with thinking set to **medium or higher**.
+- **Codex:** **GPT-5.6 Sol** (the flagship reasoning tier), or GPT-5.6 Terra
+  with reasoning set to high as the budget option.
+
+Smaller/faster tiers produce plausible-but-wrong brand facts, exactly what
+the validate gate exists to catch, so start with the strong model instead of
+paying for the retries.
 
 ### By hand
 
