@@ -15,7 +15,7 @@ built per the plan (see README). Intake and this contract are live now.
   guide; never touch `intake/`.
 - Building for a NEW brand → build mode below. Fastest entry in Claude Code:
   the `/brandos` command (`.claude/skills/brandos/`), `/brandos
-  https://client.dk` starts build mode with Q1 already answered.
+https://client.dk` starts build mode with Q1 already answered.
 
 AGENT PORTABILITY: this file is the contract and works in ANY agent that
 reads AGENTS.md (Codex, Cursor, Copilot, Gemini CLI, …). The `/brandos`
@@ -122,7 +122,7 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    in the brand's own voice (`brand/voice.md`) and language. Every component
    in the inventory gets rebuilt in Komponenter with the 4-tab contract.
    For every marketing application: generate its native program template(s)
-   (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup, 
+   (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup,
    the brand composited into phone/feed/print/OOH scenes from the template,
    the tokens and the crawl assets. Every template ships with an embedded AI
    instruction, `{name}.instructions.md`: purpose, slots/placeholders, what
@@ -130,11 +130,11 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    format allows (deck notes master, registry docs field) and aggregated
    into the brand skill's `references/templates.md` and llms.txt.
 
-5. **Validate.** `npm run validate`, 
+5. **Validate.** `npm run validate`,
    - WCAG 2.2 AA: contrast on all sys pairs; axe via vitest-axe
      (component-level, contrast rules disabled in jsdom) plus an
      @axe-core/playwright + keyboard-tab pass over the prerendered output/
-     HTML. The a11y/keyboard specs live in src/ (template, written once), 
+     HTML. The a11y/keyboard specs live in src/ (template, written once),
      a brand build never authors tests.
    - token lint (no raw hex outside tokens.json); an exported token name may
      never disappear without a deprecation alias (rename = major)
@@ -142,7 +142,7 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      (DTCG $extensions under the `com.nm.brandos.print` key)
    - assets: none missing, none past license expiry (30-day warnings);
      deprecated assets flagged, not silently served; NO font binary in
-     public output unless its license is explicitly open (OFL/Apache), 
+     public output unless its license is explicitly open (OFL/Apache),
      licensed font packs default to the gated area
    - applications: every scenario in Ch.10 (deck, offer, signature, SoMe
      formats, OOH) has a matching downloadable native template in Ch.13
@@ -155,7 +155,7 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      the /gated/ subtree only
    - COVERAGE: every component in `intake/components-inventory.md` exists in
      the library; every rule in `intake/cvi-rules.json` maps to a chapter
-   Fix until green.
+     Fix until green.
 
 6. **Publish.** `npm run build` → the finished portal lands in `output/` as
    a static React site, as light and few-file as the stack allows
@@ -165,6 +165,12 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    on mismatch. Token exports ship as versioned tarballs under
    /exports/ (URL-installable); npm publishing is an explicit opt-in via CI
    under the NM org, never a default.
+   The output governs its own future: build-ai writes AGENTS.md (rules for
+   any AI editing the deployed portal: tokens-only values, no new colors or
+   fonts, no AI-tell prose, never touch the machine files or /gated/),
+   changes.json (an append-only journal every post-build agent edit MUST be
+   recorded in: read first, append after) and llms.txt + tokens.json into
+   output/. What one agent changes after deploy, the next agent can read.
 
 ## Hard rules
 
@@ -185,7 +191,7 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
 - NEVER the generic AI look: rounded-card grids, centered-everything,
   gradient heroes, uniform radius, emoji headers. Containment, radius and
   alignment must cite evidence from `intake/` (the `sys.composition`
-  profile). A brand that boxes nothing gets a portal that boxes nothing, 
+  profile). A brand that boxes nothing gets a portal that boxes nothing,
   default to rules and whitespace, not cards.
 - Builds are reproducible from the committed lockfile: never update
   dependencies during a brand build; `engines`/.nvmrc pin Node.
