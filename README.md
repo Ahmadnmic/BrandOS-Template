@@ -466,6 +466,73 @@ nearest on-brand alternative; a writer pasting copy gets the termbank's
 corrections. The brand stops being a PDF someone half-remembers and
 becomes a capability their tools have.
 
+## What actually makes it hold
+
+The portal is the visible part. These are the mechanisms underneath,
+each one built because a real test run failed without it:
+
+- **Evidence over invention.** Everything starts from two captured
+  inputs (the site crawl, the CVI) weighed on an explicit evidence
+  ladder: painted production values first, meta tags last. Captured
+  colors are ranked by a scoring formula (interactive-background
+  weight, saturation, usage), and a confidence score decides when the
+  agent asks instead of deciding. Nothing brand-shaped is ever invented:
+  no painted logos, no stock photos, no colors from memory.
+- **Anchors are immutable.** Any value traced to evidence is a locked
+  input; theme generation only infills around it (12-step perceptual
+  tone ladders with the exact evidence hex pinned at its measured
+  lightness). The gate proves anchors survive verbatim.
+- **One contract, two readers.** The contrast matrix is a file read by
+  both the theme generator and the validation gate, so they cannot
+  disagree. The same principle everywhere: rules live as data
+  (tokens.json, rules.json, terms.json, contrast-matrix.json), and
+  prose is only the human view of it.
+- **The gate.** Twelve checks with PASS/FAIL/BLOCKED semantics, where
+  BLOCKED (missing input) is never a pass: writing rules, key hygiene,
+  seed leak, prerender completeness, gated leak, print truth, licensed
+  manifest, contrast pairs, imagery usage, theme integrity, build
+  stamp, template version. Every check exists because a test run
+  shipped the defect it now catches.
+- **Self-correcting verification.** After every build the agent drives
+  the served portal in a real browser (pages, console, fonts by
+  computed style, all theme states, language switch, search,
+  downloads) and fixes-rebuilds until clean; headless harnesses run
+  the same list through Playwright.
+- **The journal.** Every built portal carries an append-only
+  changes.json: agents record every post-build edit, and unrecorded
+  change is by definition drift. The build stamp ties output to a
+  commit.
+- **Cost honesty.** Before any paid work the build estimates Firecrawl
+  credits and AI tokens and asks once. The hybrid scrape keeps most
+  runs at a few credits (a 43,000-URL site captured for ~2).
+- **Pictures as build inputs.** The capture guarantees usable imagery
+  and a verified logo (lazy-load harvesting, sprite files, escalation
+  ladder), curation into the portal is a mandatory step, and the gate
+  fails a build that ships zero photographs while usable captures
+  exist.
+- **Update without loss.** /brandos-update overlays template-owned
+  machinery, never touches brand-owned files, and replays the
+  migrations ledger so new functions reach old portals; the gate warns
+  any clone that falls behind.
+
+## Drift defense: staying true for years
+
+A handed-over portal faces five kinds of decay: agents editing the
+output, the client's live site moving away from the captured evidence,
+brand repos falling behind the template, the stack rotting (Node EOL,
+dependency CVEs), and the AI ecosystem shifting (model retirements,
+spec revisions). The defense is layered by timeline, from the gate and
+journal that run on every edit, through scheduled still-green rebuilds
+and golden visual baselines, monthly sampling of the client's live
+site diffed against the tokens, annual scored brand audits appended to
+the journal as a trend line, up to multi-year mechanisms: token
+deprecation lifecycles with compatibility windows, a runtime manifest
+where the repo knows its own expiry dates, and a named accountable
+owner, which the research literature identifies as the single
+strongest predictor of long-term consistency. The full architecture,
+with what exists versus what is queued, lives in
+[docs/DRIFT-DEFENSE.md](docs/DRIFT-DEFENSE.md).
+
 ## Built on open tools
 
 BrandOS builds what carries brand judgment (evidence weighing, theme

@@ -107,3 +107,15 @@ migration.
    (.claude/skills/brand/SKILL.md). Both regenerate every build; if the
    brand hand-wrote a skill, fold its content into the guide/config so
    the generated one carries it.
+
+## 0.6.0 to 0.7.0
+
+1. **Image curation is mandatory.** Select the strongest captured
+   images per chapter into public/images/ with manifest.json (file,
+   source page, rights note; stock/press-agency files excluded by
+   name), wire src into ImageFrame; motif slots only for subjects the
+   capture lacks. The gate's imagery-usage check fails a portal that
+   ships zero photographs while usable captures exist.
+2. **Site-evidence chapters.** Brand-expression categories the crawl
+   reveals (sponsors, sub-brands, campaign styles, press kits) get
+   chapters automatically, UDKAST-stamped when the CVI is silent.

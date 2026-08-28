@@ -658,11 +658,19 @@ provisional handover. When the deep crawl lands: deep verification
   - Specimens sit free on the page: type set large over a hairline,
     components on a plain hairline stage. The thing itself is the
     presentation; a box around it is noise.
-  - IMAGERY: pages use the brand's CAPTURED pictures (intake assets,
-    rights-checked). Where a needed photo does not exist, `ImageFrame`
-    renders a motif specification (a ruled slot stating what the image
-    must show), never a stock photo and never painted imagery. Billedstil
-    is built from real crawl imagery or motif specs, nothing else.
+  - IMAGERY: pages use the brand's CAPTURED pictures, and CURATION IS A
+    MANDATORY BUILD STEP, not an option: after intake, select the
+    strongest captured images per chapter need into `public/images/`
+    with a `public/images/manifest.json` (file, source page, rights
+    note) and wire their `src` into `ImageFrame`. Motif slots are ONLY
+    for subjects the capture genuinely lacks. A built portal with zero
+    photographs while the capture holds usable ones is a DEFECT (the
+    gate's imagery-usage check fails it). Rights at curation: images
+    from the client's own pages are client-owned; EXCLUDE files whose
+    names or sources reveal stock or press agencies (colourbox,
+    shutterstock, getty, unsplash, ritzau) and any identifiable
+    children; note photographer credits where visible. Never a stock
+    photo, never painted imagery.
   - The same bordered container repeated as page structure is the tell.
     If two adjacent sections wear identical boxes, remove the boxes.
   - Corner radius comes only from `sys.radius` tokens and belongs to

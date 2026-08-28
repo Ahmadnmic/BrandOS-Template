@@ -410,6 +410,56 @@ function rel(p) {
   }
 }
 
+// C12: imagery usage. A portal that ships zero photographs while the
+// capture holds usable ones wastes its own evidence; curation is a
+// mandatory build step. Stock/press-agency files never count as usable.
+{
+  const intakeImgs = path.join(root, "intake", "crawl", "assets", "images");
+  if (!fs.existsSync(intakeImgs)) {
+    report("PASS", "imagery usage", "no capture (template seed context)");
+  } else {
+    const STOCK = /colourbox|shutterstock|getty|istock|unsplash|ritzau|pexels/i;
+    const usable = fs
+      .readdirSync(intakeImgs)
+      .filter(
+        (f) =>
+          /\.(jpe?g|png|webp)$/i.test(f) &&
+          !STOCK.test(f) &&
+          fs.statSync(path.join(intakeImgs, f)).size > 60_000,
+      );
+    const outDir = path.join(root, "output", "client");
+    let imgTags = 0;
+    if (fs.existsSync(outDir)) {
+      for (const f of walk(outDir, [".html"]))
+        imgTags += (fs.readFileSync(f, "utf8").match(/<img[\s>]/g) ?? []).length;
+    }
+    const pubImgs = path.join(root, "public", "images");
+    const curated = fs.existsSync(pubImgs)
+      ? fs.readdirSync(pubImgs).filter((f) => /\.(jpe?g|png|webp|svg)$/i.test(f)).length
+      : 0;
+    const manifest = fs.existsSync(path.join(pubImgs, "manifest.json"));
+    if (usable.length >= 5 && imgTags === 0) {
+      report(
+        "FAIL",
+        "imagery usage",
+        `${usable.length} usable captured images but the built portal has 0 <img> tags: curate into public/images/ and wire ImageFrame src`,
+      );
+    } else if (curated > 0 && !manifest) {
+      report(
+        "FAIL",
+        "imagery usage",
+        `${curated} curated image(s) in public/images without manifest.json (file, source page, rights note)`,
+      );
+    } else {
+      report(
+        "PASS",
+        "imagery usage",
+        `${usable.length} usable captured, ${curated} curated, ${imgTags} <img> in output`,
+      );
+    }
+  }
+}
+
 // C11: theme integrity. Anchors survive verbatim in the generated
 // ladders (the anchor-lock law made checkable), and the type ramp is a
 // sane monotone scale.
@@ -486,7 +536,7 @@ function rel(p) {
 // C9: template version. A field clone cannot know it is stale unless the
 // gate tells it. Bump TEMPLATE_VERSION together with templateVersion in
 // the seed brand.config.ts on machinery changes.
-const TEMPLATE_VERSION = "0.6.0";
+const TEMPLATE_VERSION = "0.7.0";
 {
   const config = fs.readFileSync(
     path.join(root, "brand", "brand.config.ts"),

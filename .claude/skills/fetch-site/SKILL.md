@@ -62,6 +62,16 @@ confirmed brand CDNs), re-capture zero-image pages rendered, pull the
 sprite. Still nothing? Ask the user for files. Never proceed silently
 into a build without usable imagery and at least one verified logo.
 
+### Curation, the step after the guarantee
+
+Capturing images is half the job; the build must USE them. After the
+assets stage, curate: pick the strongest captured photos per chapter
+need into the portal's `public/images/` with a manifest (file, source
+page, rights note), excluding stock/press-agency files by name
+(colourbox, shutterstock, getty, unsplash, ritzau). The portal's gate
+fails a build that ships zero photographs while the capture holds
+usable ones.
+
 ## CVI-site capture mode (live brand guides)
 
 The same pipeline captures a LIVE CVI (a designguide subdomain, or a

@@ -1,6 +1,6 @@
 # Validate report
 
-Commit: 0ced41a · Template: 0.6.0
+Commit: 4f66518 · Template: 0.7.0
 
 - PASS writing rules: no dashes-as-pause, no AI-tell phrases
 - PASS key hygiene: no key patterns in tracked files
@@ -10,8 +10,9 @@ Commit: 0ced41a · Template: 0.6.0
 - PASS print truth: 4 core colors carry CMYK
 - PASS licensed manifest: folder scaffolded, nothing dropped yet
 - PASS contrast pairs: 12 pair-modes checked, all reach AA 4.5:1
+- PASS imagery usage: no capture (template seed context)
 - PASS theme integrity: 5 ladders anchored verbatim, type ramp 1.25 monotone
-- PASS build stamp: HEAD 0ced41a, output built at 47de675 — REBUILD before shipping; WARNING: dirty working tree, commit before declaring shipped
-- PASS template version: 0.6.0
+- PASS build stamp: HEAD 4f66518, output built at 47de675 — REBUILD before shipping; WARNING: dirty working tree, commit before declaring shipped
+- PASS template version: 0.7.0
 
-11 pass, 0 fail, 0 blocked
+12 pass, 0 fail, 0 blocked
