@@ -214,7 +214,23 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      format allows (deck notes master, registry docs field) and aggregated
      into the brand skill's `references/templates.md` and llms.txt.
 
-5. **Validate.** `npm run validate`,
+5. **Validate.** `npm run validate`. The template ships a real gate in
+   `scripts/validate.mjs` (writing rules, key hygiene, seed leak,
+   prerender completeness, gated leak, print truth, with PASS/FAIL/
+   BLOCKED semantics and BLOCKED never passing). A brand build EXTENDS
+   that file with the checks below, it never rewrites it.
+   - SEED LEAK: everything under src/sections/, public/exports/, the
+     Knap demo route and the seed values in brand/tokens.json are Odense
+     Basket reference content. A brand build replaces ALL of it; the
+     seed-leak check fails the build if the seed brand's name, copy or
+     core hex survives anywhere in src/ or output/. Chrome (routes,
+     shell) derives every visible brand string from brand.config, never
+     hardcodes one.
+   - PRERENDER COMPLETENESS: every chapter and component detail page is
+     prerendered into output/. Dynamic routes need explicit entries in
+     react-router.config prerender() (derive the list from the component
+     registry, never maintain it by hand). 3 pages next to a 16-entry
+     registry means an SPA shell shipped, not a portal.
    - WCAG 2.2 AA: contrast on all sys pairs; axe via vitest-axe
      (component-level, contrast rules disabled in jsdom) plus an
      @axe-core/playwright + keyboard-tab pass over the prerendered output/

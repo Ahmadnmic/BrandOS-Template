@@ -12,7 +12,7 @@
     "build:tokens": "node scripts/build-tokens.mjs",
     "preview": "npx serve output/client",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "validate": "npm run build:tokens && npm run typecheck",
+    "validate": "npm run build:tokens && npm run typecheck && node scripts/validate.mjs",
     "intake": "node scripts/intake.mjs"
   },
   "dependencies": {

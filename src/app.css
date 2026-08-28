@@ -8,18 +8,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.display {
-  font-family: var(--sys-font-display);
-  text-transform: var(--sys-case-display, none);
-  letter-spacing: var(--sys-tracking-display);
-}
+/* Custom classes live in the components layer so Tailwind utilities can
+   override them; unlayered rules would silently beat every utility. */
+@layer components {
+  .display {
+    font-family: var(--sys-font-display);
+    text-transform: var(--sys-case-display, none);
+    letter-spacing: var(--sys-tracking-display);
+  }
 
-.label {
-  font-family: var(--sys-font-mono);
-  letter-spacing: var(--sys-tracking-label);
-  text-transform: uppercase;
-  font-size: 11px;
-  color: var(--sys-dim);
+  .label {
+    font-family: var(--sys-font-mono);
+    letter-spacing: var(--sys-tracking-label);
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--sys-dim);
+  }
 }
 
 html {
@@ -93,14 +97,16 @@ html {
   }
 }
 
-.btn-demo {
-  font-family: var(--sys-font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  transition: opacity var(--sys-duration-fast);
-}
-.btn-demo:hover {
-  opacity: 0.85;
+@layer components {
+  .btn-demo {
+    font-family: var(--sys-font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    transition: opacity var(--sys-duration-fast);
+  }
+  .btn-demo:hover {
+    opacity: 0.85;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .btn-demo {

@@ -1,7 +1,8 @@
+import { brand } from "../../brand/brand.config";
 import { ChapterHead } from "../components/guide/Guide";
 
 export function meta() {
-  return [{ title: "Theme QA · Odense Basket BrandOS" }];
+  return [{ title: "Theme QA · " + brand.name + " BrandOS" }];
 }
 
 const SWATCH_VARS = [

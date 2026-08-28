@@ -11,7 +11,7 @@ import { Button } from "../components/ui/Button";
 import { useLens } from "../lens";
 
 export function meta() {
-  return [{ title: "Knap · Komponenter · Odense Basket BrandOS" }];
+  return [{ title: "Knap · Komponenter · " + brand.name + " BrandOS" }];
 }
 
 const TABS = ["ANVENDELSE", "SPECS", "KODE", "TILGÆNGELIGHED"] as const;
