@@ -57,8 +57,12 @@ intake input.**
 
 ### 2. Q2, the CVI
 
-- Ask exactly: "Hand me the CVI / brand guide (PDF, deck or files), I'll put
-  it in `intake/cvi/`." Wait for it. Do not proceed without it.
+- Ask exactly: "Hand me the CVI / brand guide: PDF, deck or files (I'll
+  put them in `intake/cvi/`), or the URL if the guide lives on the web."
+  Wait for it. A URL means LIVE CVI MODE: capture the guide site with
+  fetch-site into `intake/cvi-site/` (`--max-pages 60`, one blocking
+  pass, Firecrawl hybrid; see AGENTS.md Q2). Do not proceed without one
+  of the two, except explicit no-CVI mode.
 
 ### 3. Build autonomously
 

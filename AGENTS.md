@@ -89,8 +89,26 @@ lower the cap; never continue on a partial corpus without saying so. Output: the
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
 
-**Q2, when intake completes**, "Hand me the CVI / brand guide."
-→ place it in `intake/cvi/`.
+**Q2, when intake completes**, "Hand me the CVI / brand guide: files
+into `intake/cvi/`, or the URL if the guide lives on the web."
+LIVE CVI MODE: many brands publish the guide as a site (a designguide
+subdomain, Frontify, Corebook, Brandpad). Capture it with the same
+fetch-site pipeline and Firecrawl hybrid, pointed at the guide URL with
+`--out <repo>/intake/cvi-site --max-pages 60`, one blocking pass (no
+two-stage, the guide IS the law and guide sites are small). Guide
+platforms are JS shells, so expect the hybrid to escalate most pages to
+Firecrawl; without a key, warn that a JS-rendered guide cannot be
+captured directly and ask for exports instead. Never bypass a
+login-protected guide: ask the user for exports or credentialless
+access. TWO CORPORA, TWO REGISTERS: `intake/crawl/` is de facto
+production evidence, `intake/cvi-site/` is de jure guide law; never
+merge them into one corpus. A live guide's own shipped stylesheets,
+font files and downloadable asset packs are GUIDE-grade truth, often
+sharper than a PDF (exact hex, real font binaries, spacing tokens);
+harvest its linked brand packs (zip/eps/svg/pdf) via the assets stage.
+When a live guide and a PDF edition disagree, the newer edition wins,
+recorded in `intake/reconciliation.md`. Extraction still produces the
+same `intake/cvi-rules.json`, whatever form the guide arrived in.
 NO-CVI MODE: if the user states there is no CVI ("go off the site only"),
 proceed with the crawl as the primary source. Then: unverified chapters
 carry only the status stamp UDKAST · AFVENTER GODKENDELSE in the chapter
@@ -125,6 +143,9 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    1. computed/painted values: production CSS custom properties in :root,
       computed styles of real rendered elements, hex frequency in the
       shipped stylesheets;
+      (a LIVE CVI's own stylesheets and font files sit at this tier too,
+      but on the GUIDE side of the ledger: the guide demonstrating its
+      law in code, usually sharper than a PDF's approximations);
    2. authored content: markup attributes, actual copy;
    3. head/meta tags LAST: <meta name="theme-color"> tints browser chrome
       and paints no UI; counting how many pages carry a tag is NOT evidence

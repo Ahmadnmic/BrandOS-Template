@@ -171,7 +171,12 @@ What the capture extracts:
 
 ### 2. Hand over the CVI (question 2)
 
-The official design guide (PDF, deck or files) goes into `intake/cvi/`.
+The official design guide goes into `intake/cvi/` (PDF, deck or files).
+A guide that lives on the web (a designguide subdomain, Frontify,
+Corebook, Brandpad) is captured instead: hand over its URL and the same
+Firecrawl-backed pipeline mirrors it into `intake/cvi-site/` as its own
+corpus, with the guide's shipped stylesheets, font files and
+downloadable brand packs treated as guide-grade truth.
 The agent extracts the official rules: palette with print values (PMS,
 CMYK, RAL), typefaces and licenses, logo construction and clearspace, tone
 of voice. Every rule is written into `cvi-rules.json` with an ID and its
@@ -365,7 +370,7 @@ Every design decision in BrandOS follows from a handful of rules:
 .claude/skills/brandos/     the /brandos startup command
 .claude/skills/fetch-site/  bundled intake engine (map → scrape → assets →
                             components → brand → offline mirror → AI index)
-intake/                     per-client inputs: crawl/ + cvi/ (gitignored)
+intake/                     per-client inputs: crawl/ + cvi/ or cvi-site/ (gitignored)
 brand/                      ── REBRAND SURFACE ── tokens.json · brand.config.ts ·
                             voice.md · assets/
 content/                    ── REBRAND SURFACE ── one MDX per chapter

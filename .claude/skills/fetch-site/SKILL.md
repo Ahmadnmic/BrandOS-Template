@@ -46,6 +46,30 @@ Turns any public website into:
    but **only for SSR/static sites**, a client-rendered SPA will yield empty shells, so check
    the first page's HTML and warn the user if it has no real content.
 
+## CVI-site capture mode (live brand guides)
+
+The same pipeline captures a LIVE CVI (a designguide subdomain, or a
+Frontify / Corebook / Brandpad-hosted guide) as its own corpus:
+
+```bash
+node map.mjs    --url <guide-url> --out <repo>/intake/cvi-site --max-pages 60
+# then stages 2-7 with the same --out
+```
+
+- One blocking pass, no two-stage and no stratification: guide sites are
+  small and the guide is the law, capture all of it.
+- Guide platforms are JS shells; expect the hybrid scrape to escalate
+  most pages to Firecrawl. Without `FIRECRAWL_API_KEY` a JS-rendered
+  guide yields empty shells: stop and ask the user for exports instead.
+- Harvest the guide's downloadable brand packs (logo zips, EPS/SVG,
+  font files, PDF editions) via the assets stage; extend `--asset-hosts`
+  only to hosts the guide itself serves its packs from.
+- Never bypass a login-protected guide; ask for exports or access.
+- Keep the corpus SEPARATE from the production crawl (`intake/crawl/`):
+  the crawl is de facto evidence, the guide capture is de jure law. The
+  guide's own shipped stylesheets and font binaries are guide-grade
+  truth, usually sharper than a PDF's approximations.
+
 ## Pipeline, run the stages in order
 
 All scripts live in this skill's `scripts/` dir and share the same arguments:
