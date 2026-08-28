@@ -256,7 +256,10 @@ append-only `changes.json` journal so post-deploy agent edits stay
 readable. The portal is stamped **provisional** until the background deep
 crawl is diffed against it: missed components get added, at-scale evidence
 gets reconciled, validate re-runs against the full inventory, and the
-stamp becomes "verificeret på N sider". Then it ships.
+stamp becomes "verificeret på N sider". Then it ships. And the agent does
+not stop at a report: when validate is green it builds, serves and opens
+the portal in your browser by itself; the build is done when the portal is
+on your screen.
 
 ## The logic
 

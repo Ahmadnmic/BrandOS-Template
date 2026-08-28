@@ -218,7 +218,11 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      against the FULL inventory, and update the stamp to "verificeret på N
      sider". A brand build is not done before this step.
 
-7. **Publish.** `npm run build` → the finished portal lands in `output/` as
+7. **Publish.** When validate is green, build and open AUTOMATICALLY: run
+   `npm run build`, serve the result in the background (`npm run preview`)
+   and open the URL in the user's browser or preview pane without being
+   asked; the build is not "done" until the portal is on screen in front
+   of the user. `npm run build` → the finished portal lands in `output/` as
    a static React site, as light and few-file as the stack allows
    (prerendered HTML per route, one CSS file, minimal JS chunks, the AI
    files). Deploy that folder. Then `npm run release`, it bumps the version

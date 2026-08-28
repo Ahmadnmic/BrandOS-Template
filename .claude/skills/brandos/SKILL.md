@@ -89,11 +89,20 @@ when the background deep pass completes: deep verification (recipe step 6:
 diff, add missed components, reconcile at-scale token evidence, re-validate
 against the full inventory, update the stamp) → report.
 
-### 4. Hand over
+### 4. Auto-build, open, hand over
 
-Finish with: what was built, the reconciliation decisions made, validation
-results, and the preview/build location. Never claim green checks you did not
-run.
+When validate is green, DO NOT stop at a report. Automatically:
+
+1. `npm run build` (the portal lands in `output/`).
+2. Serve it in the background: `npm run preview` (serves `output/client`).
+3. OPEN it for the user without being asked: in Claude Code use the
+   browser/preview pane and front the tab; in a plain terminal harness use
+   the OS opener (`open <url>` on macOS, `start <url>` on Windows,
+   `xdg-open <url>` on Linux). Always print the exact URL too.
+
+Then hand over: what was built, the reconciliation decisions made,
+validation results, and the URL now open in front of the user. Never claim
+green checks you did not run.
 
 Serving rules: BEFORE starting or reporting any dev server, confirm the
 repo you are serving is the client's build (check the `name` in
