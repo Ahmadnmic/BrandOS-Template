@@ -186,19 +186,33 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    draft status is the one stamp in the header, never a paragraph. A
    reader must not be able to tell from the guide's prose that an AI
    built it.
-   Follow each chapter's REQUIRED
-   blocks (Princip → Regler → Eksempler → Misbrug → Downloads). Rules must be
-   testable: exact values, ratios, approved phrases, never adjectives. Write
-   in the brand's own voice (`brand/voice.md`) and language. Every component
-   in the inventory gets rebuilt in Komponenter with the 4-tab contract.
-   For every marketing application: generate its native program template(s)
-   (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup,
-   the brand composited into phone/feed/print/OOH scenes from the template,
-   the tokens and the crawl assets. Every template ships with an embedded AI
-   instruction, `{name}.instructions.md`: purpose, slots/placeholders, what
-   may change, what must never change, embedded in the file where the
-   format allows (deck notes master, registry docs field) and aggregated
-   into the brand skill's `references/templates.md` and llms.txt.
+   THE GUIDE IS USAGE, NOT INVENTORY. Every chapter answers "how do we use
+   this", never "what exists" or "what is coming". Concretely:
+   - Nothing missing or planned is ever announced on a guide surface: no
+     "FASE 2", no muted placeholder rows, no disabled nav items, no chips
+     for artifacts that do not exist. Unbuilt = absent. The full chapter
+     map and the roadmap live in brand.config.ts and the handover only.
+   - TEXT BUDGET: chapter intro is one principle, max two sentences
+     (~40 words). Rules are one imperative sentence each, stated as
+     GØR/UNDGÅ pairs (the Rules component). Specimens, palettes and live
+     examples carry the chapter; text captions them. If a paragraph
+     describes the portal, its UI ("klik for at kopiere"), its build
+     system or its own guarantees, delete it.
+   - The chapter skeleton (Princip → Regler → Eksempler → Misbrug →
+     Downloads) is internal method: never print it as a breadcrumb, header
+     line or label in the guide.
+     Rules must be
+     testable: exact values, ratios, approved phrases, never adjectives. Write
+     in the brand's own voice (`brand/voice.md`) and language. Every component
+     in the inventory gets rebuilt in Komponenter with the 4-tab contract.
+     For every marketing application: generate its native program template(s)
+     (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup,
+     the brand composited into phone/feed/print/OOH scenes from the template,
+     the tokens and the crawl assets. Every template ships with an embedded AI
+     instruction, `{name}.instructions.md`: purpose, slots/placeholders, what
+     may change, what must never change, embedded in the file where the
+     format allows (deck notes master, registry docs field) and aggregated
+     into the brand skill's `references/templates.md` and llms.txt.
 
 5. **Validate.** `npm run validate`,
    - WCAG 2.2 AA: contrast on all sys pairs; axe via vitest-axe
