@@ -86,7 +86,7 @@ export function Shell({ children }: { children: ReactNode }) {
     setSettingsOpen(false);
   }, [location.pathname]);
 
-  const visibleChapters = brand.chapters.filter((c) => !c.gated);
+  const visibleChapters = brand.chapters.filter((c) => !c.gated && c.built);
   const gatedChapters = brand.chapters.filter((c) => c.gated);
 
   return (
@@ -132,11 +132,7 @@ export function Shell({ children }: { children: ReactNode }) {
                   to={href}
                   className={
                     "flex items-center gap-2.5 px-4 py-1.5 font-mono text-[10.5px] tracking-wider " +
-                    (active
-                      ? "text-accent"
-                      : c.built
-                        ? "text-dim hover:text-ink"
-                        : "text-dim/50 pointer-events-none")
+                    (active ? "text-accent" : "text-dim hover:text-ink")
                   }
                 >
                   <span
@@ -255,7 +251,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <footer className="flex flex-wrap justify-between gap-2 border-t border-line px-6 py-4 md:px-10">
           <span className="label text-[9px]">NØRGÅRD MIKKELSEN · BRANDOS</span>
           <span className="label text-[9px]">
-            FORSTÅET AF MENNESKER · BRUGBART FOR AI
+            {brand.tagline.toUpperCase()}
           </span>
         </footer>
       </div>

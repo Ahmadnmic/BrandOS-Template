@@ -129,15 +129,10 @@ export function RatioBar(props: {
   );
 }
 
-// Download affordance. Real artifacts get an href; promised-but-unbuilt
-// artifacts render muted with a FASE 2 tag, never a dead button.
+// Download affordance. Only real artifacts render; an artifact that does not
+// exist yet is absent from the guide, never announced.
 export function DownloadChip(props: { label: string; href?: string }) {
-  if (!props.href)
-    return (
-      <span className="label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-[9px] opacity-45">
-        {props.label} · FASE 2
-      </span>
-    );
+  if (!props.href) return null;
   return (
     <a
       href={props.href}
@@ -146,6 +141,37 @@ export function DownloadChip(props: { label: string; href?: string }) {
     >
       ⇩ {props.label}
     </a>
+  );
+}
+
+// Usage rules the way every serious guide states them: GØR/UNDGÅ pairs,
+// one imperative sentence per rule, ruled columns, no cards.
+export function Rules(props: { dos: string[]; donts: string[] }) {
+  return (
+    <div className="grid gap-x-12 md:grid-cols-2">
+      <div>
+        <div className="label mb-1 text-[9px] text-accent">GØR</div>
+        {props.dos.map((r) => (
+          <p
+            key={r}
+            className="border-t border-line py-2.5 text-sm leading-snug"
+          >
+            {r}
+          </p>
+        ))}
+      </div>
+      <div className="mt-6 md:mt-0">
+        <div className="label mb-1 text-[9px]">UNDGÅ</div>
+        {props.donts.map((r) => (
+          <p
+            key={r}
+            className="border-t border-line py-2.5 text-sm leading-snug text-dim"
+          >
+            {r}
+          </p>
+        ))}
+      </div>
+    </div>
   );
 }
 

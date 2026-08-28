@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ChapterHead,
   CodeBlock,
+  Rules,
   TokenTable,
   DownloadChip,
 } from "../components/guide/Guide";
@@ -56,10 +57,18 @@ export default function Knap() {
       </div>
 
       {tab === "ANVENDELSE" && (
-        <p className="max-w-xl text-sm text-dim">
-          Én primær knap pr. flade. Tekst i versaler, maks. to ord. Signal
-          bruges kun til live-situationer, aldrig til navigation.
-        </p>
+        <Rules
+          dos={[
+            "Én primær knap pr. flade.",
+            "Tekst i versaler, maks to ord.",
+            "Signal kun til live-øjeblikke.",
+          ]}
+          donts={[
+            "To primære side om side.",
+            "Signal til navigation eller dekoration.",
+            "Egen styling uden for de tre varianter.",
+          ]}
+        />
       )}
 
       {(tab === "ANVENDELSE" || tab === "KODE" || tab === "SPECS") && (
@@ -74,7 +83,6 @@ export default function Knap() {
         <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
         <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
-        <DownloadChip label="FIGMA-KIT" />
       </div>
 
       {(tab === "KODE" || tab === "SPECS") && (
@@ -111,8 +119,7 @@ export default function Knap() {
             --sys-accent.
           </p>
           <p>
-            Minimum målflade 44×44 px. Kontrast på alle tilstande er AA-checket
-            i validate.
+            Minimum målflade 44×44 px. Kontrast i alle tilstande er WCAG AA.
           </p>
           <p>
             Reduceret bevægelse: hover-overgange slås fra ved

@@ -3,7 +3,6 @@ import {
   ChapterHead,
   CodeBlock,
   DownloadChip,
-  IndexRow,
 } from "../components/guide/Guide";
 import { Button } from "../components/ui/Button";
 
@@ -17,19 +16,13 @@ const BUTTON_CSS = `.btn-primary {
   border-radius: var(--sys-radius-md);
 }`;
 
-const PLANNED = ["Kort", "Navigation", "Formular", "Badge", "Tabel"];
-
 export default function Komponenter() {
   return (
     <div className="mx-auto max-w-3xl">
-      <ChapterHead
-        num="11"
-        title="Komponenter"
-        steps="ANVENDELSE · SPECS · KODE · TILGÆNGELIGHED"
-      />
+      <ChapterHead num="11" title="Komponenter" />
       <p className="mb-10 max-w-xl text-sm leading-relaxed text-dim">
-        Hver komponent følger samme kontrakt med fire faner. Specs taler i
-        tokens, aldrig rå værdier.
+        Komponenter bruges som de står her. Farve, form og typografi kommer fra
+        tokens, aldrig fra lokale værdier.
       </p>
 
       <section className="border-t border-line pt-4">
@@ -49,15 +42,8 @@ export default function Komponenter() {
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
           <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
-          <DownloadChip label="FIGMA-KIT" />
         </div>
       </section>
-
-      <div className="mt-10 border-b border-line">
-        {PLANNED.map((t) => (
-          <IndexRow key={t} title={t} meta="FASE 2" muted />
-        ))}
-      </div>
     </div>
   );
 }

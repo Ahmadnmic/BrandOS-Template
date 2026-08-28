@@ -2,6 +2,7 @@ import {
   ChapterHead,
   Palette,
   RatioBar,
+  Rules,
   CopyValue,
   DownloadChip,
   TokenTable,
@@ -14,15 +15,10 @@ export function meta() {
 export default function Farver() {
   return (
     <div className="mx-auto max-w-3xl">
-      <ChapterHead
-        num="03"
-        title="Farver"
-        steps="PRINCIP → REGLER → EKSEMPLER → MISBRUG → DOWNLOADS"
-      />
+      <ChapterHead num="03" title="Farver" />
       <p className="mb-10 max-w-xl text-sm leading-relaxed text-dim">
-        Dybhav bærer identiteten. Is skaber kontrast og luft. Signal bruges kun
-        til handling, aldrig til dekoration. Alle værdier kan kopieres med ét
-        klik.
+        Dybhav bærer identiteten. Is skaber kontrast og luft. Signal markerer
+        handling.
       </p>
       <Palette
         colors={[
@@ -60,15 +56,27 @@ export default function Farver() {
           ]}
         />
       </div>
-      <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-line pt-4">
+      <div className="mt-12">
+        <Rules
+          dos={[
+            "Dybhav som primær flade, Is som kontrast og luft.",
+            "Signal til handling og live-øjeblikke.",
+            "Tekstfarve fra token-parret, aldrig på øjemål.",
+          ]}
+          donts={[
+            "Signal som baggrund, dekoration eller store flader.",
+            "Sort, grå eller andre mørke erstatninger for Dybhav.",
+            "Nye nuancer uden for paletten.",
+          ]}
+        />
+      </div>
+      <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-line pt-4">
         <CopyValue
           value="#0A1526 #BFD9F2 #F4F7FB #E8B84B"
           label="KOPIÉR HELE PALETTEN"
         />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
         <DownloadChip label="TOKENS.JSON" href="/exports/tokens.json" />
-        <DownloadChip label="FARVER.ASE" />
-        <DownloadChip label="FIGMA-VARIABLER" />
       </div>
       <div className="mt-8">
         <TokenTable

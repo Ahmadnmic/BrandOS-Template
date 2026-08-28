@@ -20,13 +20,13 @@ export default function Forside() {
       <p className="label mt-6 text-[11px]">{brand.tagline.toUpperCase()}</p>
 
       <p className="mt-12 max-w-lg text-sm leading-relaxed text-dim">
-        Ét levende system for {brand.name}: identitet, sprog, komponenter og
-        tokens i én kilde. Forstået af mennesker, brugbart for AI.
+        Sådan ser {brand.name} ud, og sådan bruges identiteten: farver,
+        typografi, komponenter og kode fra én kilde.
       </p>
 
       <nav aria-label="Indhold" className="mt-14 border-b border-line">
         {brand.chapters
-          .filter((c) => c.slug !== "")
+          .filter((c) => c.slug !== "" && (c.built || c.gated))
           .map((c) => {
             if (c.gated)
               return (
@@ -35,16 +35,6 @@ export default function Forside() {
                   num={c.num}
                   title={c.title}
                   meta="LÅST"
-                  muted
-                />
-              );
-            if (!c.built)
-              return (
-                <IndexRow
-                  key={c.num}
-                  num={c.num}
-                  title={c.title}
-                  meta="FASE 2"
                   muted
                 />
               );

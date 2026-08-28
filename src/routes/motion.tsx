@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { ChapterHead, TokenTable, CodeBlock } from "../components/guide/Guide";
+import {
+  ChapterHead,
+  Rules,
+  TokenTable,
+  CodeBlock,
+} from "../components/guide/Guide";
 
 export function meta() {
   return [{ title: "Motion · Odense Basket BrandOS" }];
@@ -65,16 +70,10 @@ function EasingDemo(props: { name: string; value: string }) {
 export default function Motion() {
   return (
     <div className="mx-auto max-w-4xl">
-      <ChapterHead
-        num="08"
-        title="Motion"
-        steps="PRINCIP → REGLER → EKSEMPLER → MISBRUG → DOWNLOADS"
-      />
+      <ChapterHead num="08" title="Motion" />
       <p className="mb-8 max-w-xl text-sm text-dim">
-        Afledt af sitets egen adfærd: Odense Basket bevæger sig hurtigt og
-        lander hårdt. Ingen bounce, ingen langsom elegance. Ind med ease-out, ud
-        med ease-in, flyt med ease-in-out. Al bevægelse respekterer
-        prefers-reduced-motion.
+        Odense Basket bevæger sig hurtigt og lander hårdt. Ingen bounce, ingen
+        langsom elegance.
       </p>
 
       <div className="label mb-1 text-[9px]">
@@ -86,6 +85,20 @@ export default function Motion() {
         ))}
       </div>
 
+      <div className="mt-12">
+        <Rules
+          dos={[
+            "Ind med ease-out, ud med ease-in, flyt med ease-in-out.",
+            "Én bevægelse ad gangen pr. flade.",
+            "Respektér prefers-reduced-motion i alt.",
+          ]}
+          donts={[
+            "Bounce, elastik og overshoot.",
+            "Bevægelse som dekoration.",
+            "Varigheder over 360 ms.",
+          ]}
+        />
+      </div>
       <div className="mt-8">
         <TokenTable
           rows={[
