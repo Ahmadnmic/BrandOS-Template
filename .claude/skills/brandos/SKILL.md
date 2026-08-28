@@ -105,7 +105,7 @@ personality profile; confirm the profile with the user before generating) →
 bind identity
 → author chapters (every inventoried component rebuilt; every CVI rule
 homed, ADDING new chapters for CVI sections the 16-chapter map doesn't
-cover) → `npm run validate` until green → build, stamped "foreløbig" →
+cover; site-evidence categories with no chapter home, sponsors, sub-brands, campaigns, press, get chapters AUTOMATICALLY, UDKAST-stamped when the CVI is silent) → `npm run validate` until green → build, stamped "foreløbig" →
 when the background deep pass completes: deep verification (recipe step 6:
 diff, add missed components, reconcile at-scale token evidence, re-validate
 against the full inventory, update the stamp) → design handover: when the

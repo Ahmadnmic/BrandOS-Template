@@ -91,18 +91,18 @@ estimate and ask "fortsæt?" (continue?):
   answer, then run. If the user already answered a cost gate this run,
   do not ask again unless the estimate grows past what they approved.
   IMAGES & LOGOS GUARANTEE: pictures and logos are BUILD INPUTS, not
-decoration; a capture without them is incomplete. After the assets
-stage, read `_meta/asset-summary.json`: it counts images, lists pages
-with zero <img> (a JS-lazy-loading signal) and the skipped external
-hosts. Zero images or zero usable logos (brand/logos/manifest.json) is
-a STOP, not a shrug: review the skipped hosts and re-run with
-`--asset-hosts` for confirmed brand CDNs, escalate zero-image pages to
-rendered capture (Firecrawl or the browser-context ladder), and pull
-sprite files for <use>-referenced logos. If a usable logo still cannot
-be captured, ASK the user for logo files; NEVER paint a logo or
-imagery from memory, and never build Billedstil without captured
-pictures (no data, no section).
-STATICS FIRST: before spending credits on page volume, capture the
+  decoration; a capture without them is incomplete. After the assets
+  stage, read `_meta/asset-summary.json`: it counts images, lists pages
+  with zero <img> (a JS-lazy-loading signal) and the skipped external
+  hosts. Zero images or zero usable logos (brand/logos/manifest.json) is
+  a STOP, not a shrug: review the skipped hosts and re-run with
+  `--asset-hosts` for confirmed brand CDNs, escalate zero-image pages to
+  rendered capture (Firecrawl or the browser-context ladder), and pull
+  sprite files for <use>-referenced logos. If a usable logo still cannot
+  be captured, ASK the user for logo files; NEVER paint a logo or
+  imagery from memory, and never build Billedstil without captured
+  pictures (no data, no section).
+  STATICS FIRST: before spending credits on page volume, capture the
   site's production stylesheets, root custom properties and font
   references; they are the highest evidence tier per token and nearly
   free. A run that exhausts credits before the statics (Elgiganten,
@@ -293,6 +293,16 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
    guide holds), ADD a chapter for it in brand.config.ts and build it with
    the same skeleton. Never drop or shoehorn CVI content; every entry in
    cvi-rules.json must map to a chapter, adding chapters as needed.
+   THE SITE COUNTS TOO: when the CRAWL reveals a brand-expression
+   category the chapter map does not cover (sponsor walls and partner
+   logo treatments, sub-brands, youth/academy identities, campaign
+   styles, press/media kits, merchandise), ADD a chapter for it
+   AUTOMATICALLY, built from the crawl evidence and stamped UDKAST ·
+   AFVENTER GODKENDELSE when the CVI is silent on it. The boundary:
+   site sections that carry brand EXPRESSION (rules, assets,
+   identities) become chapters; generic site plumbing (customer
+   service, checkout, cookie pages) never does. Record every added
+   chapter and its evidence in the audit trail.
    The inverse rule: if you evaluate that the GUIDE is missing a standard
    chapter (no motion rules, no co-branding, no imagery direction), build
    it ONLY when the intake data supports it (site evidence, generated
@@ -500,7 +510,7 @@ back. The checklist, every item verified against the running portal:
    get_ladder, get_rules, list_exports) plus the contract files as
    resources, answered from brand/ data with the gate's own math.
    Register per client: `claude mcp add <brand> -- node
-   scripts/mcp-server.mjs`. Template-owned machinery; reads only
+scripts/mcp-server.mjs`. Template-owned machinery; reads only
    brand/ files.
    changes.json (an append-only journal every post-build agent edit MUST be
    recorded in: read first, append after) and llms.txt + tokens.json into
@@ -691,4 +701,4 @@ provisional handover. When the deep crawl lands: deep verification
 - `brand/` + `content/`, the ONLY rebrand surface
 - `src/`, invariant template machinery (shell, guide components, UI library)
 - `scripts/, build-tokens / build-ai / validate (intake machinery lives in
-.claude/skills/fetch-site/scripts/; generate-theme is queued in UPSTREAM)
+  .claude/skills/fetch-site/scripts/; generate-theme is queued in UPSTREAM)
