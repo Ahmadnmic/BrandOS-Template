@@ -49,3 +49,17 @@ migration.
    port its extra checks on top of the template's gate (the template
    file wins; brand checks append). Never lose seed-leak, key-hygiene
    or the new contrast/build-stamp/version checks.
+
+## 0.2.0 to 0.3.0
+
+1. **One substantial block per viewport page.** Chapter sections split
+   into page-sized components (palette / rules / each component / each
+   specimen set), and the index route's SECTIONS map became a PAGES
+   list: `{ chapter, anchor?, label: {da,en}, wide?, render }`, with the
+   chapter's anchor on its first page. Split any brand chapter that
+   packs several substantial blocks into one section accordingly.
+2. **Cover page.** The document opens with a cover: the brand mark
+   component (`src/sections/Mark.tsx`, replaced per brand with the
+   CAPTURED logo from brand/logos/, never drawn from memory), name and
+   tagline; the contents index moved to its own page. The top nav shows
+   the small mark next to the brand name.

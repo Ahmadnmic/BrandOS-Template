@@ -56,7 +56,15 @@ export function Farver() {
           ]}
         />
       </div>
-      <div className="mt-12">
+    </>
+  );
+}
+
+export function FarverRegler() {
+  const tx = useTx();
+  return (
+    <>
+      <div>
         <Rules
           dos={[
             tx({

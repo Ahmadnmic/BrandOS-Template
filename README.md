@@ -390,6 +390,67 @@ Every design decision in BrandOS follows from a handful of rules:
   machine files. The finished portal builds into `output/`, a light,
   few-file static React site you can deploy anywhere.
 
+## Built on open tools
+
+BrandOS builds what carries brand judgment (evidence weighing, theme
+generation, guide voice) and stands on the ecosystem for solved
+infrastructure. Full reasoning per tool in
+[docs/TOOLS.md](docs/TOOLS.md); the credits:
+
+**The pipeline**
+
+- [Firecrawl](https://github.com/firecrawl/firecrawl): rendering and
+  crawling JS-heavy sites during intake; the hybrid scrape keeps most
+  runs at a few credits.
+- [React Router](https://github.com/remix-run/react-router),
+  [Vite](https://github.com/vitejs/vite),
+  [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss): the
+  portal stack; static prerender, one CSS file, token-driven utilities.
+- [Fontsource](https://github.com/fontsource/fontsource): versioned
+  self-hosted open fonts, no CDN calls from a client portal.
+- [cheerio](https://github.com/cheeriojs/cheerio): HTML parsing in the
+  intake scripts.
+- [Figma's MCP server](https://www.figma.com/): the design handover
+  generates the brand's Figma library through Figma's own agent
+  interface.
+
+**Verification and CI**
+
+- [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp):
+  the browser verification loop in harnesses without a built-in browser
+  pane.
+- [axe-core](https://github.com/dequelabs/axe-core): the accessibility
+  rules engine behind the roadmap a11y pass; writing our own WCAG rule
+  set would be worse and irresponsible.
+- [agnix](https://github.com/agent-sh/agnix): lints AGENTS.md and
+  SKILL.md files across Claude Code and Codex; runs as a CI action
+  (its native binary is blocked in sandboxed local runs).
+- [Agent Skills spec](https://github.com/agentskills/agentskills): the
+  open standard the bundled skills follow, so one skill folder loads in
+  Claude Code, Codex, Cursor and the rest.
+- [skills CLI](https://github.com/vercel-labs/skills): the standard
+  layout our skills use; `npx skills add Ahmadnmic/BrandOS-Template`
+  installs them into 76+ agents.
+- [anthropics/skills](https://github.com/anthropics/skills): the
+  official docx/pptx/pdf document skills for Office deliverables,
+  instruct-installed (their license permits use, not bundling).
+
+**Ideas credited, implemented natively**
+
+- [Terrazzo](https://github.com/terrazzoapp/terrazzo): pioneered
+  token-level contrast linting; our gate implements the same check
+  against our token shape, the idea is theirs.
+- [Style Dictionary](https://github.com/style-dictionary/style-dictionary):
+  the canonical token build system, queued to replace the hand-rolled
+  generator once our tokens move to standard DTCG modes.
+- [Pagefind](https://github.com/Pagefind/pagefind) and
+  [subfont](https://github.com/Munter/subfont): static search and font
+  subsetting, queued for when portals grow many pages and raw client
+  fonts.
+- The Molslinjen guide in `docs/reference/` is the structural reference
+  for the document-scroll layout: a reference, never a template; its
+  brand belongs to Molslinjen.
+
 ## Repository layout
 
 ```

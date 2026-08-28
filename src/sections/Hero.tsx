@@ -1,32 +1,44 @@
 import { brand } from "../../brand/brand.config";
 import { IndexRow } from "../components/guide/Guide";
+import { Mark } from "./Mark";
 import { useTx } from "../lens";
 
-export function Hero() {
+// The front page: the mark and the words that carry the brand, nothing else.
+export function Cover() {
   const tx = useTx();
   return (
     <>
-      <p className="label mb-6 text-[10px]">
+      <Mark size={72} />
+      <h1 className="display mt-10 text-6xl font-bold leading-[1.02] md:text-8xl">
+        {brand.name}
+      </h1>
+      <p className="label mt-8 text-[12px] text-accent">
+        {brand.tagline.toUpperCase()}
+      </p>
+      <p className="label mt-16 text-[10px]">
         {tx({ da: "DESIGNGUIDE", en: "DESIGN GUIDE" })} · VER. {brand.version} ·{" "}
         {tx({ da: "OPDATERET", en: "UPDATED" })} {brand.updated}
       </p>
-      <h1 className="display text-6xl font-bold leading-[1.05] md:text-7xl">
-        {brand.name}
-        <br />
-        Brand OS
-      </h1>
-      <p className="label mt-6 text-[11px]">{brand.tagline.toUpperCase()}</p>
+    </>
+  );
+}
 
-      <p className="mt-12 max-w-lg text-sm leading-relaxed text-dim">
+export function Indhold() {
+  const tx = useTx();
+  return (
+    <>
+      <p className="label mb-8 text-[10px] text-accent">
+        {tx({ da: "INDHOLD", en: "CONTENTS" })}
+      </p>
+      <p className="mb-10 max-w-lg text-sm leading-relaxed text-dim">
         {tx({
           da: `Sådan ser ${brand.name} ud, og sådan bruges identiteten: farver, typografi, komponenter og kode fra én kilde.`,
           en: `This is how ${brand.name} looks, and how the identity is used: colors, typography, components and code from one source.`,
         })}
       </p>
-
       <nav
         aria-label={tx({ da: "Indhold", en: "Contents" })}
-        className="mt-14 border-b border-line"
+        className="border-b border-line"
       >
         {brand.chapters
           .filter((c) => (c.built && c.slug !== "") || c.gated)

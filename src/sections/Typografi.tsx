@@ -33,7 +33,15 @@ export function Typografi() {
           sample="Aa Bb Cc 0123"
         />
       </div>
-      <div className="mt-12">
+    </>
+  );
+}
+
+export function TypografiRegler() {
+  const tx = useTx();
+  return (
+    <>
+      <div>
         <Rules
           dos={[
             tx({

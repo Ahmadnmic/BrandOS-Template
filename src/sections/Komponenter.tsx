@@ -81,8 +81,15 @@ export function Komponenter() {
           />
         </div>
       </section>
+    </>
+  );
+}
 
-      <section className="mt-10 border-t border-line pt-4">
+export function KomponentBadge() {
+  const tx = useTx();
+  return (
+    <>
+      <section className="border-t border-line pt-4">
         <h3 className="display text-xl font-bold">Badge</h3>
         <div className="mt-4 flex min-h-20 flex-wrap items-center justify-center gap-3 border border-line p-5">
           <Badge variant="signal">LIVE</Badge>
@@ -97,8 +104,15 @@ export function Komponenter() {
           <DownloadChip label="BADGE.TSX" href="/exports/badge.tsx" />
         </div>
       </section>
+    </>
+  );
+}
 
-      <section className="mt-10 border-t border-line pt-4">
+export function KomponentFelt() {
+  const tx = useTx();
+  return (
+    <>
+      <section className="border-t border-line pt-4">
         <h3 className="display text-xl font-bold">
           {tx({ da: "Felt", en: "Field" })}
         </h3>
@@ -125,8 +139,15 @@ export function Komponenter() {
           <DownloadChip label="FELT.TSX" href="/exports/felt.tsx" />
         </div>
       </section>
+    </>
+  );
+}
 
-      <section className="mt-10 border-t border-line pt-4">
+export function KomponentBanner() {
+  const tx = useTx();
+  return (
+    <>
+      <section className="border-t border-line pt-4">
         <h3 className="display text-xl font-bold">Banner</h3>
         <div className="mt-4 border border-line p-5">
           <Banner

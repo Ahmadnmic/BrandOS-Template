@@ -559,10 +559,16 @@ provisional handover. When the deep crawl lands: deep verification
   profile). A brand that boxes nothing gets a portal that boxes nothing,
   default to rules and whitespace, not cards.
 - PORTAL STRUCTURE (the document model, same for every brand):
-  - The guide is ONE scrolling document. Every chapter part is a `.page`:
-    min-height 100svh, flex-centered, one idea per page, rendered by
-    `GuidePage` with `data-page`, `data-label` and `data-chapter`. Those
-    attributes are the only registration a page needs.
+  - The guide is ONE scrolling document. EVERY SUBSTANTIAL BLOCK gets its
+    own viewport-height page on desktop: a palette, a rules pair, a
+    specimen set, each component, each rendered by `GuidePage`
+    (min-height 100svh, flex-centered) with `data-page`, `data-label`
+    and `data-chapter`. Those attributes are the only registration a
+    page needs. Pages register in the PAGES list of the index route; the
+    first page of a chapter carries the chapter's anchor slug.
+  - The document OPENS WITH A COVER: the brand mark (the captured logo,
+    from brand/logos/, never drawn from memory), the brand name and
+    tagline, full viewport. The contents index is its own page after it.
   - Navigation is DOM-driven, never a second list to maintain: the top
     bar (`TopNav`) scroll-spies the section anchors and holds only the
     chapter links and the Lys/Mørk toggle; the bottom-right pager

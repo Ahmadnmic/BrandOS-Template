@@ -28,7 +28,7 @@ export const brand: BrandConfig = {
   tagline: "All in. All together.",
   version: "0.1",
   updated: "2026-08-27",
-  templateVersion: "0.2.0",
+  templateVersion: "0.3.0",
   langs: ["da", "en"],
   contacts: [{ role: "Brand", email: "brand@odensebasket.dk" }],
   chapters: [

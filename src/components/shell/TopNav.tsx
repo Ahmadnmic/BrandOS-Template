@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { brand } from "../../../brand/brand.config";
+import { Mark } from "../../sections/Mark";
 import { useLens, useTx } from "../../lens";
 
 // Scroll-spy top bar: brand mark, one anchor link per chapter, the theme
@@ -56,7 +57,11 @@ export function TopNav() {
           : "border-b border-transparent bg-surface")
       }
     >
-      <Link to="/" className="label shrink-0 text-[10px] text-accent">
+      <Link
+        to="/"
+        className="label flex shrink-0 items-center gap-2 text-[10px] text-accent"
+      >
+        <Mark size={16} />
         {brand.name}
       </Link>
       <ul className="hidden min-w-0 flex-1 items-center gap-5 overflow-x-auto md:flex">

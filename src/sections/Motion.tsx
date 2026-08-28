@@ -120,7 +120,15 @@ export function Motion() {
         ))}
       </div>
 
-      <div className="mt-12">
+    </>
+  );
+}
+
+export function MotionRegler() {
+  const tx = useTx();
+  return (
+    <>
+      <div>
         <Rules
           dos={[
             tx({
