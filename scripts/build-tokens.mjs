@@ -55,6 +55,23 @@ light.push(`  --sys-case-display: ${tokens.sys.case.display.$value};`);
 light.push(`  --sys-space-scale: ${tokens.sys.space.scale.$value};`);
 light.push(`  --sys-alignment: ${tokens.sys.composition.alignment.$value};`);
 
+// Generated tone ladders and the type ramp (brand/ladders.json, written by
+// generate-theme): full 12-step ref ladders and derived type sizes become
+// real custom properties developers can build with.
+const laddersPath = path.join(root, "brand", "ladders.json");
+if (fs.existsSync(laddersPath)) {
+  const ladders = JSON.parse(fs.readFileSync(laddersPath, "utf8"));
+  for (const l of ladders.ladders ?? []) {
+    l.steps.forEach((hex, i) => {
+      light.push(`  --ref-${l.name}-${i + 1}: ${hex};`);
+    });
+  }
+  for (const t of ladders.type?.steps ?? []) {
+    light.push(`  --sys-type-${t.label}: ${t.size};`);
+    light.push(`  --sys-leading-${t.label}: ${t.lineHeight};`);
+  }
+}
+
 for (const [name, node] of Object.entries(tokens.sys.motion)) {
   if (name.startsWith("$")) continue;
   const v = Array.isArray(node.$value)
@@ -95,6 +112,9 @@ fs.copyFileSync(
   path.join(root, "brand", "tokens.json"),
   path.join(exportsDir, "tokens.json"),
 );
+if (fs.existsSync(laddersPath)) {
+  fs.copyFileSync(laddersPath, path.join(exportsDir, "ladders.json"));
+}
 
 // Component exports are generated from the ui sources, never maintained by
 // hand, so they cannot drift. One provenance header on each.

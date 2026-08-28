@@ -254,19 +254,25 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
 2. **Generate the theme.** Derive the personality profile from the brand
    platform (skarp/blød · tæt/luftig · teknisk/menneskelig · rolig/kinetisk ·
    rå/poleret · bokset/åben) and confirm it with a human. Then:
-   author `brand/tokens.json` by hand from the evidence: ref tier bound to
-   captured values, sys tier with light/dark contexts, radius/space/case/
-   motion/border/composition from the profile.
+   author `brand/tokens.json` from the evidence: ref tier bound to
+   captured values (color-evidence.json ranks candidates by brandScore;
+   confidence below 0.6 means ASK, not decide), sys tier with light/dark
+   contexts, radius/space/case/motion/border/composition from the
+   profile, `sys.type` as {base, ratio} (the density axis picks the
+   ratio band: dense 1.125-1.2, editorial 1.333-1.5). Then run
+   `npm run generate-theme`: it derives 12-step perceptual tone ladders
+   per core color (evidence hex pinned VERBATIM at its measured
+   lightness), the type ramp, and checks every pair in
+   `brand/contrast-matrix.json` (the same matrix the gate enforces),
+   exiting nonzero on any failure. Ladders land in `brand/ladders.json`
+   and ship as --ref-<name>-1..12 and --sys-type-* custom properties.
    ANCHOR LOCK: any value traced to evidence (CVI or capture) is an
    IMMUTABLE input to theme generation; generation only infills the
    unevidenced slots around the anchors (ladders, dark counterparts,
    support tints). An anchor that comes out mutated downstream is a
-   defect, not a variation. Keep AA pairs (the gate's
+   defect, and the gate's theme-integrity check fails on it. Keep AA pairs (the gate's
    contrast check enforces the declared text/surface pairs). Review the
-   `/theme` route on the dev server before moving on. (ROADMAP: a
-   generate-theme script exists in the POWER and LIFE ACT run repos and is
-   queued in docs/UPSTREAM.md; until it lands in scripts/, theme authoring
-   is manual and evidence-bound.)
+   `/theme` route on the dev server before moving on.
 
 3. **Bind identity.** Fonts + logos into `brand/assets/`, taking
    licensed items from `intake/licensed/` (each carried with its

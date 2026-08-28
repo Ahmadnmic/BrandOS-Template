@@ -40,6 +40,15 @@ steal list.
   axes and contrast on class/weight axes; reconciliation scores
   candidates on explicit axes.
 
+### Done at template level (2026-08-28, same day)
+
+Items 1-4 below are implemented: scripts/generate-theme.mjs (tone
+ladders with verbatim-pinned anchors + type ramp + matrix report),
+brand/contrast-matrix.json read by generator AND gate (C10), the
+gate's theme-integrity check (C11: anchors verbatim, ramp monotone),
+and brandScore + confidence in the fetch-site brand stage
+(color-evidence.json).
+
 ### Next builds (machinery, ordered by leverage)
 
 1. **Tone-ladder color system** (Material HCT + Radix + tints.dev):

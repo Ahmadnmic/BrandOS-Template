@@ -41,6 +41,104 @@ for (const m of allCss.matchAll(/rgba?\([^)]+\)/g)) {
 }
 const colors = [...colorCount.entries()].sort((a, b) => b[1] - a[1]);
 
+// brandScore ranking (the designlang formula): rank captured colors by
+// interactive-background weight + saturation + usage, so reconciliation
+// weighs a NUMBER against the CVI instead of a feeling. Secondary must
+// sit far from primary; the confidence gap says when to ASK, not decide.
+function hexToHsl(hex) {
+  const h = hex.replace("#", "");
+  if (h.length < 6) return null;
+  const r = parseInt(h.slice(0, 2), 16) / 255,
+    g = parseInt(h.slice(2, 4), 16) / 255,
+    b = parseInt(h.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b),
+    l = (max + min) / 2;
+  const s = max === min ? 0 : (max - min) / (1 - Math.abs(2 * l - 1));
+  return { s: s * 100, l: l * 100 };
+}
+function colorDist(a, b) {
+  const pa = a.replace("#", ""),
+    pb = b.replace("#", "");
+  let d = 0;
+  for (let i = 0; i < 6; i += 2)
+    d +=
+      (parseInt(pa.slice(i, i + 2), 16) - parseInt(pb.slice(i, i + 2), 16)) **
+      2;
+  return Math.sqrt(d) / 4.41;
+}
+const INTERACTIVE_SEL = /\b(btn|button|cta|primary|action)\b/i;
+const interactiveBg = new Set();
+for (const m of allCss.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+  if (!INTERACTIVE_SEL.test(m[1])) continue;
+  for (const c of m[2].matchAll(
+    /background(?:-color)?\s*:\s*(#[0-9a-fA-F]{6})/g,
+  ))
+    interactiveBg.add(c[1].toLowerCase());
+}
+const hexOnly = colors.filter(([c]) => /^#[0-9a-f]{6}$/.test(c));
+const scored = hexOnly
+  .map(([hex, count]) => {
+    const hsl = hexToHsl(hex) ?? { s: 0, l: 50 };
+    const chromatic =
+      (hsl.s > 25 && hsl.l > 5 && hsl.l < 95) || interactiveBg.has(hex);
+    return {
+      hex,
+      count,
+      saturation: Math.round(hsl.s),
+      lightness: Math.round(hsl.l),
+      interactiveBg: interactiveBg.has(hex),
+      chromatic,
+      brandScore: Math.round(
+        (interactiveBg.has(hex) ? 100 : 0) +
+          hsl.s * 2 +
+          Math.log10(Math.max(1, count)) * 10,
+      ),
+    };
+  })
+  .filter((c) => c.chromatic)
+  .sort((a, b) => b.brandScore - a.brandScore);
+const primaryC = scored[0];
+const secondaryC = scored.find(
+  (c) => primaryC && colorDist(c.hex, primaryC.hex) > 60,
+);
+const confidence =
+  primaryC && scored[1]
+    ? Math.min(
+        1,
+        Math.max(
+          0.3,
+          0.3 +
+            (1.4 * (primaryC.brandScore - scored[1].brandScore)) /
+              primaryC.brandScore,
+        ),
+      )
+    : 0.3;
+fs.writeFileSync(
+  path.join(BRAND, "color-evidence.json"),
+  JSON.stringify(
+    {
+      $description:
+        "brandScore ranking of captured chromatic colors (interactiveBg*100 + saturation*2 + log10(count)*10). confidence < 0.6: ASK the user which color is primary instead of deciding.",
+      primary: primaryC?.hex ?? null,
+      secondary: secondaryC?.hex ?? null,
+      confidence: Math.round(confidence * 100) / 100,
+      candidates: scored.slice(0, 20),
+    },
+    null,
+    2,
+  ) + "\n",
+);
+console.log(
+  "[brand] color-evidence: primary",
+  primaryC?.hex,
+  "secondary",
+  secondaryC?.hex,
+  "confidence",
+  Math.round(confidence * 100) / 100,
+  confidence < 0.6 ? "(LOW: ask the user)" : "",
+);
+
 const fontFaces = [
   ...new Set([...allCss.matchAll(/@font-face\s*\{[^{}]*\}/g)].map((m) => m[0])),
 ];

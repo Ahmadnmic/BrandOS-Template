@@ -78,3 +78,17 @@ migration.
    a captured photo, or a motif specification slot when the photo does
    not exist yet (never stock, never painted). Build Billedstil from
    crawl imagery or motif specs, page-split per the viewport-page rule.
+
+## 0.4.0 to 0.5.0
+
+1. **Theme machinery.** `npm run generate-theme` now exists: add
+   `sys.type` {base, ratio} to brand/tokens.json (density axis picks
+   the ratio band), create `brand/contrast-matrix.json` with the
+   brand's pair minimums (personality axes modulate targets, floors
+   stay at 4.5 for text), run generate-theme, commit
+   `brand/ladders.json`. The gate now enforces the matrix (C10) and
+   theme integrity (C11: anchors verbatim in ladders, ramp monotone).
+2. **Color evidence.** The intake brand stage writes
+   `brand/color-evidence.json` (brandScore ranking + confidence);
+   reconciliation cites its numbers, and confidence under 0.6 means
+   ask the client which color is primary.

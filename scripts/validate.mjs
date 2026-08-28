@@ -357,19 +357,27 @@ function rel(p) {
       const [l1, l2] = [lum(a), lum(b)].sort((x, y) => y - x);
       return (l1 + 0.05) / (l2 + 0.05);
     };
-    // Declared text-on-surface pairs; extend per brand as roles grow.
-    const PAIRS = [
-      ["ink", "surface"],
-      ["ink", "panel"],
-      ["dim", "surface"],
-      ["accent", "surface"],
-      ["on-action", "action"],
-      ["on-signal", "signal"],
+    // The contrast contract lives in brand/contrast-matrix.json (the same
+    // file generate-theme reads, so generator and gate cannot disagree);
+    // these built-ins are only the fallback when the file is absent.
+    let PAIRS = [
+      ["ink", "surface", 4.5],
+      ["ink", "panel", 4.5],
+      ["dim", "surface", 4.5],
+      ["accent", "surface", 4.5],
+      ["on-action", "action", 4.5],
+      ["on-signal", "signal", 4.5],
     ];
+    const matrixPath = path.join(root, "brand", "contrast-matrix.json");
+    if (fs.existsSync(matrixPath)) {
+      const matrix = JSON.parse(fs.readFileSync(matrixPath, "utf8"));
+      if (Array.isArray(matrix.pairs) && matrix.pairs.length)
+        PAIRS = matrix.pairs.map((p) => [p.fg, p.bg, p.min ?? 4.5]);
+    }
     const fails = [];
     const unresolved = [];
     let checked = 0;
-    for (const [fg, bg] of PAIRS) {
+    for (const [fg, bg, min] of PAIRS) {
       for (const mode of ["light", "dark"]) {
         const f = sysColor(fg, mode);
         const b = sysColor(bg, mode);
@@ -379,11 +387,11 @@ function rel(p) {
         }
         checked++;
         const r = ratio(f, b);
-        if (r < 4.5) fails.push(`${fg}/${bg} ${mode} ${r.toFixed(2)}:1`);
+        if (r < min) fails.push(`${fg}/${bg} ${mode} ${r.toFixed(2)}:1 (min ${min})`);
       }
     }
     if (fails.length)
-      report("FAIL", "contrast pairs", "below AA 4.5:1: " + fails.join(", "));
+      report("FAIL", "contrast pairs", "below matrix minimums: " + fails.join(", "));
     else if (unresolved.length)
       report(
         "BLOCKED",
@@ -399,6 +407,50 @@ function rel(p) {
       );
   } catch (e) {
     report("BLOCKED", "contrast pairs", "tokens.json unreadable: " + e.message);
+  }
+}
+
+// C11: theme integrity. Anchors survive verbatim in the generated
+// ladders (the anchor-lock law made checkable), and the type ramp is a
+// sane monotone scale.
+{
+  const laddersPath = path.join(root, "brand", "ladders.json");
+  if (!fs.existsSync(laddersPath)) {
+    report(
+      "PASS",
+      "theme integrity",
+      "no ladders.json (run npm run generate-theme to derive ladders)",
+    );
+  } else {
+    try {
+      const ladders = JSON.parse(fs.readFileSync(laddersPath, "utf8"));
+      const problems = [];
+      for (const l of ladders.ladders ?? []) {
+        if (l.pinnedStep === null) continue;
+        if (!l.steps.includes(l.anchor.toLowerCase()))
+          problems.push(`${l.name}: anchor ${l.anchor} mutated out of its ladder`);
+      }
+      const sizes = (ladders.type?.steps ?? []).map((t) => parseFloat(t.size));
+      const ratio = Number(ladders.type?.ratio ?? 0);
+      if (sizes.length) {
+        if (!sizes.every((v, i) => i === 0 || v > sizes[i - 1]))
+          problems.push("type ramp not monotone");
+        if (sizes.length < 6 || sizes.length > 8)
+          problems.push(`type ramp has ${sizes.length} steps (want 6-8)`);
+        if (ratio < 1.05 || ratio > 1.7)
+          problems.push(`type ratio ${ratio} outside 1.05-1.7`);
+      }
+      if (problems.length)
+        report("FAIL", "theme integrity", problems.join("; "));
+      else
+        report(
+          "PASS",
+          "theme integrity",
+          `${(ladders.ladders ?? []).length} ladders anchored verbatim, type ramp ${ratio} monotone`,
+        );
+    } catch (e) {
+      report("BLOCKED", "theme integrity", "ladders.json unreadable: " + e.message);
+    }
   }
 }
 
@@ -434,7 +486,7 @@ function rel(p) {
 // C9: template version. A field clone cannot know it is stale unless the
 // gate tells it. Bump TEMPLATE_VERSION together with templateVersion in
 // the seed brand.config.ts on machinery changes.
-const TEMPLATE_VERSION = "0.4.0";
+const TEMPLATE_VERSION = "0.5.0";
 {
   const config = fs.readFileSync(
     path.join(root, "brand", "brand.config.ts"),

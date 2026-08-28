@@ -1,0 +1,16 @@
+{
+  "$description": "The theme's contrast contract as data (the Huemint idea): pairwise minimum WCAG ratios between sys color roles, read by BOTH generate-theme and the validation gate so generator and gate can never disagree. Personality axes modulate targets per brand: a bolder brand raises accent-vs-surface, a calmer one lowers it toward the floor. Floors are law: never set a text pair below 4.5.",
+  "pairs": [
+    { "fg": "ink", "bg": "surface", "min": 4.5, "role": "body text" },
+    { "fg": "ink", "bg": "panel", "min": 4.5, "role": "body text on panel" },
+    { "fg": "dim", "bg": "surface", "min": 4.5, "role": "secondary text" },
+    {
+      "fg": "accent",
+      "bg": "surface",
+      "min": 4.5,
+      "role": "accent text and links"
+    },
+    { "fg": "on-action", "bg": "action", "min": 4.5, "role": "button label" },
+    { "fg": "on-signal", "bg": "signal", "min": 4.5, "role": "signal label" }
+  ]
+}

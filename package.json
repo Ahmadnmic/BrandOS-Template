@@ -10,6 +10,7 @@
     "dev": "react-router dev",
     "build": "npm run build:tokens && react-router build && node scripts/build-ai.mjs",
     "build:tokens": "node scripts/build-tokens.mjs",
+    "generate-theme": "node scripts/generate-theme.mjs",
     "preview": "npx serve output/client",
     "typecheck": "react-router typegen && tsc --noEmit",
     "validate": "npm run build:tokens && npm run typecheck && node scripts/validate.mjs"
