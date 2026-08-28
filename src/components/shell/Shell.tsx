@@ -28,7 +28,13 @@ function BallMark() {
   );
 }
 
-function SettingRow({ title, children }: { title: string; children: ReactNode }) {
+function SettingRow({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div>
       <div className="label mb-1.5 text-[9px]">{title}</div>
@@ -37,7 +43,11 @@ function SettingRow({ title, children }: { title: string; children: ReactNode })
   );
 }
 
-function SettingButton(props: { active: boolean; onClick: () => void; children: ReactNode }) {
+function SettingButton(props: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -82,19 +92,30 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
       {collapsed ? (
-        <aside className="flex w-11 shrink-0 flex-col items-center gap-4 border-r border-line bg-panel py-4">
+        <aside className="sticky top-0 flex h-screen w-11 shrink-0 flex-col items-center gap-4 border-r border-line bg-panel py-4">
           <BallMark />
+          <button
+            type="button"
+            onClick={() => {
+              setCollapsed(false);
+              setSettingsOpen(true);
+            }}
+            aria-label="Indstillinger"
+            className="mt-auto flex size-6 items-center justify-center rounded-sm border border-line text-accent hover:bg-line/30"
+          >
+            ⚙
+          </button>
           <button
             type="button"
             onClick={() => setCollapsed(false)}
             aria-label="Åbn panel"
-            className="mt-auto font-mono text-dim hover:text-ink"
+            className="font-mono text-dim hover:text-ink"
           >
             ⟩⟩
           </button>
         </aside>
       ) : (
-        <aside className="relative flex w-56 shrink-0 flex-col border-r border-line bg-panel">
+        <aside className="sticky top-0 flex h-screen w-56 shrink-0 flex-col border-r border-line bg-panel">
           <div className="flex items-center gap-2.5 border-b border-line px-4 pb-4 pt-5">
             <BallMark />
             <span className="label text-[10px] text-accent">{brand.name}</span>
@@ -102,19 +123,26 @@ export function Shell({ children }: { children: ReactNode }) {
           <nav className="flex-1 overflow-y-auto py-3" aria-label="Kapitler">
             {visibleChapters.map((c) => {
               const href = "/" + c.slug;
-              const active = location.pathname === href || (c.slug === "" && location.pathname === "/");
+              const active =
+                location.pathname === href ||
+                (c.slug === "" && location.pathname === "/");
               return (
                 <Link
                   key={c.num}
                   to={href}
                   className={
                     "flex items-center gap-2.5 px-4 py-1.5 font-mono text-[10.5px] tracking-wider " +
-                    (active ? "text-accent" : c.built ? "text-dim hover:text-ink" : "text-dim/50 pointer-events-none")
+                    (active
+                      ? "text-accent"
+                      : c.built
+                        ? "text-dim hover:text-ink"
+                        : "text-dim/50 pointer-events-none")
                   }
                 >
                   <span
                     className={
-                      "rounded-sm px-1 text-[9.5px] " + (active ? "bg-accent text-surface" : "bg-line/40")
+                      "rounded-sm px-1 text-[9.5px] " +
+                      (active ? "bg-accent text-surface" : "bg-line/40")
                     }
                   >
                     {c.num}
@@ -128,7 +156,9 @@ export function Shell({ children }: { children: ReactNode }) {
                 key={c.num}
                 className="flex items-center gap-2.5 px-4 py-1.5 font-mono text-[10.5px] tracking-wider text-dim/40"
               >
-                <span className="rounded-sm bg-line/30 px-1 text-[9.5px]">{c.num}</span>
+                <span className="rounded-sm bg-line/30 px-1 text-[9.5px]">
+                  {c.num}
+                </span>
                 {c.title.toUpperCase()} · LÅST
               </span>
             ))}
@@ -143,14 +173,22 @@ export function Shell({ children }: { children: ReactNode }) {
             >
               <SettingRow title="LINSE">
                 {LENSES.map((l) => (
-                  <SettingButton key={l.id} active={lens === l.id} onClick={() => setLens(l.id)}>
+                  <SettingButton
+                    key={l.id}
+                    active={lens === l.id}
+                    onClick={() => setLens(l.id)}
+                  >
                     {l.label}
                   </SettingButton>
                 ))}
               </SettingRow>
               <SettingRow title="TEMA">
                 {THEMES.map((t) => (
-                  <SettingButton key={t.id} active={theme === t.id} onClick={() => setTheme(t.id)}>
+                  <SettingButton
+                    key={t.id}
+                    active={theme === t.id}
+                    onClick={() => setTheme(t.id)}
+                  >
                     {t.label}
                   </SettingButton>
                 ))}
@@ -191,7 +229,11 @@ export function Shell({ children }: { children: ReactNode }) {
           <span className="label rounded-sm border border-line px-2.5 py-1 text-[9px]">
             DESIGNGUIDE · VER. {brand.version} · OPDATERET {brand.updated}
           </span>
-          <div className="flex overflow-hidden rounded-md border border-line" role="group" aria-label="Tema">
+          <div
+            className="flex overflow-hidden rounded-md border border-line"
+            role="group"
+            aria-label="Tema"
+          >
             {THEMES.filter((t) => t.id !== "auto").map((t) => (
               <button
                 key={t.id}
@@ -199,7 +241,9 @@ export function Shell({ children }: { children: ReactNode }) {
                 onClick={() => setTheme(t.id)}
                 className={
                   "px-3 py-1 font-mono text-[9px] tracking-widest " +
-                  (theme === t.id ? "bg-accent font-bold text-surface" : "text-dim hover:text-ink")
+                  (theme === t.id
+                    ? "bg-accent font-bold text-surface"
+                    : "text-dim hover:text-ink")
                 }
               >
                 {t.label}
@@ -210,7 +254,9 @@ export function Shell({ children }: { children: ReactNode }) {
         <main className="flex-1 px-6 py-8 md:px-10">{children}</main>
         <footer className="flex flex-wrap justify-between gap-2 border-t border-line px-6 py-4 md:px-10">
           <span className="label text-[9px]">NØRGÅRD MIKKELSEN · BRANDOS</span>
-          <span className="label text-[9px]">FORSTÅET AF MENNESKER · BRUGBART FOR AI</span>
+          <span className="label text-[9px]">
+            FORSTÅET AF MENNESKER · BRUGBART FOR AI
+          </span>
         </footer>
       </div>
     </div>
