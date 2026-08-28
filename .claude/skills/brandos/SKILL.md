@@ -87,7 +87,11 @@ homed, ADDING new chapters for CVI sections the 16-chapter map doesn't
 cover) → `npm run validate` until green → build, stamped "foreløbig" →
 when the background deep pass completes: deep verification (recipe step 6:
 diff, add missed components, reconcile at-scale token evidence, re-validate
-against the full inventory, update the stamp) → report.
+against the full inventory, update the stamp) → design handover: when the
+Figma MCP is authenticated, run the `figma-kit` skill (recipe step 6.5) to
+generate the brand's Figma library from tokens.json and light the
+FIGMA-BIBLIOTEK chips; no auth → skip cleanly and say so in the handover →
+report.
 
 ### 4. Auto-build, open, hand over
 

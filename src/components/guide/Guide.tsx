@@ -130,16 +130,20 @@ export function RatioBar(props: {
 }
 
 // Download affordance. Only real artifacts render; an artifact that does not
-// exist yet is absent from the guide, never announced.
+// exist yet is absent from the guide, never announced. A local href
+// downloads; an external href (the Figma library) opens in a new tab.
 export function DownloadChip(props: { label: string; href?: string }) {
   if (!props.href) return null;
+  const external = /^https?:\/\//.test(props.href);
   return (
     <a
       href={props.href}
-      download
+      {...(external
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : { download: true })}
       className="label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-[9px] text-accent hover:border-accent"
     >
-      ⇩ {props.label}
+      {external ? "↗" : "⇩"} {props.label}
     </a>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { brand } from "../../brand/brand.config";
 import {
   ChapterHead,
   CodeBlock,
@@ -89,6 +90,7 @@ export default function Knap() {
         <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
         <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
+        <DownloadChip label="FIGMA-BIBLIOTEK" href={brand.figma?.fileUrl} />
       </div>
 
       {(tab === "KODE" || tab === "SPECS") && (

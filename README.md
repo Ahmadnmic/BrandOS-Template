@@ -246,6 +246,21 @@ scenario backed by a template, its instructions and a mockup), a
 gated-content leak scan over every public file, and full coverage against
 the component inventory and the CVI rule map. Red means fix, not ship.
 
+### 6.5 Design handover: the generated Figma library
+
+When a Figma MCP is connected, the build ends with a real Figma library,
+generated from the same source as everything else. The `figma-kit` skill
+reads `brand/tokens.json` and creates variable collections in Figma (Ref
+primitives plus Sys roles with the brand's light/dark themes as native
+Figma modes, correct scopes, and `var(--sys-*)` code syntax matching the
+shipped CSS), text styles, foundation pages, and one component per
+inventory entry with every fill, stroke and radius bound to those
+variables. The file URL lands in `brand.config.ts`, which lights the
+FIGMA-BIBLIOTEK links in the portal. One direction only: designers get a
+kit that mirrors production, and edits made in Figma count as drift to
+flag, never silently merged back. Without Figma auth the step skips
+cleanly and the handover says so; the build never blocks on it.
+
 ### 7. Build and verify deep
 
 `npm run build` prerenders every chapter into `output/`: a light,
@@ -327,6 +342,10 @@ Every design decision in BrandOS follows from a handful of rules:
   token-generated theme), email-signature generator, curated image pack,
   print-grade logo packs (EPS/PDF-CMYK, 1-color pos/neg), named SoMe /
   newsletter / OOH template set, PMS/CMYK print truth on every core color.
+- **A generated Figma library**, when a Figma MCP is connected: token
+  variables with native light/dark modes, text styles, foundations and
+  variable-bound components, linked from the portal's FIGMA-BIBLIOTEK
+  chips (see step 6.5).
 - **The agent interface**, a built-in Agent Skill (open agentskills.io
   standard; works in Claude, Codex, Cursor, Gemini, Copilot and ~40 more),
   per-page `.md` twins + `llms.txt` / `llms-full.txt`, DTCG `tokens.json`,

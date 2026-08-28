@@ -255,6 +255,21 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      against the FULL inventory, and update the stamp to "verificeret på N
      sider". A brand build is not done before this step.
 
+6.5. **Design handover (Figma), optional and auth-gated.** When the Figma
+MCP is connected, run the `figma-kit` skill after validate passes: it
+generates the brand's Figma library FROM tokens.json (Ref + Sys
+variable collections with the brand's theme modes, scopes and
+var(--sys-*) code syntax, text styles, foundation pages, one
+variable-bound component per inventory entry) and writes the file URL
+into brand.config.ts `figma.fileUrl`, which lights the portal's
+FIGMA-BIBLIOTEK chips. One direction only: Figma is generated from
+tokens, hand edits in Figma are drift to flag, never merge. Brand
+purity: no community kits or foreign libraries in a brand kit.
+Sequential tail: use_figma calls never run in the parallel waves. No
+Figma auth, or file creation refused (some plans reject their own
+whoami planKey, ask the builder for an empty file URL instead) →
+degrade cleanly, note it in the handover, never block the build.
+
 7. **Publish.** When validate is green, build and open AUTOMATICALLY: run
    `npm run build`, serve the result in the background (`npm run preview`)
    and open the URL in the user's browser or preview pane without being

@@ -17,6 +17,10 @@ export interface BrandConfig {
   contacts: { role: string; email: string }[];
   chapters: Chapter[];
   changelog: { version: string; date: string; note: string }[];
+  // Set by the figma-kit skill after it generates the brand's Figma
+  // library. Absent until the kit exists; the portal's FIGMA-BIBLIOTEK
+  // chips render only when it is set.
+  figma?: { fileUrl: string };
 }
 
 export const brand: BrandConfig = {

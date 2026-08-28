@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { brand } from "../../brand/brand.config";
 import {
   ChapterHead,
   CodeBlock,
@@ -38,6 +39,7 @@ export function Komponenter() {
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
           <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
+          <DownloadChip label="FIGMA-BIBLIOTEK" href={brand.figma?.fileUrl} />
         </div>
       </section>
     </>
