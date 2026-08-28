@@ -156,6 +156,44 @@ export function DownloadChip(props: { label: string; href?: string }) {
   );
 }
 
+// Imagery in the guide is either the real captured photo or a motif
+// specification: a ruled slot stating what the image must show (the
+// honest-slot pattern from the Molslinjen reference). Never a stock
+// photo, never painted imagery.
+export function ImageFrame(props: {
+  src?: string;
+  alt?: string;
+  motif: string;
+  ratio?: string;
+}) {
+  const tx = useTx();
+  if (props.src)
+    return (
+      <figure>
+        <img
+          src={props.src}
+          alt={props.alt ?? props.motif}
+          className="w-full object-cover"
+          style={{ aspectRatio: props.ratio ?? "3/2" }}
+        />
+        <figcaption className="label mt-2 text-[9px]">{props.motif}</figcaption>
+      </figure>
+    );
+  return (
+    <div
+      className="flex w-full flex-col items-start justify-end border border-dashed border-line bg-panel p-4"
+      style={{ aspectRatio: props.ratio ?? "3/2" }}
+    >
+      <span className="label text-[9px] text-accent">
+        {tx({ da: "MOTIV", en: "MOTIF" })}
+      </span>
+      <span className="mt-1 max-w-xs text-sm leading-snug text-dim">
+        {props.motif}
+      </span>
+    </div>
+  );
+}
+
 // Usage rules the way every serious guide states them: GØR/UNDGÅ pairs,
 // one imperative sentence per rule, ruled columns, no cards.
 export function Rules(props: { dos: string[]; donts: string[] }) {

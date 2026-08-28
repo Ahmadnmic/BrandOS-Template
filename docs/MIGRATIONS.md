@@ -63,3 +63,18 @@ migration.
    CAPTURED logo from brand/logos/, never drawn from memory), name and
    tagline; the contents index moved to its own page. The top nav shows
    the small mark next to the brand name.
+
+## 0.3.0 to 0.4.0
+
+1. **Layout is a build outcome.** `sys.composition` gains `coverStyle`
+   (mark-led | image-led | type-led), `imageWeight` and `rhythm`
+   (alternating | continuous), read from the site AND the CVI document's
+   own editorial layout. The cover component branches on coverStyle
+   (image-led covers point COVER_IMAGE at a captured image), and the
+   page rhythm consumes the rhythm token. Add the three tokens to
+   brand/tokens.json with evidence-backed values; never keep the seed's
+   defaults unexamined.
+2. **ImageFrame and Billedstil.** Imagery renders through `ImageFrame`:
+   a captured photo, or a motif specification slot when the photo does
+   not exist yet (never stock, never painted). Build Billedstil from
+   crawl imagery or motif specs, page-split per the viewport-page rule.

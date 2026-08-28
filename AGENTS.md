@@ -197,6 +197,16 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
    analysis, the site's IA, and the TYPESETTING IDIOM: alignment,
    containment (boxes vs hairline rules vs whitespace), corner language,
    density, image framing → the `sys.composition` profile.
+   THE CVI IS LAYOUT EVIDENCE TOO: read the guide document's OWN editorial
+   layout (its cover composition, image-to-text ratio, grid density, how
+   rules and examples sit on its pages) into `sys.composition`:
+   `coverStyle` (mark-led | image-led | type-led), `imageWeight`
+   (photo-led | balanced | type-led), `rhythm` (alternating | continuous),
+   alongside containment and alignment. The portal's structure consumes
+   these tokens, so THE LAYOUT CHANGES FROM BUILD TO BUILD: a photo-led
+   brand gets an image-led cover and photo-weighted pages, an editorial
+   brand stays type-led. Never default every brand to the seed's
+   composition; record the layout evidence in the audit trail.
    From the CVI: official palette, typefaces + licenses, logo rules,
    clearspace, tone of voice, and PRINT TRUTH: authoritative PMS-C/PMS-U,
    CMYK and RAL per core color into `tokens.json` `$extensions` (if the CVI
@@ -605,6 +615,11 @@ provisional handover. When the deep crawl lands: deep verification
   - Specimens sit free on the page: type set large over a hairline,
     components on a plain hairline stage. The thing itself is the
     presentation; a box around it is noise.
+  - IMAGERY: pages use the brand's CAPTURED pictures (intake assets,
+    rights-checked). Where a needed photo does not exist, `ImageFrame`
+    renders a motif specification (a ruled slot stating what the image
+    must show), never a stock photo and never painted imagery. Billedstil
+    is built from real crawl imagery or motif specs, nothing else.
   - The same bordered container repeated as page structure is the tell.
     If two adjacent sections wear identical boxes, remove the boxes.
   - Corner radius comes only from `sys.radius` tokens and belongs to

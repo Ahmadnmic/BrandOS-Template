@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { brand } from "../../brand/brand.config";
 import { GuidePage } from "../components/guide/GuidePage";
+import tokens from "../../brand/tokens.json";
 import { useTx } from "../lens";
 import { Cover, Indhold } from "../sections/Hero";
 import { Farver, FarverRegler } from "../sections/Farver";
 import { Typografi, TypografiRegler } from "../sections/Typografi";
+import { Billedstil, BilledstilRegler } from "../sections/Billedstil";
 import { Motion, MotionRegler } from "../sections/Motion";
 import {
   Komponenter,
@@ -66,6 +68,17 @@ const PAGES: PageDef[] = [
     render: () => <TypografiRegler />,
   },
   {
+    chapter: "07",
+    anchor: "billedstil",
+    label: { da: "Billedstil", en: "Imagery" },
+    render: () => <Billedstil />,
+  },
+  {
+    chapter: "07",
+    label: { da: "Billedregler", en: "Image rules" },
+    render: () => <BilledstilRegler />,
+  },
+  {
     chapter: "08",
     anchor: "motion",
     label: { da: "Motion", en: "Motion" },
@@ -108,6 +121,13 @@ const PAGES: PageDef[] = [
   },
 ];
 
+// The page rhythm is a composition token: alternating brands get a clean
+// panel break between pages, continuous brands one unbroken surface.
+const RHYTHM =
+  tokens.sys?.composition?.rhythm?.$value === "continuous"
+    ? "continuous"
+    : "alternating";
+
 export default function Forside() {
   const tx = useTx();
   return (
@@ -119,7 +139,9 @@ export default function Forside() {
           page={i + 1}
           label={tx(p.label)}
           chapter={p.chapter}
-          tone={(i + 1) % 2 === 0 ? "panel" : "surface"}
+          tone={
+            RHYTHM === "alternating" && (i + 1) % 2 === 0 ? "panel" : "surface"
+          }
           wide={p.wide}
         >
           {p.render()}
