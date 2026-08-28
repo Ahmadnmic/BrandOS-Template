@@ -32,6 +32,12 @@ Thumbs.db
 # server and tool logs
 *.log
 
+# field/: filtered snapshots of client test runs, kept local for reference
+# and dev logs. Client brand material never goes to the public repo; only
+# the index is committed.
+field/*
+!field/INDEX.md
+
 # generated
 .react-router/
 output/
