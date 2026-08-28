@@ -4,6 +4,7 @@ import { brand } from "../../../brand/brand.config";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import { TopNav } from "./TopNav";
 import { PageNav } from "./PageNav";
+import { SearchPalette } from "./SearchPalette";
 
 // The portal is one scrolling document: fixed scroll-spy nav on top, the
 // guide as full-height pages in the middle, a page control bottom-right
@@ -22,6 +23,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <span className="label text-[9px]">{brand.tagline.toUpperCase()}</span>
       </footer>
       <PageNav />
+      <SearchPalette />
     </div>
   );
 }

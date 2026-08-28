@@ -47,6 +47,20 @@ html {
   transform: none;
 }
 
+/* Brief flash on the element a search jump lands on. */
+.search-flash {
+  animation: search-flash 1.8s var(--sys-ease-out) both;
+}
+@keyframes search-flash {
+  0%,
+  40% {
+    background-color: color-mix(in srgb, var(--sys-signal) 25%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .motion-ball {
   left: 0;
   animation: run-track var(--sys-duration-slow) both;
@@ -69,6 +83,9 @@ html {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .search-flash {
+    animation: none;
   }
   .motion-ball {
     animation: none;

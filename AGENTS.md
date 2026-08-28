@@ -383,6 +383,11 @@ provisional handover. When the deep crawl lands: deep verification
   - Component detail pages (the 4-tab contract) and the /theme QA surface
     are separate routes in the same frame; the pager shows only the gear
     there.
+  - Ctrl/Cmd+F opens the search palette (`SearchPalette`): a centered
+    overlay that indexes the rendered document on open, ranks headings
+    first, and jumps to the hit (revealing its page and flashing the
+    element). It searches what is actually on the page, never a second
+    content store.
   - Content reveals once on scroll (`useScrollReveal` + `[data-reveal]`),
     driven by the brand's own motion tokens, off under
     prefers-reduced-motion.
