@@ -47,6 +47,21 @@ Turns any public website into:
    but **only for SSR/static sites**, a client-rendered SPA will yield empty shells, so check
    the first page's HTML and warn the user if it has no real content.
 
+## Images and logos guarantee
+
+Pictures and logos are build inputs. The assets stage harvests lazy
+attributes (data-src, data-lazy-src, data-original, data-bg, noscript
+fallbacks), srcset variants at original resolution and SVG sprite
+files referenced by <use>; the brand stage verifies logo candidates
+(size-checked, filename + header/alt placement nets) into
+brand/logos/ with a manifest. After the stages, read
+`_meta/asset-summary.json`: zero images, a majority of zero-image
+pages (JS-lazy signal) or an empty logo manifest means ESCALATE:
+review skipped external hosts (re-run with --asset-hosts for
+confirmed brand CDNs), re-capture zero-image pages rendered, pull the
+sprite. Still nothing? Ask the user for files. Never proceed silently
+into a build without usable imagery and at least one verified logo.
+
 ## CVI-site capture mode (live brand guides)
 
 The same pipeline captures a LIVE CVI (a designguide subdomain, or a
@@ -120,7 +135,8 @@ plain-HTTP fetched first (0 credits) and classified; (c) only JS-shell pages and
 fetches (403/429/network) escalate to Firecrawl batch (1 credit/page); dead URLs (404/410)
 are never escalated because Firecrawl bills processed error pages. `--direct` never calls
 Firecrawl; `--force-firecrawl` bills every page (pre-hybrid behavior); `--fresh` ignores the
-local capture. The final counts line shows `cached-local` / `direct` / `firecrawl` / `failed`
+local capture; `--ignore-credit-check` skips the preflight STOP and is used ONLY
+on explicit user instruction after a credit stop. The final counts line shows `cached-local` / `direct` / `firecrawl` / `failed`
 plus an estimated credit spend. ALWAYS persist that summary to
 `_meta/credits.json` (mapped calls, scrape counts by mode, estimated credits)
 so every run's spend is auditable without counting manifest lines.

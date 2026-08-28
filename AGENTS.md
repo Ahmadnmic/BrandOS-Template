@@ -90,7 +90,19 @@ estimate and ask "fortsæt?" (continue?):
   This is permitted stop (d) in the autonomy rule: one question, one
   answer, then run. If the user already answered a cost gate this run,
   do not ask again unless the estimate grows past what they approved.
-  STATICS FIRST: before spending credits on page volume, capture the
+  IMAGES & LOGOS GUARANTEE: pictures and logos are BUILD INPUTS, not
+decoration; a capture without them is incomplete. After the assets
+stage, read `_meta/asset-summary.json`: it counts images, lists pages
+with zero <img> (a JS-lazy-loading signal) and the skipped external
+hosts. Zero images or zero usable logos (brand/logos/manifest.json) is
+a STOP, not a shrug: review the skipped hosts and re-run with
+`--asset-hosts` for confirmed brand CDNs, escalate zero-image pages to
+rendered capture (Firecrawl or the browser-context ladder), and pull
+sprite files for <use>-referenced logos. If a usable logo still cannot
+be captured, ASK the user for logo files; NEVER paint a logo or
+imagery from memory, and never build Billedstil without captured
+pictures (no data, no section).
+STATICS FIRST: before spending credits on page volume, capture the
   site's production stylesheets, root custom properties and font
   references; they are the highest evidence tier per token and nearly
   free. A run that exhausts credits before the statics (Elgiganten,
@@ -135,8 +147,9 @@ lower the cap; never continue on a partial corpus without saying so. Output: the
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
 
-**Q2, when intake completes**, "Hand me the CVI / brand guide: files
-into `intake/cvi/`, or the URL if the guide lives on the web."
+**Q2, when intake completes**, ask exactly: "Hand me the CVI / brand
+guide: PDF, deck or files (I'll put them in `intake/cvi/`), or the URL
+if the guide lives on the web."
 LIVE CVI MODE: many brands publish the guide as a site (a designguide
 subdomain, Frontify, Corebook, Brandpad). Capture it with the same
 fetch-site pipeline and Firecrawl hybrid, pointed at the guide URL with
@@ -226,10 +239,14 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
 2. **Generate the theme.** Derive the personality profile from the brand
    platform (skarp/blød · tæt/luftig · teknisk/menneskelig · rolig/kinetisk ·
    rå/poleret · bokset/åben) and confirm it with a human. Then:
-   `npm run generate-theme -- --seed "#0A1526" --profile profile.json`
-   → writes ref+sys tiers (color, type, radius, space, case, motion, border,
-   composition) into `brand/tokens.json`. Keep AA pairs. Review the `/theme`
-   route before moving on.
+   author `brand/tokens.json` by hand from the evidence: ref tier bound to
+   captured values, sys tier with light/dark contexts, radius/space/case/
+   motion/border/composition from the profile. Keep AA pairs (the gate's
+   contrast check enforces the declared text/surface pairs). Review the
+   `/theme` route on the dev server before moving on. (ROADMAP: a
+   generate-theme script exists in the POWER and LIFE ACT run repos and is
+   queued in docs/UPSTREAM.md; until it lands in scripts/, theme authoring
+   is manual and evidence-bound.)
 
 3. **Bind identity.** Fonts + logos into `brand/assets/`, taking
    licensed items from `intake/licensed/` (each carried with its
@@ -434,11 +451,11 @@ back. The checklist, every item verified against the running portal:
    of the user, verified by the loop in 6.7. `npm run build` → the finished portal lands in `output/` as
    a static React site, as light and few-file as the stack allows
    (prerendered HTML per route, one CSS file, minimal JS chunks, the AI
-   files). Deploy that folder. Then `npm run release`, it bumps the version
-   stamp, the changelog and the tokens export version atomically and refuses
-   on mismatch. Token exports ship as versioned tarballs under
-   /exports/ (URL-installable); npm publishing is an explicit opt-in via CI
-   under the NM org, never a default.
+   files). Deploy that folder. Bump the version stamp and changelog in
+   brand.config.ts by hand when publishing. (ROADMAP: `npm run release`
+   will do this atomically with versioned token tarballs under /exports/;
+   it does not exist yet. npm publishing stays an explicit CI opt-in under
+   the NM org, never a default.)
    The output governs its own future: build-ai writes AGENTS.md (rules for
    any AI editing the deployed portal: tokens-only values, no new colors or
    fonts, no AI-tell prose, never touch the machine files or /gated/),
@@ -478,7 +495,8 @@ pass → Q2 CVI. Then fan out TWO extractors in parallel: (0a) crawl
 analysis: component inventory, de facto tokens, typesetting idiom, copy
 corpus; (0b) CVI parsing: cvi-rules.json, official values, print truth.
 Main agent reconciles (human decisions), confirms the personality profile,
-runs generate-theme. The theme lock ends wave 0.
+authors the theme per step 2 (evidence-bound, AA-gated). The theme lock
+ends wave 0.
 
 WAVE 1, fan out in parallel (one subagent per unit):
 
@@ -532,7 +550,9 @@ provisional handover. When the deep crawl lands: deep verification
   worth noting", "In conclusion", "Let's dive in", exclamation-mark
   enthusiasm, emoji in headings, rule-of-three sentence padding. Write like
   the brand's own people: concrete nouns, short sentences, exact values.
-  validate greps generated copy for the banned list.
+  validate greps generated copy for the machine-checkable subset of this
+  list (see C1 in scripts/validate.mjs); the full list binds the writer
+  either way.
 - NEVER the generic AI look: rounded-card grids, centered-everything,
   gradient heroes, uniform radius, emoji headers. Containment, radius and
   alignment must cite evidence from `intake/` (the `sys.composition`
@@ -596,9 +616,9 @@ provisional handover. When the deep crawl lands: deep verification
   those entries to brand repos; an API change without an entry strands
   every deployed portal on the old behavior.
 - The template is versioned: `brand.config.ts` carries `templateVersion`;
-  template upgrades happen only via `npm run upgrade-template` (overlays
-  src/ + scripts/, runs migrations, re-runs validate), never by hand-editing
-  src/ in a brand repo.
+  template upgrades happen only via the /brandos-update skill
+  (.claude/skills/brandos-update/: overlay + docs/MIGRATIONS.md migration
+  pass + gate + browser loop), never by hand-editing src/ in a brand repo.
 - MISSING-MACHINERY EXCEPTION: if template machinery a build needs does not
   exist yet or is broken (a validate check, a build script, a gating
   mechanism), the build agent MAY add or fix it, but MUST list every such
@@ -611,7 +631,10 @@ provisional handover. When the deep crawl lands: deep verification
 - `.claude/skills/brandos/`, the /brandos startup command
 - `.claude/skills/fetch-site/`, bundled intake engine (7 stages)
 - `.claude/skills/brand/`, per-brand knowledge skill (generated in step 4)
-- `intake/`, the two rebuild inputs (per client; never committed)
+- `intake/`, the rebuild inputs (bulk captures never committed; the
+  three audit-trail files reconciliation.md, components-inventory.md and
+  cvi-rules.json are)
 - `brand/` + `content/`, the ONLY rebrand surface
 - `src/`, invariant template machinery (shell, guide components, UI library)
-- `scripts/`, intake / generate-theme / build-tokens / build-ai / validate
+- `scripts/, build-tokens / build-ai / validate (intake machinery lives in
+.claude/skills/fetch-site/scripts/; generate-theme is queued in UPSTREAM)

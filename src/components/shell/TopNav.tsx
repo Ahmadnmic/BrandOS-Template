@@ -48,7 +48,7 @@ export function TopNav() {
 
   return (
     <nav
-      aria-label="Kapitler"
+      aria-label={tx({ da: "Kapitler", en: "Chapters" })}
       className={
         "fixed inset-x-0 top-0 z-20 flex h-14 items-center gap-6 px-6 transition-colors md:px-10 " +
         (scrolled

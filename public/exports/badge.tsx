@@ -1,3 +1,5 @@
+// Odense Basket brand tokens · badge.tsx
+// Styles flow only through var(--sys-*) tokens. Never introduce raw values.
 import type { HTMLAttributes } from "react";
 
 type Variant = "standard" | "signal";

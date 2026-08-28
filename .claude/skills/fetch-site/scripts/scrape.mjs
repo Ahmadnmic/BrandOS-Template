@@ -303,6 +303,13 @@ writeJSON(cfg.meta("scrape-manifest.json"), manifest);
 const counts = {};
 for (const v of Object.values(manifest)) counts[v] = (counts[v] || 0) + 1;
 console.log("[scrape] DONE", JSON.stringify(counts));
+// Auditable spend record for every run, per the credit posture.
+writeJSON(cfg.meta("credits.json"), {
+  finishedAt: new Date().toISOString(),
+  countsByMode: counts,
+  estimatedCredits: (counts.firecrawl || 0) + 1,
+  note: "estimate = firecrawl-scraped pages + 1 map call; cached-local and direct cost 0",
+});
 console.log(
   `[scrape] estimated Firecrawl credits this run: ${counts.firecrawl || 0} (+1 if map used Firecrawl)`,
 );

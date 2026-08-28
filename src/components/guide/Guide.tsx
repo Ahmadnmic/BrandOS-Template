@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { useLens, useTx } from "../../lens";
 import tokens from "../../../brand/tokens.json";
 
+// Part of the template's public surface: brand rebuilds read CONTAINMENT
+// to align their own layout decisions with the composition token.
 // The brand's containment idiom drives how every guide component renders.
 // "ruled": hairlines and whitespace, square, flush-left (editorial brands).
 // "boxed": contained cards (only for brands whose own material is carded).

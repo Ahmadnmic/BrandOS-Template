@@ -45,6 +45,8 @@
   --sys-tracking-display: 0.08em;
   --sys-tracking-label: 0.16em;
   --sys-case-display: uppercase;
+  --sys-space-scale: 0.9;
+  --sys-alignment: flush-left;
   --sys-duration-instant: 80ms;
   --sys-duration-fast: 140ms;
   --sys-duration-base: 220ms;

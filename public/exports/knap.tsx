@@ -1,5 +1,5 @@
-// Odense Basket BrandOS · Knap
-// Styles flow only through sys tokens. Never introduce raw values.
+// Odense Basket brand tokens · knap.tsx
+// Styles flow only through var(--sys-*) tokens. Never introduce raw values.
 import type { ButtonHTMLAttributes } from "react";
 
 type Variant = "primaer" | "sekundaer" | "signal";

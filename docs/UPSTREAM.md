@@ -7,9 +7,11 @@ adapt, delete the entry.
 ## From the POWER build (power.dk, 2026-08-28, branch brandos/power-dk)
 
 - `scripts/validate.mjs`: DONE at template level (2026-08-28, after the
-  LIFE ACT build also had to rewrite it): six static checks with
+  LIFE ACT build also had to rewrite it): now ten checks with
   PASS / FAIL / BLOCKED semantics (writing rules, key hygiene, seed
-  leak, prerender completeness, gated leak, print truth). Still to pull
+  leak, route-aware prerender completeness, gated leak incl. bare slugs,
+  print truth, licensed manifest, token-level contrast, build stamp,
+  template version). Still to pull
   from the field implementations: axe/contrast/keyboard passes, token
   deprecation-alias lint, asset license expiry, application coverage.
 - `scripts/build-gated.mjs` + the `BRANDOS_GATED=1` routes split: gated
@@ -65,7 +67,7 @@ Still to pull, in priority order:
   resolver so no brand literal lives in src/), registry-derived
   component routes (brand/content/komponenter.ts + generic
   routes/komponent.tsx; 33 detail pages prerendered without a hand
-  list). docs/adr/001-brand-content-modules.md documents it.
+  list). docs/adr/001-brand-content-modules.md IN THE ELGIGANTEN BRAND REPO documents it.
 - POWER scripts: stratify.mjs (generic, type-map as config; make the
   cap a hard invariant, SDU overshot 156/150), generate-theme.mjs
   (--evidence mode binds ref to captured values; AA failure exits

@@ -1,3 +1,5 @@
+// Odense Basket brand tokens · banner.tsx
+// Styles flow only through var(--sys-*) tokens. Never introduce raw values.
 import type { ReactNode } from "react";
 
 // Announcement strip: hairlines above and below, flush left, no box.

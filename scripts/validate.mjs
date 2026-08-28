@@ -154,13 +154,33 @@ function rel(p) {
   } else {
     const pages = walk(outDir, ["index.html"]).length;
     const fallback = fs.existsSync(path.join(outDir, "__spa-fallback.html"));
-    if (pages >= 2 && fallback)
-      report("PASS", "prerender completeness", `${pages} pages prerendered`);
+    // Expected pages come from the route table itself: the index route plus
+    // every registered route except dev-only /theme. An SPA shell (fewer
+    // prerendered pages than routes) FAILS.
+    let expected = 2;
+    try {
+      const routesSrc = fs.readFileSync(
+        path.join(root, "src", "routes.ts"),
+        "utf8",
+      );
+      const routePaths = [...routesSrc.matchAll(/route\("([^"]+)"/g)]
+        .map((m) => m[1])
+        .filter((r) => r !== "theme");
+      expected = 1 + routePaths.length;
+    } catch {
+      /* keep the floor of 2 */
+    }
+    if (pages >= expected && fallback)
+      report(
+        "PASS",
+        "prerender completeness",
+        `${pages} pages prerendered (expected ${expected})`,
+      );
     else
       report(
         "FAIL",
         "prerender completeness",
-        `${pages} pages, fallback=${fallback} — check react-router.config prerender()`,
+        `${pages} pages, expected ${expected}, fallback=${fallback} — check react-router.config prerender()`,
       );
   }
 }
@@ -347,22 +367,35 @@ function rel(p) {
       ["on-signal", "signal"],
     ];
     const fails = [];
+    const unresolved = [];
+    let checked = 0;
     for (const [fg, bg] of PAIRS) {
       for (const mode of ["light", "dark"]) {
         const f = sysColor(fg, mode);
         const b = sysColor(bg, mode);
-        if (!f || !b || !/^#/.test(f) || !/^#/.test(b)) continue;
+        if (!f || !b || !/^#/.test(f) || !/^#/.test(b)) {
+          unresolved.push(`${fg}/${bg} ${mode}`);
+          continue;
+        }
+        checked++;
         const r = ratio(f, b);
         if (r < 4.5) fails.push(`${fg}/${bg} ${mode} ${r.toFixed(2)}:1`);
       }
     }
     if (fails.length)
       report("FAIL", "contrast pairs", "below AA 4.5:1: " + fails.join(", "));
+    else if (unresolved.length)
+      report(
+        "BLOCKED",
+        "contrast pairs",
+        `${checked} checked, UNRESOLVED (missing or non-hex): ` +
+          unresolved.join(", "),
+      );
     else
       report(
         "PASS",
         "contrast pairs",
-        `${PAIRS.length} pairs x 2 modes reach AA 4.5:1`,
+        `${checked} pair-modes checked, all reach AA 4.5:1`,
       );
   } catch (e) {
     report("BLOCKED", "contrast pairs", "tokens.json unreadable: " + e.message);

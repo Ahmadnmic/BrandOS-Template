@@ -60,9 +60,11 @@ export function Komponenter() {
           </Link>
         </div>
         <div className="mt-4 flex min-h-28 flex-wrap items-center justify-center gap-3 border border-line p-5">
-          <Button>KØB BILLET</Button>
-          <Button variant="sekundaer">SE KAMPPROGRAM</Button>
-          <Button variant="signal">LIVE NU</Button>
+          <Button>{tx({ da: "KØB BILLET", en: "BUY TICKETS" })}</Button>
+          <Button variant="sekundaer">
+            {tx({ da: "SE KAMPPROGRAM", en: "SEE SCHEDULE" })}
+          </Button>
+          <Button variant="signal">{tx({ da: "LIVE NU", en: "LIVE NOW" })}</Button>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <CodeBlock
@@ -73,7 +75,10 @@ export function Komponenter() {
             code={BUTTON_CSS}
           />
           <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
-          <DownloadChip label="FIGMA-BIBLIOTEK" href={brand.figma?.fileUrl} />
+          <DownloadChip
+            label={tx({ da: "FIGMA-BIBLIOTEK", en: "FIGMA LIBRARY" })}
+            href={brand.figma?.fileUrl}
+          />
         </div>
       </section>
 
@@ -126,7 +131,9 @@ export function Komponenter() {
         <div className="mt-4 border border-line p-5">
           <Banner
             label={tx({ da: "KAMPDAG", en: "GAME DAY" })}
-            action={<Button variant="signal">LIVE NU</Button>}
+            action={
+              <Button variant="signal">{tx({ da: "LIVE NU", en: "LIVE NOW" })}</Button>
+            }
           >
             {tx({
               da: "Odense Basket møder Bakken Bears i aften kl. 19.00.",

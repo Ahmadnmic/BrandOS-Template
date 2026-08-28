@@ -52,6 +52,8 @@ for (const [name, node] of Object.entries(tokens.sys.radius)) {
 light.push(`  --sys-tracking-display: ${tokens.sys.tracking.display.$value};`);
 light.push(`  --sys-tracking-label: ${tokens.sys.tracking.label.$value};`);
 light.push(`  --sys-case-display: ${tokens.sys.case.display.$value};`);
+light.push(`  --sys-space-scale: ${tokens.sys.space.scale.$value};`);
+light.push(`  --sys-alignment: ${tokens.sys.composition.alignment.$value};`);
 
 for (const [name, node] of Object.entries(tokens.sys.motion)) {
   if (name.startsWith("$")) continue;
@@ -93,6 +95,25 @@ fs.copyFileSync(
   path.join(root, "brand", "tokens.json"),
   path.join(exportsDir, "tokens.json"),
 );
+
+// Component exports are generated from the ui sources, never maintained by
+// hand, so they cannot drift. One provenance header on each.
+const UI_EXPORTS = {
+  "Button.tsx": "knap.tsx",
+  "Badge.tsx": "badge.tsx",
+  "Felt.tsx": "felt.tsx",
+  "Banner.tsx": "banner.tsx",
+};
+const uiDir = path.join(root, "src", "components", "ui");
+for (const [src, out] of Object.entries(UI_EXPORTS)) {
+  const p = path.join(uiDir, src);
+  if (!fs.existsSync(p)) continue;
+  const header = `// ${tokens.$description?.split(".")[0] ?? "BrandOS"} · ${out}\n// Styles flow only through var(--sys-*) tokens. Never introduce raw values.\n`;
+  fs.writeFileSync(
+    path.join(exportsDir, out),
+    header + fs.readFileSync(p, "utf8"),
+  );
+}
 console.log(
   "tokens.css written:",
   theme.length,

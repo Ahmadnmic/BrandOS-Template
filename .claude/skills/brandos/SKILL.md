@@ -82,12 +82,14 @@ intake input.**
 ### 3. Build autonomously
 
 From here, run the `AGENTS.md` rebuild recipe steps 1-7 without further
-questions, with exactly three exceptions:
+questions, with exactly four exceptions:
 
 - a **reconciliation conflict** (crawl vs CVI disagree) → write it to
   `intake/reconciliation.md` and ask for a decision;
 - the **not-100%-sure doctrine** above;
-- the **one-time personality-profile confirmation** before theme generation.
+- the **one-time personality-profile confirmation** before theme generation;
+- the **cost gate**, re-presented only if the estimate grows past what
+  the user approved.
 
 Execute via AGENTS.md's "Parallel build plan": if your harness supports
 subagents, fan out one subagent per unit (each SCOPED to ~10 minutes, but

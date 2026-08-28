@@ -91,9 +91,11 @@ export default function Knap() {
 
       {(tab === "ANVENDELSE" || tab === "KODE" || tab === "SPECS") && (
         <div className="mt-5 flex min-h-36 flex-wrap items-center justify-center gap-3 border border-line p-6">
-          <Button>KØB BILLET</Button>
-          <Button variant="sekundaer">SE KAMPPROGRAM</Button>
-          <Button variant="signal">LIVE NU</Button>
+          <Button>{tx({ da: "KØB BILLET", en: "BUY TICKETS" })}</Button>
+          <Button variant="sekundaer">
+            {tx({ da: "SE KAMPPROGRAM", en: "SEE SCHEDULE" })}
+          </Button>
+          <Button variant="signal">{tx({ da: "LIVE NU", en: "LIVE NOW" })}</Button>
         </div>
       )}
 
@@ -104,7 +106,10 @@ export default function Knap() {
         />
         <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
-        <DownloadChip label="FIGMA-BIBLIOTEK" href={brand.figma?.fileUrl} />
+        <DownloadChip
+          label={tx({ da: "FIGMA-BIBLIOTEK", en: "FIGMA LIBRARY" })}
+          href={brand.figma?.fileUrl}
+        />
       </div>
 
       {(tab === "KODE" || tab === "SPECS") && (

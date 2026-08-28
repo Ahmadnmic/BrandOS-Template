@@ -253,7 +253,8 @@ and the main agent merges, batches questions to you, and registers the
 chapters. (Harnesses without subagents run the same units in order; the
 plan lives in AGENTS.md.)
 
-One MDX file per chapter, each following the same skeleton: Princip →
+One section module per chapter (src/sections/, registered in the index
+route), each following the same skeleton: Princip →
 Regler (exact values, never adjectives) → Eksempler → Misbrug (wrong usage
 quoted verbatim) → Downloads. The chapter map is a floor, not a ceiling:
 a CVI section with no home gets a new chapter; a chapter the guide lacks
@@ -394,14 +395,16 @@ Every design decision in BrandOS follows from a handful of rules:
 ```
 .claude/skills/brandos/     the /brandos startup command
 .claude/skills/fetch-site/  bundled intake engine (map → scrape → assets →
+.claude/skills/figma-kit/   design handover: generated Figma library
+.claude/skills/brandos-update/  /brandos-update: template upgrade + migrations
                             components → brand → offline mirror → AI index)
 intake/                     per-client inputs: crawl/ + cvi/ or cvi-site/ + licensed/ (gitignored)
 brand/                      ── REBRAND SURFACE ── tokens.json · brand.config.ts ·
                             voice.md · assets/
-content/                    ── REBRAND SURFACE ── one MDX per chapter
+content/                    REBRAND SURFACE: brand copy modules per chapter
 src/                        invariant template machinery (shell, guide
                             components, UI library)
-scripts/                    intake · generate-theme · build-tokens · build-ai ·
+scripts/                    build-tokens · build-ai · validate
                             validate
 AGENTS.md                   the rebuild contract every agent follows
 ```

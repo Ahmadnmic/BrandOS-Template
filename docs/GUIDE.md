@@ -76,9 +76,10 @@ always gives the same theme.
 `npm run validate` must pass before anything ships. The template gate
 covers today: writing rules, key hygiene, seed leak, prerender
 completeness, gated leak (including bare slugs in public JS chunks),
-print truth (CMYK), licensed manifest, build stamp and template version;
+print truth (CMYK), licensed manifest, token-level contrast pairs (AA
+4.5:1, both modes), build stamp and template version;
 it writes its report to `docs/validate-report.md`. A brand build EXTENDS
-the gate with WCAG 2.2 AA (contrast + axe + keyboard), token lint,
+the gate with WCAG 2.2 AA in the browser (axe + keyboard), token lint,
 asset license/expiry, and full coverage: every crawled component
 rebuilt, every CVI rule homed, every application scenario backed by a
 downloadable artifact. BLOCKED (missing input) is never a pass.
@@ -112,7 +113,7 @@ the static build to the client's domain (`brand.client.dk`).
 - **Fonts:** downloadable font packs sit in the gated area unless the
   typeface is explicitly open-licensed (OFL/Apache), a client EULA must be
   checked before ungating; validate enforces this.
-- **Corrections:** every portal page has a "Meld en fejl" link that lands
+- **Corrections:** every portal page has a "Meld en fejl" link that lands (ROADMAP: the link does not exist in the shell yet; corrections go to the brand contact until it ships.)
   with you, prefilled with page and version.
 - **Never** edit component styling directly, hardcode a hex, or resolve a
   reconciliation conflict on the agent's behalf without recording it.

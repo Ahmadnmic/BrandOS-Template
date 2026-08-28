@@ -267,7 +267,7 @@ export function SearchPalette() {
         {!helpMode && hits.length > 0 && (
           <ul
             role="listbox"
-            aria-label="Resultater"
+            aria-label={tx({ da: "Resultater", en: "Results" })}
             className="border-t border-line"
           >
             {hits.map((h, i) => {
