@@ -114,7 +114,25 @@ plus Cursor Pro.
 3. Hand over the CVI when asked; decide any reconciliation conflicts the
    agent surfaces. Done.
 
-Full operator walkthrough: [docs/GUIDE.md](docs/GUIDE.md).
+### Updating an existing brand portal
+
+`/brandos-update` in the brand repo pulls the latest template from this
+GitHub repository and applies it automatically: template-owned machinery
+(scripts, shell, guide components, skills, the contract) is overlaid,
+everything brand-owned (tokens, chapters, sections, intake, the
+per-brand skill) is left alone, conflict-prone files are merged with
+their diffs shown, and the full gate plus the browser verification loop
+run before anything is committed. `npm run validate` tells you when a
+repo is behind the template. In Codex, say "run the brandos-update
+skill".
+
+The template's own skills follow the open Agent Skills layout, so a
+client team can pull them into any agent with
+`npx skills add Ahmadnmic/BrandOS-Template`.
+
+Full operator walkthrough: [docs/GUIDE.md](docs/GUIDE.md). The open
+tools the template builds on, with credits and the build-vs-use
+reasoning: [docs/TOOLS.md](docs/TOOLS.md).
 
 ## How a build actually works
 

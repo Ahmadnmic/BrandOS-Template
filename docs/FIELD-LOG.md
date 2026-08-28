@@ -112,3 +112,23 @@ what went wrong, what changed because of it. Newest at the bottom.
   as human text in both languages.
 - The seed component library grew to Knap, Badge, Felt and Banner, each
   with live preview, code popup and downloadable source.
+- Browser verification loop made mandatory (AGENTS step 6.7): after
+  every build the agent drives the served portal, checks pages,
+  console, fonts, themes, language, lenses, search, pager, downloads
+  and components, and fixes-and-rebuilds until clean.
+- Cost gate added: Firecrawl credits and AI tokens estimated after
+  mapping, one continue question before any paid work.
+- Contrast gate (the Terrazzo idea, implemented natively): six sys
+  text/surface pairs checked at AA 4.5:1 in both modes, at token level.
+  The seed theme passes 12/12.
+- /brandos-update command: pulls the latest template from GitHub into a
+  brand repo with a strict ownership map (template-owned overlaid,
+  brand-owned untouched, conflicts diffed), then gate + browser loop.
+- Search made site-wide: the palette indexes the live page plus every
+  other route's HTML (routes discovered from the document's own links),
+  and cross-page hits navigate and flash on arrival.
+- agnix evaluated for the local gate: its native-binary spawn is
+  blocked in sandboxed runs, so it belongs in CI (agnix-action), noted
+  in TOOLS.md.
+- docs/TOOLS.md: credits and build-vs-use reasoning for every adopted
+  or recommended tool.

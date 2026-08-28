@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 import { useLocation } from "react-router";
 import { brand } from "../../../brand/brand.config";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
+import { useEffect } from "react";
 import { TopNav } from "./TopNav";
 import { PageNav } from "./PageNav";
-import { SearchPalette } from "./SearchPalette";
+import { SearchPalette, resolvePendingSearchTarget } from "./SearchPalette";
 
 // The portal is one scrolling document: fixed scroll-spy nav on top, the
 // guide as full-height pages in the middle, a page control bottom-right
@@ -13,6 +14,12 @@ import { SearchPalette } from "./SearchPalette";
 export function Shell({ children }: { children: ReactNode }) {
   const location = useLocation();
   useScrollReveal(location.pathname);
+
+  // A search jump from another page lands here: find and flash its target.
+  useEffect(() => {
+    const t = setTimeout(resolvePendingSearchTarget, 150);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen">

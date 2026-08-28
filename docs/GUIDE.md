@@ -97,12 +97,13 @@ the static build to the client's domain (`brand.client.dk`).
   validate. (ROADMAP: `npm run release` will do this atomically with a
   subscriber digest and a versioned tokens tarball; it does not exist
   yet, do it by hand until it does.)
-- **Template upgrades:** never hand-edit `src/` in a brand repo.
+- **Template upgrades:** never hand-edit `src/` in a brand repo. Run
+  `/brandos-update`: it fetches the latest template from GitHub,
+  overlays template-owned machinery, preserves everything brand-owned,
+  shows diffs for the conflict-prone files, and re-runs the full gate
+  plus the browser verification loop before committing.
   `templateVersion` in `brand.config.ts` records where each portal
-  stands, and `npm run validate` warns when a clone is behind the
-  template. (ROADMAP: `npm run upgrade-template` will overlay new
-  machinery and run migrations; until it exists, pull template commits
-  manually and re-run validate.)
+  stands, and `npm run validate` warns when a clone is behind.
 - **Access:** manage the partner allowlist (external agencies, with expiry
   dates) in the gitignored `access.config.json`, it's PII, so it never goes
   in git; the deploy script provisions it to the access layer, and

@@ -284,6 +284,10 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
      testable: exact values, ratios, approved phrases, never adjectives. Write
      in the brand's own voice (`brand/voice.md`) and language. Every component
      in the inventory gets rebuilt in Komponenter with the 4-tab contract.
+     For Office formats prefer the official Anthropic document skills
+     (anthropics/skills pptx/docx/pdf): instruct-install them when
+     available rather than hand-rolling OOXML (license permits use, not
+     bundling; see docs/TOOLS.md).
      For every marketing application: generate its native program template(s)
      (.potx / .dotx / Figma+PSD / .idml / HTML mail) AND an in-situ mockup,
      the brand composited into phone/feed/print/OOH scenes from the template,
@@ -384,11 +388,50 @@ changes.json must match HEAD, and validate warns on a dirty tree.
 Client repos never carry template reference material: `docs/reference/`
 stays in the template repo only.
 
+6.7. **Browser verification loop, mandatory and self-correcting.** After
+every `npm run build`, the agent verifies the served output IN A REAL
+BROWSER and fixes what it finds: diagnose in source, fix, rebuild,
+re-verify, and repeat until every check holds. Never hand over with a
+known-failing check; never ask the user to click through and report
+back. The checklist, every item verified against the running portal:
+
+- Every prerendered page loads; console has zero errors; no failed
+  requests for same-origin assets (read console + network, not vibes).
+- Fonts actually painted: document.fonts resolves the brand faces, no
+  fallback-only rendering (the Elgiganten portal shipped its whole
+  body in fallbacks without anyone noticing).
+- Theme: all states paint (data-theme stamped pre-hydration, body
+  background changes per state, standard resolves to the brand
+  default). Computed styles checked, not assumed: the CSS-layering
+  bug survived every non-computed check.
+- Language switch (when the brand lists 2+ langs): chrome AND content
+  flip, html lang updates.
+- Lenses: dev expands token tables and inlines code; generel folds
+  them; detail pages open on the lens's tab.
+- Search: palette opens, a known term returns hits, Enter jumps and
+  flashes the target; /help renders.
+- Pager and anchors: arrows update the status, anchor jumps land
+  below the fixed nav (scroll offset), gated entries show muted with
+  no dead links.
+- Downloads: every chip href fetches 200; external chips open in a
+  new tab.
+- Components: previews render the real components, code popups open
+  and close, tabs switch.
+  HARNESS NOTES: in Claude Code use the browser pane tools; a hidden
+  pane does not composite frames, so smooth scrolling, screenshots and
+  IntersectionObserver callbacks stall there. That is a pane artifact,
+  not a site bug: verify those paths with computed state (scroll
+  positions, class lists, seeded status) and take screenshots only when
+  the pane is displayed. In Codex or headless CI, run the same
+  checklist through Playwright (microsoft/playwright-mcp, or an
+  @axe-core/playwright script). Record the checklist results and every
+  fix the loop made in the handover.
+
 7. **Publish.** When validate is green, build and open AUTOMATICALLY: run
    `npm run build`, serve the result in the background (`npm run preview`)
    and open the URL in the user's browser or preview pane without being
    asked; the build is not "done" until the portal is on screen in front
-   of the user. `npm run build` → the finished portal lands in `output/` as
+   of the user, verified by the loop in 6.7. `npm run build` → the finished portal lands in `output/` as
    a static React site, as light and few-file as the stack allows
    (prerendered HTML per route, one CSS file, minimal JS chunks, the AI
    files). Deploy that folder. Then `npm run release`, it bumps the version

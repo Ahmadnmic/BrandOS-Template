@@ -48,8 +48,8 @@ export function HelpDocs() {
         <p>
           <Key>Ctrl</Key>+<Key>F</Key> (Mac: <Key>Cmd</Key>+<Key>F</Key>){" "}
           {tx({
-            da: "åbner søgefeltet. Skriv mindst to tegn, så søges der i alt det, der står på siden: regler, værdier, tokens, tabeller. Overskrifter rangeres først.",
-            en: "opens the search field. Type at least two characters and everything on the page is searched: rules, values, tokens, tables. Headings rank first.",
+            da: "åbner søgefeltet. Skriv mindst to tegn, så søges der i hele portalen, også de andre sider: regler, værdier, tokens, tabeller. Overskrifter rangeres først, og et hop til en anden side finder selv frem til stedet.",
+            en: "opens the search field. Type at least two characters and the whole portal is searched, other pages included: rules, values, tokens, tables. Headings rank first, and a jump to another page finds its own way to the spot.",
           })}
         </p>
         <p>

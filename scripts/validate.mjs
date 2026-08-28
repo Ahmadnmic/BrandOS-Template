@@ -311,6 +311,64 @@ function rel(p) {
   }
 }
 
+// C10: WCAG contrast at token level (the Terrazzo idea, implemented
+// against this repo's token shape): every declared sys text/surface
+// pair must reach AA 4.5:1 in BOTH modes, before any browser exists.
+{
+  try {
+    const tokens = JSON.parse(
+      fs.readFileSync(path.join(root, "brand", "tokens.json"), "utf8"),
+    );
+    const refOf = (v) => {
+      const m = typeof v === "string" && v.match(/^\{ref\.(.+)\}$/);
+      return m ? tokens.ref[m[1]]?.$value : v;
+    };
+    const sysColor = (name, mode) =>
+      refOf(tokens.sys.color[name]?.$value?.[mode]);
+    const lum = (hex) => {
+      const h = hex.replace("#", "");
+      const c = [0, 2, 4].map((i) => {
+        let x = parseInt(h.slice(i, i + 2), 16) / 255;
+        return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    };
+    const ratio = (a, b) => {
+      const [l1, l2] = [lum(a), lum(b)].sort((x, y) => y - x);
+      return (l1 + 0.05) / (l2 + 0.05);
+    };
+    // Declared text-on-surface pairs; extend per brand as roles grow.
+    const PAIRS = [
+      ["ink", "surface"],
+      ["ink", "panel"],
+      ["dim", "surface"],
+      ["accent", "surface"],
+      ["on-action", "action"],
+      ["on-signal", "signal"],
+    ];
+    const fails = [];
+    for (const [fg, bg] of PAIRS) {
+      for (const mode of ["light", "dark"]) {
+        const f = sysColor(fg, mode);
+        const b = sysColor(bg, mode);
+        if (!f || !b || !/^#/.test(f) || !/^#/.test(b)) continue;
+        const r = ratio(f, b);
+        if (r < 4.5) fails.push(`${fg}/${bg} ${mode} ${r.toFixed(2)}:1`);
+      }
+    }
+    if (fails.length)
+      report("FAIL", "contrast pairs", "below AA 4.5:1: " + fails.join(", "));
+    else
+      report(
+        "PASS",
+        "contrast pairs",
+        `${PAIRS.length} pairs x 2 modes reach AA 4.5:1`,
+      );
+  } catch (e) {
+    report("BLOCKED", "contrast pairs", "tokens.json unreadable: " + e.message);
+  }
+}
+
 // C8: build stamp. The shipped output must be traceable to a commit; a
 // dirty tree at build time makes the stamp unverifiable.
 {

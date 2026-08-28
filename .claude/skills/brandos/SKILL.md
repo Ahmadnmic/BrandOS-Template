@@ -118,7 +118,13 @@ When validate is green, DO NOT stop at a report. Automatically:
 
 1. `npm run build` (the portal lands in `output/`).
 2. Serve it in the background: `npm run preview` (serves `output/client`).
-3. OPEN it for the user without being asked: in Claude Code use the
+3. RUN THE BROWSER VERIFICATION LOOP (AGENTS.md step 6.7): drive the
+   served portal in the browser, check every item on the checklist
+   (pages, console, fonts, theme states, language, lenses, search,
+   pager, downloads, components), and when a check fails, fix the
+   source, rebuild and re-verify. Loop until clean. This is automatic:
+   never hand a broken check to the user to find.
+4. OPEN it for the user without being asked: in Claude Code use the
    browser/preview pane and front the tab; in a plain terminal harness use
    the OS opener (`open <url>` on macOS, `start <url>` on Windows,
    `xdg-open <url>` on Linux). Always print the exact URL too.

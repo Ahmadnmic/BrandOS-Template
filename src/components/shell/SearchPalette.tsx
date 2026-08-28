@@ -4,17 +4,81 @@ import { useTx } from "../../lens";
 import { HelpDocs } from "./HelpDocs";
 
 interface Hit {
-  el: HTMLElement;
+  el?: HTMLElement;
+  route?: string;
   text: string;
   chapter: string;
   weight: number;
 }
 
 const CANDIDATES = "h1, h2, h3, h4, p, li, dt, dd, td, blockquote";
+const TARGET_KEY = "brandos-search-target";
+
+function indexDocument(
+  scope: ParentNode,
+  fallbackChapter: string,
+  route?: string,
+): Hit[] {
+  const pages = scope.querySelectorAll<HTMLElement>("[data-page]");
+  const roots: { root: HTMLElement; chapter: string }[] = pages.length
+    ? Array.from(pages).map((p) => ({
+        root: p,
+        chapter: [p.dataset.chapter, p.dataset.label]
+          .filter(Boolean)
+          .join(" · "),
+      }))
+    : [{ root: scope as HTMLElement, chapter: fallbackChapter }];
+  const seen = new Set<HTMLElement>();
+  const index: Hit[] = [];
+  roots.forEach(({ root, chapter }) => {
+    root.querySelectorAll<HTMLElement>(CANDIDATES).forEach((el) => {
+      if (seen.has(el)) return;
+      seen.add(el);
+      const text = (el.innerText ?? el.textContent ?? "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (text.length < 2 || text.length > 400) return;
+      index.push({
+        el: route ? undefined : el,
+        route,
+        text,
+        chapter,
+        weight: /^H[1-4]$/.test(el.tagName) ? 0 : 1,
+      });
+    });
+  });
+  return index;
+}
+
+// Find an element on the current page whose text matches a search target
+// handed over from another route, then flash it.
+export function resolvePendingSearchTarget(): void {
+  try {
+    const raw = sessionStorage.getItem(TARGET_KEY);
+    if (!raw) return;
+    sessionStorage.removeItem(TARGET_KEY);
+    const { text } = JSON.parse(raw) as { text: string };
+    const scope = document.querySelector("main") ?? document.body;
+    const el = [...scope.querySelectorAll<HTMLElement>(CANDIDATES)].find((e) =>
+      (e.innerText ?? "").replace(/\s+/g, " ").trim().includes(text),
+    );
+    if (!el) return;
+    el.closest("[data-page]")
+      ?.querySelectorAll("[data-reveal]")
+      .forEach((r) => r.classList.add("is-visible"));
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("search-flash");
+    setTimeout(() => el.classList.remove("search-flash"), 1800);
+  } catch {
+    /* storage unavailable */
+  }
+}
 
 // Ctrl/Cmd+F opens a centered search over the guide, Spotlight-style. It
-// indexes the rendered document (nothing is registered twice), so it finds
-// exactly what is on the page: rules, values, token names, table cells.
+// indexes the rendered document plus every other route's prerendered HTML
+// (routes discovered from the document's own links, never a second list),
+// so it finds anything anywhere on the site. A hit on another page
+// navigates there and flashes the element on arrival.
 export function SearchPalette() {
   const location = useLocation();
   const tx = useTx();
@@ -48,36 +112,53 @@ export function SearchPalette() {
 
   useEffect(close, [location.pathname, close]);
 
-  // Build the index from the live document each time the palette opens.
+  // Build the index each time the palette opens: the live document first,
+  // then the other routes fetched and parsed in the background.
   useEffect(() => {
     if (!open) return;
+    let cancelled = false;
     const scope = document.querySelector("main") ?? document.body;
-    const pages = scope.querySelectorAll<HTMLElement>("[data-page]");
-    const roots: { root: HTMLElement; chapter: string }[] = pages.length
-      ? Array.from(pages).map((p) => ({
-          root: p,
-          chapter: [p.dataset.chapter, p.dataset.label]
-            .filter(Boolean)
-            .join(" · "),
-        }))
-      : [{ root: scope as HTMLElement, chapter: document.title.split("·")[0] }];
-    const seen = new Set<HTMLElement>();
-    const index: Hit[] = [];
-    roots.forEach(({ root, chapter }) => {
-      root.querySelectorAll<HTMLElement>(CANDIDATES).forEach((el) => {
-        if (seen.has(el)) return;
-        seen.add(el);
-        const text = (el.innerText ?? "").replace(/\s+/g, " ").trim();
-        if (text.length < 2 || text.length > 400) return;
-        index.push({
-          el,
-          text,
-          chapter,
-          weight: /^H[1-4]$/.test(el.tagName) ? 0 : 1,
+    indexRef.current = indexDocument(scope, document.title.split("·")[0]);
+
+    async function indexOtherRoutes(): Promise<void> {
+      const here = window.location.pathname.replace(/\/$/, "") || "/";
+      const routes = new Set<string>(here === "/" ? [] : ["/"]);
+      const collect = (n: ParentNode) =>
+        n.querySelectorAll<HTMLAnchorElement>("a[href^='/']").forEach((a) => {
+          const path = a.getAttribute("href") ?? "";
+          if (
+            !path.startsWith("/exports/") &&
+            !path.includes("#") &&
+            path !== here &&
+            path !== "/"
+          )
+            routes.add(path.replace(/\/$/, ""));
         });
-      });
-    });
-    indexRef.current = index;
+      collect(document);
+      for (const route of routes) {
+        try {
+          const res = await fetch(route);
+          if (!res.ok || cancelled) continue;
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          collect(doc);
+          const main = doc.querySelector("main") ?? doc.body;
+          const label =
+            doc.title.split("·")[0]?.trim() || route.replace("/", "");
+          if (!cancelled)
+            indexRef.current = [
+              ...indexRef.current,
+              ...indexDocument(main, label.toUpperCase(), route),
+            ];
+        } catch {
+          /* route not reachable in this environment */
+        }
+      }
+    }
+    void indexOtherRoutes();
+    return () => {
+      cancelled = true;
+    };
   }, [open]);
 
   useEffect(() => {
@@ -89,7 +170,9 @@ export function SearchPalette() {
     }
     const found = indexRef.current
       .filter((h) => h.text.toLowerCase().includes(q))
-      .sort((a, b) => a.weight - b.weight)
+      .sort(
+        (a, b) => a.weight - b.weight || Number(!!a.route) - Number(!!b.route),
+      )
       .slice(0, 10);
     setHits(found);
     setActive(0);
@@ -97,15 +180,30 @@ export function SearchPalette() {
 
   function jumpTo(hit: Hit): void {
     close();
+    if (hit.route) {
+      // The hit lives on another page: hand the target over and navigate;
+      // resolvePendingSearchTarget picks it up after load.
+      try {
+        sessionStorage.setItem(
+          TARGET_KEY,
+          JSON.stringify({ text: hit.text.slice(0, 80) }),
+        );
+      } catch {
+        /* storage unavailable */
+      }
+      window.location.href = hit.route;
+      return;
+    }
+    if (!hit.el) return;
+    const el = hit.el;
     // A target below the fold may still be waiting for its scroll reveal;
     // make it visible before jumping so the reader never lands on nothing.
-    hit.el
-      .closest("[data-page]")
+    el.closest("[data-page]")
       ?.querySelectorAll("[data-reveal]")
       .forEach((r) => r.classList.add("is-visible"));
-    hit.el.scrollIntoView({ behavior: "smooth", block: "center" });
-    hit.el.classList.add("search-flash");
-    setTimeout(() => hit.el.classList.remove("search-flash"), 1800);
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("search-flash");
+    setTimeout(() => el.classList.remove("search-flash"), 1800);
   }
 
   function onInputKey(e: React.KeyboardEvent): void {
