@@ -366,6 +366,30 @@ provisional handover. When the deep crawl lands: deep verification
   alignment must cite evidence from `intake/` (the `sys.composition`
   profile). A brand that boxes nothing gets a portal that boxes nothing,
   default to rules and whitespace, not cards.
+- PORTAL STRUCTURE (the document model, same for every brand):
+  - The guide is ONE scrolling document. Every chapter part is a `.page`:
+    min-height 100svh, flex-centered, one idea per page, rendered by
+    `GuidePage` with `data-page`, `data-label` and `data-chapter`. Those
+    attributes are the only registration a page needs.
+  - Navigation is DOM-driven, never a second list to maintain: the top
+    bar (`TopNav`) scroll-spies the section anchors and holds only the
+    chapter links and the Lys/Mørk toggle; the bottom-right pager
+    (`PageNav`) reads the rendered `[data-page]` sections and flips one
+    page at a time; the settings gear (linse, tema, sprog) lives in the
+    pager, bottom-right.
+  - Chapter order and page numbers come from `brand.config.ts` alone;
+    sections register in the `SECTIONS` map in the index route. Unbuilt
+    chapters are absent, gated chapters appear muted as LÅST.
+  - Component detail pages (the 4-tab contract) and the /theme QA surface
+    are separate routes in the same frame; the pager shows only the gear
+    there.
+  - Content reveals once on scroll (`useScrollReveal` + `[data-reveal]`),
+    driven by the brand's own motion tokens, off under
+    prefers-reduced-motion.
+  - `docs/reference/molslinjen-brandguide/` is the REFERENCE for this
+    structure: study it for setup cleanliness (DOM-driven nav, data-first
+    content pages, interactive escape hatch). It is NOT a template; never
+    copy its brand, colors, graphics, fonts or copy into a build.
 - PORTAL LAYOUT RULES, per brand, enforced on every content page:
   - Guide components render through the containment idiom in
     `sys.composition` (ruled | boxed | open). "boxed" is permitted ONLY
@@ -382,8 +406,8 @@ provisional handover. When the deep crawl lands: deep verification
     If two adjacent sections wear identical boxes, remove the boxes.
   - Corner radius comes only from `sys.radius` tokens and belongs to
     interactive elements (buttons, inputs), not to layout containers.
-  - Workspace chrome (sidebar, settings panel, code console) is exempt:
-    it is a tool surface, not brand content.
+  - Workspace chrome (top nav, pager, settings panel, code console) is
+    exempt: it is a tool surface, not brand content.
 - Builds are reproducible from the committed lockfile: never update
   dependencies during a brand build; `engines`/.nvmrc pin Node.
 - The template is versioned: `brand.config.ts` carries `templateVersion`;

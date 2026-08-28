@@ -316,9 +316,13 @@ Every design decision in BrandOS follows from a handful of rules:
   rå/poleret, bokset/åben) drives radius, density, casing, motion, borders
   and composition. Layout idiom is read from the brand's own material,
   never the generic "AI look".
-- **Brand-true light & dark themes**, a Figma-style collapsible sidebar,
-  a ⚙ Settings panel (lens: Generel/Design/Dev/HR · theme · language), and an
-  anchored code console so the default view stays brand-book calm.
+- **One scrolling document**, the way the best printed guides read: every
+  chapter part is a full-height page, a scroll-spy top nav names where you
+  are, and a bottom-right pager flips page by page (structure modeled on
+  the reference in `docs/reference/molslinjen-brandguide/`).
+- **Brand-true light & dark themes**, a ⚙ Settings panel in the pager
+  (lens: Generel/Design/Dev/HR · theme · language), and an anchored code
+  console so the default view stays brand-book calm.
 - **The Everyday & Print pack**, Office templates (.potx/.dotx on a
   token-generated theme), email-signature generator, curated image pack,
   print-grade logo packs (EPS/PDF-CMYK, 1-color pos/neg), named SoMe /

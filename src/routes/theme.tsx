@@ -19,7 +19,7 @@ const SWATCH_VARS = [
 
 export default function ThemeQA() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl px-6 py-10 md:px-10">
       <ChapterHead
         num="QA"
         title="Theme"

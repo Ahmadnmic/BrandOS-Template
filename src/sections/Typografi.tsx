@@ -5,13 +5,9 @@ import {
   TokenTable,
 } from "../components/guide/Guide";
 
-export function meta() {
-  return [{ title: "Typografi · Odense Basket BrandOS" }];
-}
-
-export default function Typografi() {
+export function Typografi() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <>
       <ChapterHead num="04" title="Typografi" />
       <p className="mb-8 max-w-xl text-sm text-dim">
         To snit, ingen undtagelser: JetBrains Mono til overskrifter, Public Sans
@@ -71,6 +67,6 @@ export default function Typografi() {
           ]}
         />
       </div>
-    </div>
+    </>
   );
 }

@@ -34,7 +34,13 @@ export default function Knap() {
   }, [lens]);
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-3xl px-6 py-10 md:px-10">
+      <a
+        href="/#komponenter"
+        className="label mb-6 inline-block text-[9px] hover:text-accent"
+      >
+        ← KOMPONENTER
+      </a>
       <ChapterHead num="11" title="Knap" steps="KOMPONENTER" />
       <div className="mb-5 flex gap-1 border-b border-line" role="tablist">
         {TABS.map((t) => (

@@ -1,0 +1,55 @@
+MOLSLINJEN — INTERAKTIV BRAND- OG DESIGNGUIDE
+=============================================
+
+Guiden i tre udgaver. Alt virker offline — skrifterne (Oswald og Barlow)
+ligger med i pakken, så der hentes intet fra nettet.
+
+
+1) molslinjen-brandguide.html
+-----------------------------
+Én selvstændig fil. Dobbeltklik, og den åbner i browseren.
+Alt er bygget ind i filen: layout, kode og skrifter.
+
+Brug denne, hvis du bare vil se guiden eller sende den videre
+til én person. Den kan ligge hvor som helst.
+
+
+2) site/
+--------
+Samme guide som en almindelig hjemmesidemappe.
+Åbn site/index.html — eller læg hele mappen på et intranet
+eller en webserver, hvis guiden skal deles bredere.
+
+Hold mappen samlet: index.html har brug for assets-mappen ved siden af sig.
+
+
+3) kildekode/
+-------------
+Kildekoden, hvis guiden skal rettes eller bygges videre på.
+
+    cd kildekode
+    npm install
+    npm run dev      # åbner en lokal udgave med det samme
+    npm run build    # bygger en ny udgave til udgivelse
+
+Bygget med React og Vite.
+
+
+HVAD DER MANGLER
+----------------
+Guiden markerer selv de steder, hvor der skal et rigtigt billede ind
+(fritlagt færge, Kombardo Expressen-bus, Bardo-illustrationer, det
+endelige ikonsæt). De vises som stiplede felter med en beskrivelse af,
+hvilket motiv der skal bruges. Materialet hentes på brand.molslinjen.dk.
+
+To ting bør afklares med Molslinjen, før guiden bruges i en leverance:
+
+  - Skrifttypen. Den rigtige skrift er Korolev, som ikke er en gratis
+    webfont. Denne udgave bruger Oswald og Barlow som erstatning.
+
+  - Farverne. molslinjen.dk kører i dag med andre værdier end den
+    trykte guides Pantone-farver (bl.a. en mintgrøn CTA-farve, der
+    ikke findes i guiden). Begge sæt er vist, så forskellen er tydelig.
+
+Guiden er et udkast til intern brug og skal kvalitetssikres af et
+menneske, før noget af det går videre til en kunde.

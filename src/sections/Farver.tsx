@@ -8,13 +8,9 @@ import {
   TokenTable,
 } from "../components/guide/Guide";
 
-export function meta() {
-  return [{ title: "Farver · Odense Basket BrandOS" }];
-}
-
-export default function Farver() {
+export function Farver() {
   return (
-    <div className="mx-auto max-w-3xl">
+    <>
       <ChapterHead num="03" title="Farver" />
       <p className="mb-10 max-w-xl text-sm leading-relaxed text-dim">
         Dybhav bærer identiteten. Is skaber kontrast og luft. Signal markerer
@@ -108,6 +104,6 @@ export default function Farver() {
           ]}
         />
       </div>
-    </div>
+    </>
   );
 }

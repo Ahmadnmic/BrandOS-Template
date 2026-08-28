@@ -1,0 +1,42 @@
+:root {
+  /* Molslinjen primary palette — Brand- og designguide 2026, s. 48 */
+  --dyb-havbla: #002547;
+  --havbla: #005ba9;
+  --havbla-60: #7196ce;
+  --hvid-slorsky: #ffffff;
+  --smart-bla: #00b5ed;
+  --lavpris-orange: #f18700;
+
+  /* neutrals for UI chrome (not brand colors — interface only) */
+  --paper: #f4f6f8;
+  --ink-soft: #4a5a68;
+  --line: rgba(0, 37, 71, 0.12);
+  --line-on-dark: rgba(255, 255, 255, 0.16);
+
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+
+  --radius-btn: 999px;
+
+  /* Motion: two families, per Material's spatial/effects split.
+     Spatial (size, position, radius, transform) overshoots slightly, like a
+     released spring — it's how the wave mark should feel: soft but with tempo.
+     Effects (color, opacity) ease straight to the target, no bounce. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-effects: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spatial: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.25s;
+  --dur-default: 0.45s;
+  --dur-slow: 0.7s;
+
+  --container: 1180px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-spatial: linear;
+    --dur-fast: 0.001s;
+    --dur-default: 0.001s;
+    --dur-slow: 0.001s;
+  }
+}

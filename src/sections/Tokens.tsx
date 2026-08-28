@@ -5,10 +5,6 @@ import {
 } from "../components/guide/Guide";
 import tokens from "../../brand/tokens.json";
 
-export function meta() {
-  return [{ title: "Tokens · Odense Basket BrandOS" }];
-}
-
 interface TokenValue {
   $value: { light: string; dark: string } | string;
 }
@@ -21,7 +17,7 @@ function resolve(v: string): string {
   return ref ? ref.$value : v;
 }
 
-export default function Tokens() {
+export function Tokens() {
   const colorEntries = Object.entries(tokens.sys.color).filter(
     ([k]) => !k.startsWith("$"),
   ) as [string, TokenValue][];
@@ -35,7 +31,7 @@ export default function Tokens() {
     };
   });
   return (
-    <div className="mx-auto max-w-4xl">
+    <>
       <ChapterHead num="12" title="Tokens" />
       <p className="mb-6 max-w-xl text-sm text-dim">
         Tokens er den eneste kilde til farve og form. Byg med --sys-rollerne,
@@ -46,6 +42,6 @@ export default function Tokens() {
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
         <DownloadChip label="TOKENS.JSON" href="/exports/tokens.json" />
       </div>
-    </div>
+    </>
   );
 }

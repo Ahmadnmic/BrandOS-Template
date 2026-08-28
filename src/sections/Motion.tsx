@@ -6,10 +6,6 @@ import {
   CodeBlock,
 } from "../components/guide/Guide";
 
-export function meta() {
-  return [{ title: "Motion · Odense Basket BrandOS" }];
-}
-
 const EASINGS = [
   {
     name: "ease-out",
@@ -24,7 +20,7 @@ const EASINGS = [
   {
     name: "ease-in-out",
     value: "cubic-bezier(0.65, 0, 0.35, 1)",
-    use: "Flytninger på fladen: sidebar, tabs",
+    use: "Flytninger på fladen: paneler, tabs",
   },
   {
     name: "ease-emphasized",
@@ -67,9 +63,9 @@ function EasingDemo(props: { name: string; value: string }) {
   );
 }
 
-export default function Motion() {
+export function Motion() {
   return (
-    <div className="mx-auto max-w-4xl">
+    <>
       <ChapterHead num="08" title="Motion" />
       <p className="mb-8 max-w-xl text-sm text-dim">
         Odense Basket bevæger sig hurtigt og lander hårdt. Ingen bounce, ingen
@@ -99,6 +95,7 @@ export default function Motion() {
           ]}
         />
       </div>
+
       <div className="mt-8">
         <TokenTable
           rows={[
@@ -144,6 +141,6 @@ export default function Motion() {
 }`}
         />
       </div>
-    </div>
+    </>
   );
 }

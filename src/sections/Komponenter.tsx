@@ -6,19 +6,15 @@ import {
 } from "../components/guide/Guide";
 import { Button } from "../components/ui/Button";
 
-export function meta() {
-  return [{ title: "Komponenter · Odense Basket BrandOS" }];
-}
-
 const BUTTON_CSS = `.btn-primary {
   background: var(--sys-action);
   color: var(--sys-on-action);
   border-radius: var(--sys-radius-md);
 }`;
 
-export default function Komponenter() {
+export function Komponenter() {
   return (
-    <div className="mx-auto max-w-3xl">
+    <>
       <ChapterHead num="11" title="Komponenter" />
       <p className="mb-10 max-w-xl text-sm leading-relaxed text-dim">
         Komponenter bruges som de står her. Farve, form og typografi kommer fra
@@ -44,6 +40,6 @@ export default function Komponenter() {
           <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
         </div>
       </section>
-    </div>
+    </>
   );
 }

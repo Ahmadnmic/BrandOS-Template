@@ -1,0 +1,138 @@
+@import "./tokens.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+/* Every one of the 85 pages fills at least one screen, like flipping
+   through the real PDF one page at a time — but still grows past 100vh
+   for pages with more content than fits (proximity snap, not mandatory,
+   so that never feels like it's fighting you). */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+}
+
+.page > * {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--dyb-havbla);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--havbla);
+}
+
+.section {
+  padding: clamp(4rem, 9vw, 7.5rem) clamp(1.5rem, 5vw, 3rem);
+}
+
+.section-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.section-head h2 {
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  margin: 0.4rem 0 1rem;
+}
+
+.section-head p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* Light and dark pages alternate strictly (see App.jsx), so each page reads
+   as a clean break from the one before it. */
+.section:not(.dark) {
+  background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+}
+
+.dark {
+  background: radial-gradient(120% 120% at 15% 0%, #003a6b 0%, var(--dyb-havbla) 58%, #001830 100%);
+  color: #fff;
+}
+
+.dark .section-head p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.dark .eyebrow {
+  color: var(--smart-bla);
+}
+
+::selection {
+  background: var(--smart-bla);
+  color: var(--dyb-havbla);
+}
+
+/* Scroll reveal: spatial motion (position) eased with the spring curve,
+   opacity (an effect) eased separately — see tokens.css. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity var(--dur-default) var(--ease-effects),
+    transform var(--dur-slow) var(--ease-spatial);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

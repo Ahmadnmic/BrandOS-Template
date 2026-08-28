@@ -1,54 +1,55 @@
-import { Link } from "react-router";
+import type { ReactNode } from "react";
 import { brand } from "../../brand/brand.config";
-import { IndexRow } from "../components/guide/Guide";
+import { GuidePage } from "../components/guide/GuidePage";
+import { Hero } from "../sections/Hero";
+import { Farver } from "../sections/Farver";
+import { Typografi } from "../sections/Typografi";
+import { Motion } from "../sections/Motion";
+import { Komponenter } from "../sections/Komponenter";
+import { Tokens } from "../sections/Tokens";
 
 export function meta() {
   return [{ title: brand.name + " · BrandOS" }];
 }
 
+// The chapter sections of the document, keyed by slug. A chapter renders
+// when brand.config marks it built and a section exists for it; page
+// numbers and order come from the chapter map alone.
+const SECTIONS: Record<string, { render: () => ReactNode; wide?: boolean }> = {
+  farver: { render: () => <Farver /> },
+  typografi: { render: () => <Typografi />, wide: true },
+  motion: { render: () => <Motion />, wide: true },
+  komponenter: { render: () => <Komponenter /> },
+  tokens: { render: () => <Tokens />, wide: true },
+};
+
 export default function Forside() {
+  const chapters = brand.chapters.filter(
+    (c) => c.built && !c.gated && c.slug !== "" && SECTIONS[c.slug],
+  );
+
   return (
-    <div className="mx-auto max-w-3xl py-10">
-      <p className="label mb-6 text-[10px]">
-        DESIGNGUIDE · VER. {brand.version} · OPDATERET {brand.updated}
-      </p>
-      <h1 className="display text-6xl font-bold leading-[1.05] md:text-7xl">
-        {brand.name}
-        <br />
-        Brand OS
-      </h1>
-      <p className="label mt-6 text-[11px]">{brand.tagline.toUpperCase()}</p>
-
-      <p className="mt-12 max-w-lg text-sm leading-relaxed text-dim">
-        Sådan ser {brand.name} ud, og sådan bruges identiteten: farver,
-        typografi, komponenter og kode fra én kilde.
-      </p>
-
-      <nav aria-label="Indhold" className="mt-14 border-b border-line">
-        {brand.chapters
-          .filter((c) => c.slug !== "" && (c.built || c.gated))
-          .map((c) => {
-            if (c.gated)
-              return (
-                <IndexRow
-                  key={c.num}
-                  num={c.num}
-                  title={c.title}
-                  meta="LÅST"
-                  muted
-                />
-              );
-            return (
-              <Link
-                key={c.num}
-                to={"/" + c.slug}
-                className="block hover:text-accent"
-              >
-                <IndexRow num={c.num} title={c.title} />
-              </Link>
-            );
-          })}
-      </nav>
+    <div>
+      <GuidePage id="top" page={1} label="Forside" chapter="00">
+        <Hero />
+      </GuidePage>
+      {chapters.map((c, i) => {
+        const n = i + 2;
+        const section = SECTIONS[c.slug];
+        return (
+          <GuidePage
+            key={c.num}
+            id={c.slug}
+            page={n}
+            label={c.title}
+            chapter={c.num}
+            tone={n % 2 === 0 ? "panel" : "surface"}
+            wide={section.wide}
+          >
+            {section.render()}
+          </GuidePage>
+        );
+      })}
     </div>
   );
 }
