@@ -4,6 +4,7 @@ import {
   DownloadChip,
 } from "../components/guide/Guide";
 import tokens from "../../brand/tokens.json";
+import { useTx } from "../lens";
 
 interface TokenValue {
   $value: { light: string; dark: string } | string;
@@ -18,6 +19,7 @@ function resolve(v: string): string {
 }
 
 export function Tokens() {
+  const tx = useTx();
   const colorEntries = Object.entries(tokens.sys.color).filter(
     ([k]) => !k.startsWith("$"),
   ) as [string, TokenValue][];
@@ -34,8 +36,10 @@ export function Tokens() {
     <>
       <ChapterHead num="12" title="Tokens" />
       <p className="mb-6 max-w-xl text-sm text-dim">
-        Tokens er den eneste kilde til farve og form. Byg med --sys-rollerne,
-        aldrig med rå værdier.
+        {tx({
+          da: "Tokens er den eneste kilde til farve og form. Byg med --sys-rollerne, aldrig med rå værdier.",
+          en: "Tokens are the only source of color and form. Build with the --sys roles, never with raw values.",
+        })}
       </p>
       <TokenTable rows={rows} />
       <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-line pt-4">

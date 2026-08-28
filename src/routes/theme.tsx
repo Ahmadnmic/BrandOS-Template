@@ -28,8 +28,8 @@ export default function ThemeQA() {
       />
       <p className="mb-6 max-w-xl text-sm text-dim">
         QA-fladen efter hver generate-theme-kørsel: alle sys-roller malet live
-        fra CSS-variablerne. Skift Lys/Mørk i headeren og se hele fladen følge
-        med.
+        fra CSS-variablerne. Skift mellem Standard, Lys og Mørk i headeren og se
+        hele fladen følge med.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-5">
         {SWATCH_VARS.map((name) => (

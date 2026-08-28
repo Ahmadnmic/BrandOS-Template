@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
+import { useTx } from "../../lens";
+import { HelpDocs } from "./HelpDocs";
 
 interface Hit {
   el: HTMLElement;
@@ -15,6 +17,7 @@ const CANDIDATES = "h1, h2, h3, h4, p, li, dt, dd, td, blockquote";
 // exactly what is on the page: rules, values, token names, table cells.
 export function SearchPalette() {
   const location = useLocation();
+  const tx = useTx();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
@@ -132,6 +135,8 @@ export function SearchPalette() {
 
   if (!open) return null;
 
+  const helpMode = /^\/(help|hjælp|hjaelp)\b/i.test(query.trim());
+
   return (
     <div
       className="fixed inset-0 z-30 bg-black/30"
@@ -139,10 +144,10 @@ export function SearchPalette() {
       role="presentation"
     >
       <div
-        className="mx-auto mt-[18vh] w-[min(90vw,34rem)] overflow-hidden rounded-md border border-line bg-panel shadow-2xl"
+        className="mx-auto mt-[14vh] w-[min(90vw,36rem)] overflow-hidden rounded-md border border-line bg-panel shadow-2xl"
         role="dialog"
         aria-modal="true"
-        aria-label="Søg i guiden"
+        aria-label={tx({ da: "Søg i guiden", en: "Search the guide" })}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 px-4">
@@ -155,12 +160,13 @@ export function SearchPalette() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onInputKey}
-            placeholder="Søg i guiden …"
-            aria-label="Søg i guiden"
+            placeholder={tx({ da: "Søg i guiden …", en: "Search the guide …" })}
+            aria-label={tx({ da: "Søg i guiden", en: "Search the guide" })}
             className="w-full bg-transparent py-3.5 text-base text-ink placeholder:text-dim focus:outline-none"
           />
         </div>
-        {hits.length > 0 && (
+        {helpMode && <HelpDocs />}
+        {!helpMode && hits.length > 0 && (
           <ul
             role="listbox"
             aria-label="Resultater"
@@ -193,15 +199,28 @@ export function SearchPalette() {
             })}
           </ul>
         )}
-        {query.trim().length >= 2 && hits.length === 0 && (
-          <p className="border-t border-line px-4 py-3 text-sm text-dim">
-            Ingen resultater for "{query.trim()}".
-          </p>
-        )}
+        {!helpMode &&
+          query.trim().length >= 2 &&
+          !query.trim().startsWith("/") &&
+          hits.length === 0 && (
+            <p className="border-t border-line px-4 py-3 text-sm text-dim">
+              {tx({ da: "Ingen resultater for", en: "No results for" })} "
+              {query.trim()}".
+            </p>
+          )}
         <div className="flex gap-4 border-t border-line px-4 py-2">
-          <span className="label text-[8.5px]">↑↓ NAVIGER</span>
-          <span className="label text-[8.5px]">ENTER GÅ TIL</span>
-          <span className="label text-[8.5px]">ESC LUK</span>
+          <span className="label text-[8.5px]">
+            ↑↓ {tx({ da: "NAVIGER", en: "NAVIGATE" })}
+          </span>
+          <span className="label text-[8.5px]">
+            ENTER {tx({ da: "GÅ TIL", en: "GO TO" })}
+          </span>
+          <span className="label text-[8.5px]">
+            ESC {tx({ da: "LUK", en: "CLOSE" })}
+          </span>
+          <span className="label ml-auto text-[8.5px] text-accent">
+            /HELP {tx({ da: "DOKUMENTATION", en: "DOCUMENTATION" })}
+          </span>
         </div>
       </div>
     </div>

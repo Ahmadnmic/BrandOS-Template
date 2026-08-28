@@ -73,6 +73,33 @@ you offer it. Rules:
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
 to `intake/crawl/`. THE SCRAPE RUNS IN TWO STAGES:
 
+COST GATE, before any paid work: after the map call (1 credit) and the
+strata plan, and BEFORE scraping or building, present one short
+estimate and ask "fortsæt?" (continue?):
+
+- Firecrawl: remaining credits (free endpoint), pages planned per pass,
+  and the range: best case ~1-5 credits (SSR site, hybrid direct-first),
+  worst case = fast set + deep set all escalated (e.g. "~25-175 of your
+  854 credits"). Never start a paid batch that the preflight says cannot
+  finish.
+- AI tokens: state model and effort, then the observed ranges from the
+  test runs: a fast-pass build (theme + first chapters + components)
+  runs roughly 2-4M tokens; a full build with deep verification and all
+  chapters 6-12M. Record the actual spend in the handover so these
+  numbers tighten with every run.
+  This is permitted stop (d) in the autonomy rule: one question, one
+  answer, then run. If the user already answered a cost gate this run,
+  do not ask again unless the estimate grows past what they approved.
+  STATICS FIRST: before spending credits on page volume, capture the
+  site's production stylesheets, root custom properties and font
+  references; they are the highest evidence tier per token and nearly
+  free. A run that exhausts credits before the statics (Elgiganten,
+  2026-08) mis-weights meta tags and reverses decisions later.
+  MULTI-DOMAIN: each additional confirmed-owned domain (a B2B site, a
+  separate shop) gets its own `intake/crawl-<name>/` with its own strata
+  and robots capture; the component inventories merge into one. Never mix
+  two domains into one corpus.
+
 FAST PASS (blocking, minutes): map the site and recover its real structure
 (its HTML sitemap page plus the navs of the main hub pages), enumerate the
 page TYPES (home, hubs, listings, products, customer service, magazine,
@@ -128,6 +155,14 @@ harvest its linked brand packs (zip/eps/svg/pdf) via the assets stage.
 When a live guide and a PDF edition disagree, the newer edition wins,
 recorded in `intake/reconciliation.md`. Extraction still produces the
 same `intake/cvi-rules.json`, whatever form the guide arrived in.
+CAPTURE HARDENING: throttled hosts sometimes answer HTTP 200 with a
+challenge page (F5/bot walls), which corrupts a naive capture. Validate
+every response BEFORE writing (magic bytes for binaries, content
+heuristics for HTML), make the capture resumable, and pace requests
+(SDU designguide, 2026-08). EXTRACTION GATE: reconciliation may not
+open against a CVI capture until text extraction produced non-empty
+output and the capture manifest reports zero validated-missing files;
+an operator can waive this only with a logged reason.
 NO-CVI MODE: if the user states there is no CVI ("go off the site only"),
 proceed with the crawl as the primary source. Then: unverified chapters
 carry only the status stamp UDKAST · AFVENTER GODKENDELSE in the chapter
@@ -138,7 +173,8 @@ CVI-rule coverage report BLOCKED in validate, and BLOCKED is never a pass;
 voice.md rules cite their site evidence IN THE AUDIT TRAIL. Say all of
 this in the handover, never in the guide. From here run steps 1-7 AUTONOMOUSLY, the only
 permitted stops are: (a) a reconciliation conflict, (b) the ask-when-unsure
-doctrine above, (c) the one-time personality-profile confirmation in step 2.
+doctrine above, (c) the one-time personality-profile confirmation in step 2,
+(d) the cost gate in Q1 (credits + AI tokens estimate, once).
 
 ## Rebuild recipe
 
@@ -299,7 +335,12 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    - GATING LEAK SCAN: no gated-chapter slug, content canary string, or
      personal email appears anywhere in the public output (llms*.txt, .md
      twins, sitemap, Pagefind index, JS chunks), gated chapters build into
-     the /gated/ subtree only
+     the /gated/ subtree only. Gated slugs live in `brand/gated.config.ts`
+     (never bundled); gated entries in brand.config.ts carry an empty
+     slug. The scan matches BARE slug strings in public .js, not only
+     href-shaped ones. The personal-data denylist the scan uses is read
+     from a gitignored file (e.g. `intake/pii.json`), never inlined in a
+     committed script.
    - COVERAGE: every component in `intake/components-inventory.md` exists in
      the library; every rule in `intake/cvi-rules.json` maps to a chapter
      Fix until green.
@@ -332,6 +373,16 @@ Sequential tail: use_figma calls never run in the parallel waves. No
 Figma auth, or file creation refused (some plans reject their own
 whoami planKey, ask the builder for an empty file URL instead) →
 degrade cleanly, note it in the handover, never block the build.
+
+GIT DISCIPLINE, the whole way through: a brand build runs on a
+`brandos/<brand>` branch, never on main, and commits at every
+milestone: capture complete, sampling recorded, reconciliation opened,
+theme generated, chapters authored, validate green. An entire build
+sitting uncommitted in a working tree (seen twice in the field, both
+recoverable only by luck) is a FAIL in the handover. The build stamp in
+changes.json must match HEAD, and validate warns on a dirty tree.
+Client repos never carry template reference material: `docs/reference/`
+stays in the template repo only.
 
 7. **Publish.** When validate is green, build and open AUTOMATICALLY: run
    `npm run build`, serve the result in the background (`npm run preview`)

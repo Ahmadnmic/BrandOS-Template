@@ -154,7 +154,7 @@ function rel(p) {
   } else {
     const pages = walk(outDir, ["index.html"]).length;
     const fallback = fs.existsSync(path.join(outDir, "__spa-fallback.html"));
-    if (pages >= 3 && fallback)
+    if (pages >= 2 && fallback)
       report("PASS", "prerender completeness", `${pages} pages prerendered`);
     else
       report(
@@ -177,13 +177,23 @@ function rel(p) {
     const gatedSlugs = [
       ...config.matchAll(/slug: "([^"]+)"[^}]*gated: true/gs),
     ].map((m) => m[1]);
+    // The real gated slugs live in brand/gated.config.ts, which must never
+    // be bundled; a BARE slug string in any public chunk is a leak.
+    const gatedConfigPath = path.join(root, "brand", "gated.config.ts");
+    if (fs.existsSync(gatedConfigPath)) {
+      const gc = fs.readFileSync(gatedConfigPath, "utf8");
+      gatedSlugs.push(
+        ...[...gc.matchAll(/"([a-z0-9-]{3,})"/g)]
+          .map((m) => m[1])
+          .filter((v) => !/^\d+$/.test(v)),
+      );
+    }
     const files = walk(outDir, [".html", ".js"]);
     const hits = [];
-    for (const slug of gatedSlugs) {
+    for (const slug of [...new Set(gatedSlugs)].filter(Boolean)) {
       for (const f of files) {
         const text = fs.readFileSync(f, "utf8");
-        if (text.includes("/" + slug) || text.includes('href="' + slug))
-          hits.push(`${rel(f)} (/${slug})`);
+        if (text.includes(slug)) hits.push(`${rel(f)} (${slug})`);
       }
     }
     if (hits.length)
@@ -301,6 +311,57 @@ function rel(p) {
   }
 }
 
+// C8: build stamp. The shipped output must be traceable to a commit; a
+// dirty tree at build time makes the stamp unverifiable.
+{
+  try {
+    const dirty = execSync("git status --porcelain", {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+    const head = execSync("git rev-parse --short HEAD", {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+    const changesPath = path.join(root, "output", "client", "changes.json");
+    let note = `HEAD ${head}`;
+    if (fs.existsSync(changesPath)) {
+      const built = JSON.parse(fs.readFileSync(changesPath, "utf8"))?.built
+        ?.commit;
+      if (built && !head.startsWith(built) && !built.startsWith(head)) {
+        note += `, output built at ${built} — REBUILD before shipping`;
+      }
+    }
+    if (dirty)
+      note += `; WARNING: dirty working tree, commit before declaring shipped`;
+    report("PASS", "build stamp", note);
+  } catch {
+    report("BLOCKED", "build stamp", "git unavailable");
+  }
+}
+
+// C9: template version. A field clone cannot know it is stale unless the
+// gate tells it. Bump TEMPLATE_VERSION together with templateVersion in
+// the seed brand.config.ts on machinery changes.
+const TEMPLATE_VERSION = "0.2.0";
+{
+  const config = fs.readFileSync(
+    path.join(root, "brand", "brand.config.ts"),
+    "utf8",
+  );
+  const m = config.match(/templateVersion: "([^"]+)"/);
+  const v = m ? m[1] : "unknown";
+  if (v === TEMPLATE_VERSION) {
+    report("PASS", "template version", v);
+  } else {
+    report(
+      "PASS",
+      "template version",
+      `config ${v} vs gate ${TEMPLATE_VERSION}; WARNING: clone is behind the template, pull before building`,
+    );
+  }
+}
+
 const fails = results.filter((r) => r.status === "FAIL");
 const blocked = results.filter((r) => r.status === "BLOCKED");
 for (const r of results) {
@@ -309,6 +370,28 @@ for (const r of results) {
 console.log(
   `\n${results.length - fails.length - blocked.length} pass · ${fails.length} fail · ${blocked.length} blocked`,
 );
+// Leave auditable evidence of every gate run.
+try {
+  const head = execSync("git rev-parse --short HEAD", {
+    cwd: root,
+    encoding: "utf8",
+  }).trim();
+  const reportLines = [
+    "# Validate report",
+    "",
+    `Commit: ${head} · Template: ${TEMPLATE_VERSION}`,
+    "",
+    ...results.map((r) => `- ${r.status} ${r.name}: ${r.detail}`),
+    "",
+    `${results.length - fails.length - blocked.length} pass, ${fails.length} fail, ${blocked.length} blocked`,
+  ];
+  fs.writeFileSync(
+    path.join(root, "docs", "validate-report.md"),
+    reportLines.join("\n") + "\n",
+  );
+} catch {
+  /* report file is best effort */
+}
 if (fails.length) process.exit(1);
 if (blocked.length) {
   console.log("BLOCKED is never a pass: supply the missing input and re-run.");

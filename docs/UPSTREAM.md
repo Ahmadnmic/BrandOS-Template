@@ -48,3 +48,42 @@ adapt, delete the entry.
   ship that wiring (import the registry, never regex the source).
 - Per-brand answer skill (`.claude/skills/brand/SKILL.md` in the client
   repo) worked well as a handover artifact; consider templating it.
+
+## From the desktop audit of all four run repos (2026-08-28)
+
+DONE at template level in the same pass: dead `npm run intake` removed,
+gated slugs split into brand/gated.config.ts with bare-slug output scan,
+/theme excluded from prerender, validate report file + build-stamp +
+template-version checks, GUIDE.md reconciled with reality, *.log
+ignored, git-discipline/statics-first/multi-domain/capture-hardening/
+extraction-gate rules in AGENTS.md.
+
+Still to pull, in priority order:
+
+- Elgiganten ADR-001 content architecture: brand/content/ typed modules
+  (one per chapter, types.ts, mark.tsx), src/tokenValues.ts ({ref.*}
+  resolver so no brand literal lives in src/), registry-derived
+  component routes (brand/content/komponenter.ts + generic
+  routes/komponent.tsx; 33 detail pages prerendered without a hand
+  list). docs/adr/001-brand-content-modules.md documents it.
+- POWER scripts: stratify.mjs (generic, type-map as config; make the
+  cap a hard invariant, SDU overshot 156/150), generate-theme.mjs
+  (--evidence mode binds ref to captured values; AA failure exits
+  nonzero), build-gated.mjs + BRANDOS_BUILD_DIR (leak-free second
+  build), build-inventory.mjs (inventory generated from evidence, feeds
+  a coverage check), extract-components.mjs + extract-scales.mjs (SPA
+  fallbacks: custom-element tags, inline-style mining).
+- LIFE ACT validate checks to port: WCAG AA contrast pairs, token lint
+  (hex-in-src must exist in tokens), CVI-rule coverage, component
+  coverage, voice lint, font-licence scan (closed-font pattern list
+  from config, not hardcoded); add a brand-extension hook
+  (brand/validate.checks.mjs) so builds extend without forking.
+- SDU intake scripts: capture-cvi.mjs (validate-before-write, magic
+  bytes, resume), color-evidence.mjs + idiom.mjs (evidence ladder tier
+  1 automated with vendor exclusion), scaffold-inventory.mjs
+  (status-preserving inventory generation), deep-pass.mjs (fast/deep
+  runner; fold into a future scripts/intake.mjs).
+- build-ai.mjs should emit the per-brand answer skill
+  (.claude/skills/brand/SKILL.md) from brand.config + cvi-rules.
+- Pick one canonical evidence home (intake/crawl/_meta/) and write all
+  evidence artifacts there.

@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useLocation } from "react-router";
 import { brand } from "../../../brand/brand.config";
-import { useLens, type Lens, type Theme } from "../../lens";
+import { useLens, useTx, type Lens, type Theme, type Lang } from "../../lens";
 
-const LENSES: { id: Lens; label: string }[] = [
-  { id: "generel", label: "GENEREL" },
-  { id: "design", label: "DESIGN" },
-  { id: "dev", label: "DEV" },
-  { id: "hr", label: "HR" },
+const LENSES: { id: Lens; da: string; en: string }[] = [
+  { id: "generel", da: "GENEREL", en: "GENERAL" },
+  { id: "design", da: "DESIGN", en: "DESIGN" },
+  { id: "dev", da: "DEV", en: "DEV" },
+  { id: "hr", da: "HR", en: "HR" },
 ];
 
-const THEMES: { id: Theme; label: string }[] = [
-  { id: "light", label: "LYS" },
-  { id: "dark", label: "MØRK" },
-  { id: "auto", label: "AUTO" },
+const THEMES: { id: Theme; da: string; en: string }[] = [
+  { id: "default", da: "STANDARD", en: "STANDARD" },
+  { id: "light", da: "LYS", en: "LIGHT" },
+  { id: "dark", da: "MØRK", en: "DARK" },
 ];
 
 function SettingRow(props: { title: string; children: ReactNode }) {
@@ -53,7 +53,8 @@ function SettingButton(props: {
 // reordered. Also hosts the settings gear (lens, theme, language).
 export function PageNav() {
   const location = useLocation();
-  const { lens, setLens, theme, setTheme } = useLens();
+  const { lens, setLens, theme, setTheme, lang, setLang } = useLens();
+  const tx = useTx();
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [meta, setMeta] = useState({ label: "", chapter: "" });
@@ -140,33 +141,37 @@ export function PageNav() {
         <div
           className="absolute bottom-full right-0 mb-2 w-48 space-y-3 rounded-md border border-line bg-panel p-3.5 shadow-xl"
           role="dialog"
-          aria-label="Indstillinger"
+          aria-label={tx({ da: "Indstillinger", en: "Settings" })}
         >
-          <SettingRow title="LINSE">
+          <SettingRow title={tx({ da: "LINSE", en: "LENS" })}>
             {LENSES.map((l) => (
               <SettingButton
                 key={l.id}
                 active={lens === l.id}
                 onClick={() => setLens(l.id)}
               >
-                {l.label}
+                {tx(l)}
               </SettingButton>
             ))}
           </SettingRow>
-          <SettingRow title="TEMA">
+          <SettingRow title={tx({ da: "TEMA", en: "THEME" })}>
             {THEMES.map((t) => (
               <SettingButton
                 key={t.id}
                 active={theme === t.id}
                 onClick={() => setTheme(t.id)}
               >
-                {t.label}
+                {tx(t)}
               </SettingButton>
             ))}
           </SettingRow>
-          <SettingRow title="SPROG">
+          <SettingRow title={tx({ da: "SPROG", en: "LANGUAGE" })}>
             {brand.langs.map((l) => (
-              <SettingButton key={l} active onClick={() => undefined}>
+              <SettingButton
+                key={l}
+                active={lang === l}
+                onClick={() => setLang(l as Lang)}
+              >
                 {l.toUpperCase()}
               </SettingButton>
             ))}
@@ -175,7 +180,7 @@ export function PageNav() {
       )}
       <div
         role="navigation"
-        aria-label="Sidenavigation"
+        aria-label={tx({ da: "Sidenavigation", en: "Page navigation" })}
         className="flex items-center gap-2 rounded-md border border-line bg-panel/95 px-2 py-1.5 backdrop-blur"
       >
         {paged && (
@@ -184,7 +189,7 @@ export function PageNav() {
               type="button"
               onClick={() => goTo(page - 1)}
               disabled={page === 1}
-              aria-label="Forrige side"
+              aria-label={tx({ da: "Forrige side", en: "Previous page" })}
               className="px-1.5 font-mono text-sm text-dim hover:text-ink disabled:opacity-30"
             >
               ‹
@@ -201,7 +206,7 @@ export function PageNav() {
               type="button"
               onClick={() => goTo(page + 1)}
               disabled={page === total}
-              aria-label="Næste side"
+              aria-label={tx({ da: "Næste side", en: "Next page" })}
               className="px-1.5 font-mono text-sm text-dim hover:text-ink disabled:opacity-30"
             >
               ›
@@ -211,7 +216,7 @@ export function PageNav() {
         <button
           type="button"
           onClick={() => setSettingsOpen((o) => !o)}
-          aria-label="Indstillinger"
+          aria-label={tx({ da: "Indstillinger", en: "Settings" })}
           aria-expanded={settingsOpen}
           className="flex size-6 items-center justify-center rounded-sm border border-line text-accent hover:bg-line/30"
         >

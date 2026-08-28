@@ -8,13 +8,19 @@ import {
   DownloadChip,
 } from "../components/guide/Guide";
 import { Button } from "../components/ui/Button";
-import { useLens } from "../lens";
+import { useLens, useTx } from "../lens";
 
 export function meta() {
   return [{ title: "Knap · Komponenter · " + brand.name + " BrandOS" }];
 }
 
-const TABS = ["ANVENDELSE", "SPECS", "KODE", "TILGÆNGELIGHED"] as const;
+const TABS = [
+  { id: "ANVENDELSE", da: "ANVENDELSE", en: "USAGE" },
+  { id: "SPECS", da: "SPECS", en: "SPECS" },
+  { id: "KODE", da: "KODE", en: "CODE" },
+  { id: "TILGÆNGELIGHED", da: "TILGÆNGELIGHED", en: "ACCESSIBILITY" },
+] as const;
+type TabId = (typeof TABS)[number]["id"];
 
 const BUTTON_CSS = `.btn-primary {
   background: var(--sys-action);
@@ -24,7 +30,8 @@ const BUTTON_CSS = `.btn-primary {
 
 export default function Knap() {
   const { lens } = useLens();
-  const [tab, setTab] = useState<(typeof TABS)[number]>("ANVENDELSE");
+  const tx = useTx();
+  const [tab, setTab] = useState<TabId>("ANVENDELSE");
 
   // The lens re-weights the page: Dev opens on code, Design on specs,
   // Generel and HR on usage.
@@ -40,25 +47,29 @@ export default function Knap() {
         href="/#komponenter"
         className="label mb-6 inline-block text-[9px] hover:text-accent"
       >
-        ← KOMPONENTER
+        ← {tx({ da: "KOMPONENTER", en: "COMPONENTS" })}
       </a>
-      <ChapterHead num="11" title="Knap" steps="KOMPONENTER" />
+      <ChapterHead
+        num="11"
+        title={tx({ da: "Knap", en: "Button" })}
+        steps={tx({ da: "KOMPONENTER", en: "COMPONENTS" })}
+      />
       <div className="mb-5 flex gap-1 border-b border-line" role="tablist">
         {TABS.map((t) => (
           <button
-            key={t}
+            key={t.id}
             type="button"
             role="tab"
-            aria-selected={tab === t}
-            onClick={() => setTab(t)}
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
             className={
               "border-b-2 px-3.5 py-2 font-mono text-[10px] tracking-wider " +
-              (tab === t
+              (tab === t.id
                 ? "border-signal text-accent"
                 : "border-transparent text-dim hover:text-ink")
             }
           >
-            {t}
+            {tx(t)}
           </button>
         ))}
       </div>
@@ -66,14 +77,14 @@ export default function Knap() {
       {tab === "ANVENDELSE" && (
         <Rules
           dos={[
-            "Én primær knap pr. flade.",
-            "Tekst i versaler, maks to ord.",
-            "Signal kun til live-øjeblikke.",
+            tx({ da: "Én primær knap pr. flade.", en: "One primary button per surface." }),
+            tx({ da: "Tekst i versaler, maks to ord.", en: "Text in uppercase, two words at most." }),
+            tx({ da: "Signal kun til live-øjeblikke.", en: "Signal only for live moments." }),
           ]}
           donts={[
-            "To primære side om side.",
-            "Signal til navigation eller dekoration.",
-            "Egen styling uden for de tre varianter.",
+            tx({ da: "To primære side om side.", en: "Two primaries side by side." }),
+            tx({ da: "Signal til navigation eller dekoration.", en: "Signal for navigation or decoration." }),
+            tx({ da: "Egen styling uden for de tre varianter.", en: "Custom styling outside the three variants." }),
           ]}
         />
       )}
@@ -87,7 +98,10 @@ export default function Knap() {
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
+        <CodeBlock
+          title={tx({ da: "KODE · KNAP · PRIMÆR", en: "CODE · BUTTON · PRIMARY" })}
+          code={BUTTON_CSS}
+        />
         <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
         <DownloadChip label="FIGMA-BIBLIOTEK" href={brand.figma?.fileUrl} />
@@ -99,19 +113,19 @@ export default function Knap() {
             rows={[
               {
                 token: "--sys-action",
-                role: "Primær handling",
+                role: tx({ da: "Primær handling", en: "Primary action" }),
                 light: "#0A1526",
                 dark: "#BFD9F2",
               },
               {
                 token: "--sys-on-action",
-                role: "Tekst på handling",
+                role: tx({ da: "Tekst på handling", en: "Text on action" }),
                 light: "#F4F7FB",
                 dark: "#0A1526",
               },
               {
                 token: "--sys-radius-md",
-                role: "Hjørner",
+                role: tx({ da: "Hjørner", en: "Corners" }),
                 light: "6px",
                 dark: "6px",
               },
@@ -123,15 +137,22 @@ export default function Knap() {
       {tab === "TILGÆNGELIGHED" && (
         <div className="max-w-xl space-y-3 text-sm text-dim">
           <p>
-            Tastatur: Tab fokuserer, Enter/Space aktiverer. Fokusring følger
-            --sys-accent.
+            {tx({
+              da: "Tastatur: Tab fokuserer, Enter/Space aktiverer. Fokusring følger --sys-accent.",
+              en: "Keyboard: Tab focuses, Enter/Space activates. The focus ring follows --sys-accent.",
+            })}
           </p>
           <p>
-            Minimum målflade 44×44 px. Kontrast i alle tilstande er WCAG AA.
+            {tx({
+              da: "Minimum målflade 44×44 px. Kontrast i alle tilstande er WCAG AA.",
+              en: "Minimum target size 44×44 px. Contrast in every state is WCAG AA.",
+            })}
           </p>
           <p>
-            Reduceret bevægelse: hover-overgange slås fra ved
-            prefers-reduced-motion.
+            {tx({
+              da: "Reduceret bevægelse: hover-overgange slås fra ved prefers-reduced-motion.",
+              en: "Reduced motion: hover transitions are disabled under prefers-reduced-motion.",
+            })}
           </p>
         </div>
       )}

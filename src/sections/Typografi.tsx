@@ -4,36 +4,61 @@ import {
   Rules,
   TokenTable,
 } from "../components/guide/Guide";
+import { useTx } from "../lens";
 
 export function Typografi() {
+  const tx = useTx();
   return (
     <>
-      <ChapterHead num="04" title="Typografi" />
+      <ChapterHead num="04" title={tx({ da: "Typografi", en: "Typography" })} />
       <p className="mb-8 max-w-xl text-sm text-dim">
-        To snit, ingen undtagelser: JetBrains Mono til overskrifter, Public Sans
-        til brødtekst.
+        {tx({
+          da: "To snit, ingen undtagelser: JetBrains Mono til overskrifter, Public Sans til brødtekst.",
+          en: "Two faces, no exceptions: JetBrains Mono for headings, Public Sans for body text.",
+        })}
       </p>
       <div className="grid gap-4 md:grid-cols-2">
         <TypeSpecimen
-          face="DISPLAY · JETBRAINS MONO · 700 · VERSALER"
+          face={tx({
+            da: "DISPLAY · JETBRAINS MONO · 700 · VERSALER",
+            en: "DISPLAY · JETBRAINS MONO · 700 · UPPERCASE",
+          })}
           sample="ALL IN. AA BB 09"
         />
         <TypeSpecimen
-          face="BRØDTEKST · PUBLIC SANS · 400-700"
+          face={tx({
+            da: "BRØDTEKST · PUBLIC SANS · 400-700",
+            en: "BODY · PUBLIC SANS · 400-700",
+          })}
           sample="Aa Bb Cc 0123"
         />
       </div>
       <div className="mt-12">
         <Rules
           dos={[
-            "Overskrifter i versaler med fast tracking.",
-            "Flush venstre, ragget højre.",
-            "Maks to typografiske niveauer pr. flade.",
+            tx({
+              da: "Overskrifter i versaler med fast tracking.",
+              en: "Headings in uppercase with fixed tracking.",
+            }),
+            tx({
+              da: "Flush venstre, ragget højre.",
+              en: "Flush left, ragged right.",
+            }),
+            tx({
+              da: "Maks to typografiske niveauer pr. flade.",
+              en: "At most two typographic levels per surface.",
+            }),
           ]}
           donts={[
-            "Andre snit end de to.",
-            "Kursiv, skygger eller outline i display.",
-            "Centreret tekst og hele afsnit i versaler.",
+            tx({ da: "Andre snit end de to.", en: "Faces beyond the two." }),
+            tx({
+              da: "Kursiv, skygger eller outline i display.",
+              en: "Italics, shadows or outlines in display.",
+            }),
+            tx({
+              da: "Centreret tekst og hele afsnit i versaler.",
+              en: "Centered text and whole paragraphs in uppercase.",
+            }),
           ]}
         />
       </div>
@@ -42,13 +67,13 @@ export function Typografi() {
           rows={[
             {
               token: "--sys-font-display",
-              role: "Overskrifter",
+              role: tx({ da: "Overskrifter", en: "Headings" }),
               light: "JetBrains Mono",
               dark: "JetBrains Mono",
             },
             {
               token: "--sys-font-body",
-              role: "Brødtekst",
+              role: tx({ da: "Brødtekst", en: "Body text" }),
               light: "Public Sans",
               dark: "Public Sans",
             },

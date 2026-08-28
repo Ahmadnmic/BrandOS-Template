@@ -47,6 +47,13 @@ intake input.**
   licensed-manifest check enforces one line per dropped file.
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
+- COST GATE: after the map and strata plan, before any paid batch,
+  present the estimate and wait for one yes: Firecrawl (remaining
+  credits, planned pages per pass, best case ~1-5 credits for SSR sites
+  via the hybrid, worst case fast+deep fully escalated) and AI tokens
+  (model + effort, observed 2-4M for a fast-pass build, 6-12M full).
+  Ask "fortsæt?", then run without asking again unless the estimate
+  grows past what was approved. Record actual spend in the handover.
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against
   that URL with output directed to `intake/crawl/`, in TWO stages per
   AGENTS.md Q1: first the blocking FAST PASS (one page per discovered page

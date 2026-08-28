@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { useLens } from "../../lens";
+import { useLens, useTx } from "../../lens";
 import tokens from "../../../brand/tokens.json";
 
 // The brand's containment idiom drives how every guide component renders.
@@ -30,6 +30,7 @@ export function ChapterHead(props: {
 }
 
 export function CopyValue(props: { value: string; label?: string }) {
+  const tx = useTx();
   const [copied, setCopied] = useState(false);
   async function copy(): Promise<void> {
     try {
@@ -45,9 +46,11 @@ export function CopyValue(props: { value: string; label?: string }) {
       type="button"
       onClick={() => void copy()}
       className="font-mono text-[11px] text-dim hover:text-ink"
-      title={"Kopiér " + (props.label ?? props.value)}
+      title={tx({ da: "Kopiér ", en: "Copy " }) + (props.label ?? props.value)}
     >
-      {copied ? "KOPIERET ✓" : (props.label ?? props.value) + " ⧉"}
+      {copied
+        ? tx({ da: "KOPIERET ✓", en: "COPIED ✓" })
+        : (props.label ?? props.value) + " ⧉"}
     </button>
   );
 }
@@ -111,9 +114,12 @@ export function Palette(props: {
 export function RatioBar(props: {
   parts: { name: string; pct: number; bg: string; fg: string }[];
 }) {
+  const tx = useTx();
   return (
     <div>
-      <div className="label mb-2 text-[9px]">VÆGTNING I FLADEN</div>
+      <div className="label mb-2 text-[9px]">
+        {tx({ da: "VÆGTNING I FLADEN", en: "WEIGHT ON THE SURFACE" })}
+      </div>
       <div className="flex h-8">
         {props.parts.map((p) => (
           <span
@@ -151,10 +157,13 @@ export function DownloadChip(props: { label: string; href?: string }) {
 // Usage rules the way every serious guide states them: GØR/UNDGÅ pairs,
 // one imperative sentence per rule, ruled columns, no cards.
 export function Rules(props: { dos: string[]; donts: string[] }) {
+  const tx = useTx();
   return (
     <div className="grid gap-x-12 md:grid-cols-2">
       <div>
-        <div className="label mb-1 text-[9px] text-accent">GØR</div>
+        <div className="label mb-1 text-[9px] text-accent">
+          {tx({ da: "GØR", en: "DO" })}
+        </div>
         {props.dos.map((r) => (
           <p
             key={r}
@@ -165,7 +174,9 @@ export function Rules(props: { dos: string[]; donts: string[] }) {
         ))}
       </div>
       <div className="mt-6 md:mt-0">
-        <div className="label mb-1 text-[9px]">UNDGÅ</div>
+        <div className="label mb-1 text-[9px]">
+          {tx({ da: "UNDGÅ", en: "AVOID" })}
+        </div>
         {props.donts.map((r) => (
           <p
             key={r}
@@ -183,6 +194,7 @@ export function TokenTable(props: {
   rows: { token: string; role: string; light: string; dark: string }[];
 }) {
   const { lens } = useLens();
+  const tx = useTx();
   const [open, setOpen] = useState(false);
   // Dev lens: always expanded inline. Every other lens: one click away.
   if (lens !== "dev" && !open)
@@ -192,7 +204,7 @@ export function TokenTable(props: {
         onClick={() => setOpen(true)}
         className="label border-t border-line py-3 text-left text-[9px] hover:text-accent"
       >
-        VIS TOKEN-TABEL ▸
+        {tx({ da: "VIS TOKEN-TABEL", en: "SHOW TOKEN TABLE" })} ▸
       </button>
     );
   return (
@@ -200,7 +212,12 @@ export function TokenTable(props: {
       <table className="w-full font-mono text-[11px]">
         <thead>
           <tr className="border-b border-line text-left">
-            {["TOKEN", "ROLLE", "LYS", "MØRK"].map((h) => (
+            {[
+              "TOKEN",
+              tx({ da: "ROLLE", en: "ROLE" }),
+              tx({ da: "LYS", en: "LIGHT" }),
+              tx({ da: "MØRK", en: "DARK" }),
+            ].map((h) => (
               <th
                 key={h}
                 className="label whitespace-nowrap py-2 pr-4 text-[8.5px] font-normal"
@@ -238,12 +255,16 @@ export function TokenTable(props: {
 
 export function CodeBlock(props: { title: string; code: string }) {
   const { lens } = useLens();
+  const tx = useTx();
   const [open, setOpen] = useState(false);
   const block = (
     <div className="border-l-2 border-accent bg-panel">
       <div className="flex items-center justify-between border-b border-line px-4 py-2">
         <span className="label text-[8.5px]">{props.title}</span>
-        <CopyValue value={props.code} label="KOPIÉR" />
+        <CopyValue
+          value={props.code}
+          label={tx({ da: "KOPIÉR", en: "COPY" })}
+        />
       </div>
       <pre className="overflow-x-auto px-4 py-3 font-mono text-[11px] leading-relaxed">
         {props.code}
@@ -259,7 +280,7 @@ export function CodeBlock(props: { title: string; code: string }) {
         aria-expanded={open}
         className="rounded-md bg-action px-3.5 py-2 font-mono text-[10px] font-bold tracking-wider text-on-action"
       >
-        {"</>"} KODE
+        {"</>"} {tx({ da: "KODE", en: "CODE" })}
       </button>
       {open ? (
         <div className="absolute left-0 top-full z-10 mt-2 w-80 shadow-xl">

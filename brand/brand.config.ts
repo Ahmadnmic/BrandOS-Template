@@ -28,8 +28,8 @@ export const brand: BrandConfig = {
   tagline: "All in. All together.",
   version: "0.1",
   updated: "2026-08-27",
-  templateVersion: "0.1.0",
-  langs: ["da"],
+  templateVersion: "0.2.0",
+  langs: ["da", "en"],
   contacts: [{ role: "Brand", email: "brand@odensebasket.dk" }],
   chapters: [
     { num: "00", slug: "", title: "Forside", group: "Brandet", built: true },
@@ -77,9 +77,12 @@ export const brand: BrandConfig = {
     },
     { num: "13", slug: "assets", title: "Assets", group: "System" },
     { num: "14", slug: "ai", title: "AI", group: "System" },
+    // Gated chapters carry NO slug here: brand.config is bundled into the
+    // public client, and a gated route string in a public chunk is a leak.
+    // The slug lives in brand/gated.config.ts (build scripts only).
     {
       num: "15",
-      slug: "brand-data",
+      slug: "",
       title: "Brand data",
       group: "Brand data",
       gated: true,

@@ -121,7 +121,9 @@ fetches (403/429/network) escalate to Firecrawl batch (1 credit/page); dead URLs
 are never escalated because Firecrawl bills processed error pages. `--direct` never calls
 Firecrawl; `--force-firecrawl` bills every page (pre-hybrid behavior); `--fresh` ignores the
 local capture. The final counts line shows `cached-local` / `direct` / `firecrawl` / `failed`
-plus an estimated credit spend.
+plus an estimated credit spend. ALWAYS persist that summary to
+`_meta/credits.json` (mapped calls, scrape counts by mode, estimated credits)
+so every run's spend is auditable without counting manifest lines.
 
 ### Credit economics (verified against docs.firecrawl.dev/billing, Aug 2026)
 

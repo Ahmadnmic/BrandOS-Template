@@ -7,14 +7,18 @@ import {
   DownloadChip,
   TokenTable,
 } from "../components/guide/Guide";
+import { useTx } from "../lens";
 
 export function Farver() {
+  const tx = useTx();
   return (
     <>
-      <ChapterHead num="03" title="Farver" />
+      <ChapterHead num="03" title={tx({ da: "Farver", en: "Colors" })} />
       <p className="mb-10 max-w-xl text-sm leading-relaxed text-dim">
-        Dybhav bærer identiteten. Is skaber kontrast og luft. Signal markerer
-        handling.
+        {tx({
+          da: "Dybhav bærer identiteten. Is skaber kontrast og luft. Signal markerer handling.",
+          en: "Dybhav carries the identity. Is creates contrast and air. Signal marks action.",
+        })}
       </p>
       <Palette
         colors={[
@@ -55,21 +59,42 @@ export function Farver() {
       <div className="mt-12">
         <Rules
           dos={[
-            "Dybhav som primær flade, Is som kontrast og luft.",
-            "Signal til handling og live-øjeblikke.",
-            "Tekstfarve fra token-parret, aldrig på øjemål.",
+            tx({
+              da: "Dybhav som primær flade, Is som kontrast og luft.",
+              en: "Dybhav as the primary surface, Is as contrast and air.",
+            }),
+            tx({
+              da: "Signal til handling og live-øjeblikke.",
+              en: "Signal for action and live moments.",
+            }),
+            tx({
+              da: "Tekstfarve fra token-parret, aldrig på øjemål.",
+              en: "Text color from the token pair, never by eye.",
+            }),
           ]}
           donts={[
-            "Signal som baggrund, dekoration eller store flader.",
-            "Sort, grå eller andre mørke erstatninger for Dybhav.",
-            "Nye nuancer uden for paletten.",
+            tx({
+              da: "Signal som baggrund, dekoration eller store flader.",
+              en: "Signal as background, decoration or large surfaces.",
+            }),
+            tx({
+              da: "Sort, grå eller andre mørke erstatninger for Dybhav.",
+              en: "Black, grey or other dark substitutes for Dybhav.",
+            }),
+            tx({
+              da: "Nye nuancer uden for paletten.",
+              en: "New shades outside the palette.",
+            }),
           ]}
         />
       </div>
       <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-line pt-4">
         <CopyValue
           value="#0A1526 #BFD9F2 #F4F7FB #E8B84B"
-          label="KOPIÉR HELE PALETTEN"
+          label={tx({
+            da: "KOPIÉR HELE PALETTEN",
+            en: "COPY THE WHOLE PALETTE",
+          })}
         />
         <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
         <DownloadChip label="TOKENS.JSON" href="/exports/tokens.json" />
@@ -79,19 +104,19 @@ export function Farver() {
           rows={[
             {
               token: "--sys-surface",
-              role: "Flade",
+              role: tx({ da: "Flade", en: "Surface" }),
               light: "#F4F7FB",
               dark: "#0A1526",
             },
             {
               token: "--sys-ink",
-              role: "Tekst",
+              role: tx({ da: "Tekst", en: "Text" }),
               light: "#0A1526",
               dark: "#F2F6FC",
             },
             {
               token: "--sys-action",
-              role: "Primær handling",
+              role: tx({ da: "Primær handling", en: "Primary action" }),
               light: "#0A1526",
               dark: "#BFD9F2",
             },

@@ -73,29 +73,36 @@ always gives the same theme.
 
 ### 5. Validation (automatic, but read the report)
 
-`npm run validate` must pass before anything ships: WCAG 2.2 AA (contrast +
-axe + keyboard), token lint, print values (PMS/CMYK) on every core color,
-asset license/expiry checks, and coverage, every crawled component rebuilt,
-every CVI rule homed, every application scenario (deck, offer, signature,
-SoMe, OOH) backed by a downloadable artifact.
+`npm run validate` must pass before anything ships. The template gate
+covers today: writing rules, key hygiene, seed leak, prerender
+completeness, gated leak (including bare slugs in public JS chunks),
+print truth (CMYK), licensed manifest, build stamp and template version;
+it writes its report to `docs/validate-report.md`. A brand build EXTENDS
+the gate with WCAG 2.2 AA (contrast + axe + keyboard), token lint,
+asset license/expiry, and full coverage: every crawled component
+rebuilt, every CVI rule homed, every application scenario backed by a
+downloadable artifact. BLOCKED (missing input) is never a pass.
 
 ### 6. Review & ship
 
-Check the hidden `/theme` route (the full generated theme, every token and
-state), click through the portal in both Lys and Mørk, then deploy the
-static build to the client's domain (`brand.client.dk`).
+Check the `/theme` route on the DEV server (the full generated theme,
+every token and state; it is dev-only and excluded from the shipped
+output), click through the portal in Standard, Lys and Mørk, then deploy
+the static build to the client's domain (`brand.client.dk`).
 
 ## After launch
 
-- **Updating the brand:** edits go through `brand/` + `content/`; then
-  `npm run release` bumps the version stamp, changelog and token exports
-  atomically. Subscribers get a digest (sent via the EU-hosted list service
-  the CI release job posts to); developers get a new versioned tokens
-  tarball under `/exports/` plus `tokens.diff.json`.
-- **Template upgrades:** never hand-edit `src/` in a brand repo, run
-  `npm run upgrade-template`, which overlays the new template machinery,
-  runs migrations and re-runs validate. `templateVersion` in
-  `brand.config.ts` records where each portal stands.
+- **Updating the brand:** edits go through `brand/` + `content/`; bump
+  the version stamp and changelog in `brand.config.ts`, rebuild, re-run
+  validate. (ROADMAP: `npm run release` will do this atomically with a
+  subscriber digest and a versioned tokens tarball; it does not exist
+  yet, do it by hand until it does.)
+- **Template upgrades:** never hand-edit `src/` in a brand repo.
+  `templateVersion` in `brand.config.ts` records where each portal
+  stands, and `npm run validate` warns when a clone is behind the
+  template. (ROADMAP: `npm run upgrade-template` will overlay new
+  machinery and run migrations; until it exists, pull template commits
+  manually and re-run validate.)
 - **Access:** manage the partner allowlist (external agencies, with expiry
   dates) in the gitignored `access.config.json`, it's PII, so it never goes
   in git; the deploy script provisions it to the access layer, and

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { brand } from "../../../brand/brand.config";
-import { useLens } from "../../lens";
+import { useLens, useTx } from "../../lens";
 
 // Scroll-spy top bar: brand mark, one anchor link per chapter, the theme
 // toggle. It observes the section anchors to highlight the chapter in view
 // and turns solid after a little scroll.
 export function TopNav() {
   const { theme, setTheme } = useLens();
+  const tx = useTx();
   const location = useLocation();
   const onDocument = location.pathname === "/";
   const [active, setActive] = useState("");
@@ -75,7 +76,7 @@ export function TopNav() {
         {gated.map((c) => (
           <li key={c.num} className="shrink-0">
             <span className="font-mono text-[10px] tracking-wider text-dim/40">
-              {c.title.toUpperCase()} · LÅST
+              {c.title.toUpperCase()} · {tx({ da: "LÅST", en: "LOCKED" })}
             </span>
           </li>
         ))}
@@ -83,21 +84,35 @@ export function TopNav() {
       <div
         className="ml-auto flex shrink-0 overflow-hidden rounded-md border border-line"
         role="group"
-        aria-label="Tema"
+        aria-label={tx({ da: "Tema", en: "Theme" })}
       >
-        {(["light", "dark"] as const).map((t) => (
+        {(
+          [
+            { id: "default", label: { da: "STANDARD", en: "STANDARD" } },
+            { id: "light", label: { da: "LYS", en: "LIGHT" } },
+            { id: "dark", label: { da: "MØRK", en: "DARK" } },
+          ] as const
+        ).map((t) => (
           <button
-            key={t}
+            key={t.id}
             type="button"
-            onClick={() => setTheme(t)}
+            onClick={() => setTheme(t.id)}
+            title={
+              t.id === "default"
+                ? tx({
+                    da: "Brandets eget udtryk",
+                    en: "The brand's own appearance",
+                  })
+                : tx({ da: "Kontrastvisning", en: "Contrast view" })
+            }
             className={
               "px-3 py-1 font-mono text-[9px] tracking-widest " +
-              (theme === t
+              (theme === t.id
                 ? "bg-accent font-bold text-surface"
                 : "text-dim hover:text-ink")
             }
           >
-            {t === "light" ? "LYS" : "MØRK"}
+            {tx(t.label)}
           </button>
         ))}
       </div>
