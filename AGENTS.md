@@ -215,9 +215,13 @@ locked, chapters are independent of each other, and serializing them wastes
 most of the wall clock. If your harness has no subagents, run the same
 units sequentially in the order below; the unit contracts are identical.
 
-Sizing rule: every unit is scoped to roughly 10 minutes of agent work.
+Sizing rule: every unit is SCOPED to roughly 10 minutes of agent work.
 If a unit looks bigger (a fat component inventory, a huge image harvest),
 split it further; if trivial, merge it with its neighbor.
+This is a sizing guideline, NOT a timeout. There is no time limit on a
+subagent: a unit takes the time it takes. Never abort, rush or restart a
+subagent for running long, and never trade correctness for speed to hit
+the guideline.
 
 Subagent contract (every unit):
 

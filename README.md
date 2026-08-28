@@ -210,7 +210,8 @@ every token and state as the QA surface.
 ### 5. Author the sixteen chapters (in parallel)
 
 Once the theme is locked, the chapters are independent, so the agent fans
-out **subagents**, one per unit sized to roughly ten minutes of work:
+out **subagents**, one per unit scoped to roughly ten minutes of work (a
+sizing guideline, not a timeout; a unit takes the time it takes):
 strategy, logo, color+tokens, type+grid, graphics+motion, imagery, voice,
 applications, the Office pack, the SoMe masters, and the component
 inventory split into batches of at most four components each. Each subagent

@@ -71,9 +71,11 @@ questions, with exactly three exceptions:
 - the **one-time personality-profile confirmation** before theme generation.
 
 Execute via AGENTS.md's "Parallel build plan": if your harness supports
-subagents, fan out one subagent per unit (each sized ~10 minutes) exactly
-as the plan's waves specify; otherwise run the same units in order. Never
-let two units write the same file; you own the shared files and the merge.
+subagents, fan out one subagent per unit (each SCOPED to ~10 minutes, but
+with no timeout: a unit takes the time it takes, never abort or rush one
+for running long) exactly as the plan's waves specify; otherwise run the
+same units in order. Never let two units write the same file; you own the
+shared files and the merge.
 
 Order: extract & reconcile (two parallel extractors: crawl analysis + CVI
 parsing; then human reconciliation; incl. typesetting idiom → composition
