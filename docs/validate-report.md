@@ -1,6 +1,6 @@
 # Validate report
 
-Commit: 106b0de · Template: 0.4.0
+Commit: dc3d4a6 · Template: 0.4.0
 
 - PASS writing rules: no dashes-as-pause, no AI-tell phrases
 - PASS key hygiene: no key patterns in tracked files
@@ -10,7 +10,7 @@ Commit: 106b0de · Template: 0.4.0
 - PASS print truth: 4 core colors carry CMYK
 - PASS licensed manifest: folder scaffolded, nothing dropped yet
 - PASS contrast pairs: 12 pair-modes checked, all reach AA 4.5:1
-- PASS build stamp: HEAD 106b0de; WARNING: dirty working tree, commit before declaring shipped
+- PASS build stamp: HEAD dc3d4a6, output built at 106b0de — REBUILD before shipping; WARNING: dirty working tree, commit before declaring shipped
 - PASS template version: 0.4.0
 
 10 pass, 0 fail, 0 blocked

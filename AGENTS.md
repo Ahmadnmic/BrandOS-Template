@@ -212,6 +212,11 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
    CMYK and RAL per core color into `tokens.json` `$extensions` (if the CVI
    lacks them, flag in `intake/reconciliation.md`, never soft-convert from
    hex).
+   FONT PAIRING AXES: when choosing or reconciling display/body pairs
+   (including fallbacks), score candidates on explicit axes (serif
+   class, stroke contrast, x-height, width, weight range, mood): a good
+   pair MATCHES on x-height, proportion and mood and CONTRASTS
+   deliberately on class or weight. Never pick pairs by feel alone.
    Reconcile by WEIGHING EVIDENCE. When the guide and the site disagree on
    an element, ask the builder, "should I use this element from the site or
    from the guide?", showing both values and the evidence for each (how
@@ -251,7 +256,12 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
    rå/poleret · bokset/åben) and confirm it with a human. Then:
    author `brand/tokens.json` by hand from the evidence: ref tier bound to
    captured values, sys tier with light/dark contexts, radius/space/case/
-   motion/border/composition from the profile. Keep AA pairs (the gate's
+   motion/border/composition from the profile.
+   ANCHOR LOCK: any value traced to evidence (CVI or capture) is an
+   IMMUTABLE input to theme generation; generation only infills the
+   unevidenced slots around the anchors (ladders, dark counterparts,
+   support tints). An anchor that comes out mutated downstream is a
+   defect, not a variation. Keep AA pairs (the gate's
    contrast check enforces the declared text/surface pairs). Review the
    `/theme` route on the dev server before moving on. (ROADMAP: a
    generate-theme script exists in the POWER and LIFE ACT run repos and is
@@ -308,7 +318,12 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2,
      Downloads) is internal method: never print it as a breadcrumb, header
      line or label in the guide.
      Rules must be
-     testable: exact values, ratios, approved phrases, never adjectives. Write
+     testable: exact values, ratios, approved phrases, never adjectives.
+     RULE GRAMMAR for every GØR/UNDGÅ row: phrased as must/must-not over
+     VISIBLE properties (color, placement, treatment, case, spacing,
+     composition), conditions as If-clauses, exact token values inlined,
+     no bare adjective without an example. A rule written this way is
+     executable by any future compliance check. Write
      in the brand's own voice (`brand/voice.md`) and language. Every component
      in the inventory gets rebuilt in Komponenter with the 4-tab contract.
      For Office formats prefer the official Anthropic document skills
