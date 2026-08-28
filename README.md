@@ -207,7 +207,17 @@ properties, so the entire portal, every component and every code sample
 re-skins itself from this single file. A hidden `/theme` route renders
 every token and state as the QA surface.
 
-### 5. Author the sixteen chapters
+### 5. Author the sixteen chapters (in parallel)
+
+Once the theme is locked, the chapters are independent, so the agent fans
+out **subagents**, one per unit sized to roughly ten minutes of work:
+strategy, logo, color+tokens, type+grid, graphics+motion, imagery, voice,
+applications, the Office pack, the SoMe masters, and the component
+inventory split into batches of at most four components each. Each subagent
+owns only its own files, returns its open questions instead of guessing,
+and the main agent merges, batches questions to you, and registers the
+chapters. (Harnesses without subagents run the same units in order; the
+plan lives in AGENTS.md.)
 
 One MDX file per chapter, each following the same skeleton: Princip →
 Regler (exact values, never adjectives) → Eksempler → Misbrug (wrong usage

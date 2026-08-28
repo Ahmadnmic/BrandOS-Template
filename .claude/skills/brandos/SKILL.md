@@ -70,9 +70,16 @@ questions, with exactly three exceptions:
 - the **not-100%-sure doctrine** above;
 - the **one-time personality-profile confirmation** before theme generation.
 
-Order: extract & reconcile (incl. typesetting idiom → composition profile,
-and print truth PMS/CMYK from the CVI) → generate theme (seeds + personality
-profile; confirm the profile with the user before generating) → bind identity
+Execute via AGENTS.md's "Parallel build plan": if your harness supports
+subagents, fan out one subagent per unit (each sized ~10 minutes) exactly
+as the plan's waves specify; otherwise run the same units in order. Never
+let two units write the same file; you own the shared files and the merge.
+
+Order: extract & reconcile (two parallel extractors: crawl analysis + CVI
+parsing; then human reconciliation; incl. typesetting idiom → composition
+profile, and print truth PMS/CMYK from the CVI) → generate theme (seeds +
+personality profile; confirm the profile with the user before generating) →
+bind identity
 → author chapters (every inventoried component rebuilt; every CVI rule
 homed, ADDING new chapters for CVI sections the 16-chapter map doesn't
 cover) → `npm run validate` until green → build, stamped "foreløbig" →

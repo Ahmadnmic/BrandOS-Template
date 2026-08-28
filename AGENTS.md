@@ -123,7 +123,9 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    provisions it to the edge access layer. Public pages use role aliases
    only (brand@client.dk); personal contacts live in the gated area.
 
-4. **Write chapters.** One MDX per chapter. The 16-chapter map is a FLOOR,
+4. **Write chapters.** Execute via the Parallel build plan below (waves 1
+   and 2); a 10-minute-per-unit fan-out instead of a serial crawl through
+   sixteen chapters. One MDX per chapter. The 16-chapter map is a FLOOR,
    not a ceiling: if the CVI contains a section no chapter accounts for
    (vehicle livery, uniforms, packaging, sonic DNA, wayfinding, whatever the
    guide holds), ADD a chapter for it in brand.config.ts and build it with
@@ -204,6 +206,73 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    changes.json (an append-only journal every post-build agent edit MUST be
    recorded in: read first, append after) and llms.txt + tokens.json into
    output/. What one agent changes after deploy, the next agent can read.
+
+## Parallel build plan (subagents)
+
+If your harness supports subagents or parallel tasks (Claude Code Task
+tool, Codex parallel runs, etc.), BUILD IN PARALLEL: after the theme is
+locked, chapters are independent of each other, and serializing them wastes
+most of the wall clock. If your harness has no subagents, run the same
+units sequentially in the order below; the unit contracts are identical.
+
+Sizing rule: every unit is scoped to roughly 10 minutes of agent work.
+If a unit looks bigger (a fat component inventory, a huge image harvest),
+split it further; if trivial, merge it with its neighbor.
+
+Subagent contract (every unit):
+
+- Input: brand/tokens.json, the reconciled facts, intake/cvi-rules.json
+  entries assigned to its chapters, and only the intake slices it needs.
+- Output: ONLY its own listed files. No unit ever edits brand/tokens.json,
+  brand.config.ts, or another unit's files; the MAIN agent owns shared
+  files and does all merging and chapter registration.
+- A subagent that is not 100% sure RETURNS the question in its summary
+  instead of guessing; the main agent batches questions to the human.
+- Every unit returns: files written, decisions made, open questions.
+
+WAVE 0, sequential (main agent, human in the loop): preflight → Q1 fast
+pass → Q2 CVI. Then fan out TWO extractors in parallel: (0a) crawl
+analysis: component inventory, de facto tokens, typesetting idiom, copy
+corpus; (0b) CVI parsing: cvi-rules.json, official values, print truth.
+Main agent reconciles (human decisions), confirms the personality profile,
+runs generate-theme. The theme lock ends wave 0.
+
+WAVE 1, fan out in parallel (one subagent per unit):
+
+- U1 Ch. 01 Brandet + Forside copy
+- U2 Ch. 02 Logo (construction, clearspace, misuse, chooser data,
+  print-grade logo pack manifest)
+- U3 Ch. 03 Farver + Ch. 12 Tokens page (token-table work, one voice)
+- U4 Ch. 04 Typografi + Ch. 05 Grid & layout
+- U5 Ch. 06 Grafik & ikoner + Ch. 08 Motion (easing demos from profile)
+- U6 Ch. 07 Billedstil (image curation from the harvest, rights flags,
+  operator sign-off list)
+- U7 Ch. 09 Tone of voice: voice.md, channel matrix,
+  references/channels.md (works from the copy corpus, not tokens)
+- U8 Ch. 10 Anvendelse: platform spec tables, co-branding toolkit,
+  campaign scaffolding, Godkendelse blocks
+- U9 Office pack: .thmx from tokens, .potx deck, .dotx offer/letter,
+  email signature, each with {name}.instructions.md
+- U10 SoMe/newsletter/OOH masters + generated in-situ mockups, each with
+  {name}.instructions.md
+- U11+ Komponenter: split intake/components-inventory.md into batches of
+  AT MOST 4 components per subagent; each batch delivers the rebuilt
+  components, their 4-tab pages, and demo items. A 20-component
+  inventory means 5 parallel component units.
+
+WAVE 2, after wave 1 lands (parallel where possible):
+
+- V1 Ch. 14 AI + the brand skill (SKILL.md router + references built
+  from U7's voice files and the token exports)
+- V2 Ch. 13 Assets: download center wired to every pack from U2/U9/U10,
+  license/expiry metadata on every asset
+- V3 Consistency sweep: one slug per entity, identical section skeletons,
+  terminology drift, AI-tell scan across all chapters
+
+WAVE 3, sequential (main agent): merge, register chapters, `npm run
+validate`, fix until green (fan the fixes out if there are many), build,
+provisional handover. When the deep crawl lands: deep verification
+(step 6), which may itself fan out one diff unit per page type.
 
 ## Hard rules
 
