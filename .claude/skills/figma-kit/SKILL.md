@@ -48,6 +48,21 @@ authenticated email and ask them to invite it as editor (or set the
 link to anyone-can-edit). Always state the whoami email when asking for
 a file.
 
+STARTER-TIER FILE (limits follow the FILE's team, not the whoami
+tier; all observed 2026-08):
+
+- `addMode` fails with "Limited to 1 modes only": keep `Sys` single-mode
+  with the light values and create a hidden `Sys Mørk (reference)`
+  collection (scopes `[]`) carrying the dark values, aliased to Ref.
+  Note in the handover that moving the file to a Pro team and re-running
+  restores native mode switching.
+- `createPage` caps at 3 pages: merge foundations onto one page
+  (sections with clear headings) and keep one components page.
+- The MCP itself rate-caps tool calls on Starter. Budget the run:
+  variables and components FIRST, doc pages second, screenshots last,
+  and validate structurally via returned IDs when the cap cuts off
+  screenshot validation. Say exactly which validations did not run.
+
 ## Build order (sequential, never parallel use_figma writes)
 
 Follow figma-generate-library's phases. For a BrandOS kit that means:

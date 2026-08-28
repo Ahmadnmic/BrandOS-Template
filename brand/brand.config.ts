@@ -85,6 +85,9 @@ export const brand: BrandConfig = {
       gated: true,
     },
   ],
+  figma: {
+    fileUrl: "https://www.figma.com/design/UYuxd7T5NKJZLFmnOJzveJ/",
+  },
   changelog: [
     {
       version: "0.1",
