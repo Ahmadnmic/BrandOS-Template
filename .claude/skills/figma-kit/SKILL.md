@@ -40,6 +40,14 @@ retry in a loop. Fall back: ask the builder to create one empty Figma
 design file and paste its URL; `use_figma` needs only edit rights on an
 existing file. Extract the fileKey from the URL and continue.
 
+KNOWN FAILURE: "you don't have edit access to this file" on the
+builder-supplied URL usually means an ACCOUNT MISMATCH: the MCP is
+authenticated as one Figma identity (see the email in `whoami`) while
+the builder created the file under another. Tell the builder the exact
+authenticated email and ask them to invite it as editor (or set the
+link to anyone-can-edit). Always state the whoami email when asking for
+a file.
+
 ## Build order (sequential, never parallel use_figma writes)
 
 Follow figma-generate-library's phases. For a BrandOS kit that means:
