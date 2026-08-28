@@ -490,6 +490,18 @@ back. The checklist, every item verified against the running portal:
    The output governs its own future: build-ai writes AGENTS.md (rules for
    any AI editing the deployed portal: tokens-only values, no new colors or
    fonts, no AI-tell prose, never touch the machine files or /gated/),
+   extracts every GØR/UNDGÅ row into brand/rules.json (+ a copy in the
+   output), and emits the per-brand skill (.claude/skills/brand/) so
+   agents in the repo load the brand's law automatically.
+   THE BRAND MCP is the third agent-interface tier (context: llms.txt,
+   instructions: the skill, EXECUTABLE CHECKS: `npm run mcp`): eight
+   tools (brand_info, get_token, list_tokens, check_contrast with
+   ladder-based fix suggestions, check_copy against the termbank,
+   get_ladder, get_rules, list_exports) plus the contract files as
+   resources, answered from brand/ data with the gate's own math.
+   Register per client: `claude mcp add <brand> -- node
+   scripts/mcp-server.mjs`. Template-owned machinery; reads only
+   brand/ files.
    changes.json (an append-only journal every post-build agent edit MUST be
    recorded in: read first, append after) and llms.txt + tokens.json into
    output/. What one agent changes after deploy, the next agent can read.

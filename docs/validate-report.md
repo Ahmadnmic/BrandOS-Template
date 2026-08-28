@@ -1,6 +1,6 @@
 # Validate report
 
-Commit: 0cd91c1 · Template: 0.5.0
+Commit: 47de675 · Template: 0.6.0
 
 - PASS writing rules: no dashes-as-pause, no AI-tell phrases
 - PASS key hygiene: no key patterns in tracked files
@@ -11,7 +11,7 @@ Commit: 0cd91c1 · Template: 0.5.0
 - PASS licensed manifest: folder scaffolded, nothing dropped yet
 - PASS contrast pairs: 12 pair-modes checked, all reach AA 4.5:1
 - PASS theme integrity: 5 ladders anchored verbatim, type ramp 1.25 monotone
-- PASS build stamp: HEAD 0cd91c1, output built at 61b7b81 — REBUILD before shipping; WARNING: dirty working tree, commit before declaring shipped
-- PASS template version: 0.5.0
+- PASS build stamp: HEAD 47de675; WARNING: dirty working tree, commit before declaring shipped
+- PASS template version: 0.6.0
 
 11 pass, 0 fail, 0 blocked

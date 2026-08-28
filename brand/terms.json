@@ -1,0 +1,39 @@
+{
+  "$description": "The brand termbank (the Writer.com schema): terms the copy must use, avoid or fix, enforced deterministically by the gate's term check and served by the brand MCP's check_copy. A brand build fills this from the CVI's terminology section; every entry needs evidence.",
+  "terms": [
+    {
+      "term": "Odense Basket",
+      "type": "approved",
+      "caseSensitive": true,
+      "pos": "noun",
+      "description": "The club's name, always both words, never abbreviated in copy.",
+      "mistakes": [
+        { "mistake": "OB Basket", "caseSensitive": false },
+        { "mistake": "Odense basket", "caseSensitive": true }
+      ],
+      "examples": [
+        { "text": "Odense Basket møder Bakken Bears.", "type": "good" },
+        { "text": "OB Basket vinder igen.", "type": "bad" }
+      ],
+      "autofix": {
+        "capitalize": true,
+        "fixCase": true,
+        "fixCommonMistakes": true
+      }
+    },
+    {
+      "term": "kampdag",
+      "type": "approved",
+      "caseSensitive": false,
+      "pos": "noun",
+      "description": "The brand's word for match day; never 'matchdag'.",
+      "mistakes": [{ "mistake": "matchdag", "caseSensitive": false }],
+      "examples": [{ "text": "Kampdag i hallen.", "type": "good" }],
+      "autofix": {
+        "capitalize": false,
+        "fixCase": false,
+        "fixCommonMistakes": true
+      }
+    }
+  ]
+}

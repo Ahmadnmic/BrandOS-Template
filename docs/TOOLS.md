@@ -23,6 +23,12 @@ reimplementation we would have to debug alone.
   real Figma library through Figma's own MCP server; we build the
   generation logic, Figma owns the file format.
 
+- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+  + [zod](https://github.com/colinhacks/zod): the brand MCP server is
+  built on the official SDK (spec-tracking stdio transport, typed tool
+  schemas) instead of hand-rolled JSON-RPC; the protocol moves, the SDK
+  moves with it.
+
 ## Recommended by the contract (verification and CI)
 
 - [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp):

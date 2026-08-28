@@ -390,6 +390,82 @@ Every design decision in BrandOS follows from a handful of rules:
   machine files. The finished portal builds into `output/`, a light,
   few-file static React site you can deploy anywhere.
 
+## The brand MCP: the brand as executable tools
+
+Every brand repo ships an MCP server (`npm run mcp`, stdio, built on the
+official MCP SDK) that turns the brand's contract into tools any
+MCP-capable app can call: Claude Code, Claude Desktop, Cursor, Codex.
+It completes the agent interface's three tiers: context (`llms.txt` in
+the built portal), instructions (the generated per-brand skill in
+`.claude/skills/brand/`), and now executable checks, answers computed
+from the brand's own files with the same math the validation gate runs,
+never from a model's recollection.
+
+### The tools
+
+| Tool             | What it answers                                                                                                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `brand_info`     | Name, tagline, versions, languages, contacts, chapter map. Start here.                                                                                                                                           |
+| `get_token`      | The exact value of any sys token, per mode, with its CSS variable.                                                                                                                                               |
+| `list_tokens`    | The complete design contract in one call, colors resolved for both modes.                                                                                                                                        |
+| `check_contrast` | WCAG ratio between two colors (role names or hex), judged against the brand's contrast matrix. On failure it suggests the nearest BRAND color that passes, picked from the tone ladders by perceptual distance.  |
+| `check_copy`     | Deterministic scan against the writing rules and the termbank: banned phrases, dashes-as-pauses, known term mistakes, casing. Returns violations and, where the termbank declares autofixes, the corrected text. |
+| `get_ladder`     | A core color's 12-step tone ladder with each step's job, CSS variable and perceptual tone. The anchor step is the exact evidence hex.                                                                            |
+| `get_rules`      | Every GØR/UNDGÅ usage rule from the guide as data, both languages, filterable by chapter.                                                                                                                        |
+| `list_exports`   | The downloadable artifacts (tokens, ladders, component sources) with their portal paths.                                                                                                                         |
+
+It also serves the contract files as MCP resources (`brand://tokens`,
+`brand://ladders`, `brand://contrast-matrix`, `brand://terms`,
+`brand://rules`). All reads are per-call from disk, so a token edit is
+live on the next question without restarting.
+
+### Where the data comes from
+
+`brand/tokens.json` and `brand/ladders.json` for values,
+`brand/contrast-matrix.json` for the contrast contract,
+`brand/terms.json` for the termbank (the Writer.com-style schema:
+approved/banned terms, known mistakes, per-term autofix flags), and
+`brand/rules.json`, which `build-ai` regenerates every build by
+extracting the guide's own GØR/UNDGÅ rows, so the sections stay the
+single source and the data can never drift from the portal.
+
+### Registering it
+
+Claude Code, from the brand repo:
+
+```bash
+claude mcp add odense-basket -- node scripts/mcp-server.mjs
+```
+
+Claude Desktop (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "odense-basket": {
+      "command": "node",
+      "args": ["C:/path/to/brand-repo/scripts/mcp-server.mjs"]
+    }
+  }
+}
+```
+
+Codex CLI (`~/.codex/config.toml`):
+
+```toml
+[mcp_servers.odense-basket]
+command = "node"
+args = ["C:/path/to/brand-repo/scripts/mcp-server.mjs"]
+```
+
+The server is template-owned machinery (updated by `/brandos-update`)
+that reads only `brand/` files, so one implementation serves every
+brand and never drifts from the portal it ships with. A designer asking
+"is #4A90D9 okay on our surface?" gets the matrix's verdict and the
+nearest on-brand alternative; a writer pasting copy gets the termbank's
+corrections. The brand stops being a PDF someone half-remembers and
+becomes a capability their tools have.
+
 ## Built on open tools
 
 BrandOS builds what carries brand judgment (evidence weighing, theme

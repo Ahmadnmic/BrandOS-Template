@@ -92,3 +92,18 @@ migration.
    `brand/color-evidence.json` (brandScore ranking + confidence);
    reconciliation cites its numbers, and confidence under 0.6 means
    ask the client which color is primary.
+
+## 0.5.0 to 0.6.0
+
+1. **The brand MCP.** New template-owned machinery: scripts/mcp-server.mjs
+   (npm run mcp; deps @modelcontextprotocol/sdk + zod, run npm install
+   after overlay). Register it for the client:
+   `claude mcp add <brand> -- node scripts/mcp-server.mjs`.
+2. **Termbank.** Create brand/terms.json (Writer-style schema) from the
+   CVI's terminology; every entry needs evidence. check_copy and the
+   gate's term scan read it.
+3. **Rules and skill as build artifacts.** build-ai now extracts every
+   GØR/UNDGÅ row into brand/rules.json and emits the per-brand skill
+   (.claude/skills/brand/SKILL.md). Both regenerate every build; if the
+   brand hand-wrote a skill, fold its content into the guide/config so
+   the generated one carries it.

@@ -1,0 +1,186 @@
+{
+  "$description": "Generated from src/sections by build-ai: every GØR/UNDGÅ rule as data. Regenerated each build; never hand-edit.",
+  "count": 30,
+  "rules": [
+    {
+      "chapter": "Billedstil",
+      "kind": "do",
+      "da": "Ægte øjeblikke fra kamp og træning.",
+      "en": "Real moments from games and practice."
+    },
+    {
+      "chapter": "Billedstil",
+      "kind": "do",
+      "da": "Hårdt hallys som det er, ingen filtre.",
+      "en": "Hard arena light as it is, no filters."
+    },
+    {
+      "chapter": "Billedstil",
+      "kind": "do",
+      "da": "Beskær tæt og følg bolden.",
+      "en": "Crop tight and follow the ball."
+    },
+    {
+      "chapter": "Billedstil",
+      "kind": "dont",
+      "da": "Opstillede fotos og stockbilleder.",
+      "en": "Staged photos and stock imagery."
+    },
+    {
+      "chapter": "Billedstil",
+      "kind": "dont",
+      "da": "Bløde pastelfiltre og udvasket lys.",
+      "en": "Soft pastel filters and washed-out light."
+    },
+    {
+      "chapter": "Billedstil",
+      "kind": "dont",
+      "da": "Logo klistret hen over billeder.",
+      "en": "The logo pasted across photos."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "do",
+      "da": "Dybhav som primær flade, Is som kontrast og luft.",
+      "en": "Dybhav as the primary surface, Is as contrast and air."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "do",
+      "da": "Signal til handling og live-øjeblikke.",
+      "en": "Signal for action and live moments."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "do",
+      "da": "Tekstfarve fra token-parret, aldrig på øjemål.",
+      "en": "Text color from the token pair, never by eye."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "dont",
+      "da": "Signal som baggrund, dekoration eller store flader.",
+      "en": "Signal as background, decoration or large surfaces."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "dont",
+      "da": "Sort, grå eller andre mørke erstatninger for Dybhav.",
+      "en": "Black, grey or other dark substitutes for Dybhav."
+    },
+    {
+      "chapter": "Farver",
+      "kind": "dont",
+      "da": "Nye nuancer uden for paletten.",
+      "en": "New shades outside the palette."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "do",
+      "da": "Ind med ease-out, ud med ease-in, flyt med ease-in-out.",
+      "en": "In with ease-out, out with ease-in, move with ease-in-out."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "do",
+      "da": "Én bevægelse ad gangen pr. flade.",
+      "en": "One movement at a time per surface."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "do",
+      "da": "Respektér prefers-reduced-motion i alt.",
+      "en": "Respect prefers-reduced-motion in everything."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "dont",
+      "da": "Bounce, elastik og overshoot.",
+      "en": "Bounce, elastic and overshoot."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "dont",
+      "da": "Bevægelse som dekoration.",
+      "en": "Motion as decoration."
+    },
+    {
+      "chapter": "Motion",
+      "kind": "dont",
+      "da": "Varigheder over 360 ms.",
+      "en": "Durations above 360 ms."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "do",
+      "da": "Overskrifter i versaler med fast tracking.",
+      "en": "Headings in uppercase with fixed tracking."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "do",
+      "da": "Flush venstre, ragget højre.",
+      "en": "Flush left, ragged right."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "do",
+      "da": "Maks to typografiske niveauer pr. flade.",
+      "en": "At most two typographic levels per surface."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "dont",
+      "da": "Andre snit end de to.",
+      "en": "Faces beyond the two."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "dont",
+      "da": "Kursiv, skygger eller outline i display.",
+      "en": "Italics, shadows or outlines in display."
+    },
+    {
+      "chapter": "Typografi",
+      "kind": "dont",
+      "da": "Centreret tekst og hele afsnit i versaler.",
+      "en": "Centered text and whole paragraphs in uppercase."
+    },
+    {
+      "chapter": "knap",
+      "kind": "do",
+      "da": "Én primær knap pr. flade.",
+      "en": "One primary button per surface."
+    },
+    {
+      "chapter": "knap",
+      "kind": "do",
+      "da": "Tekst i versaler, maks to ord.",
+      "en": "Text in uppercase, two words at most."
+    },
+    {
+      "chapter": "knap",
+      "kind": "do",
+      "da": "Signal kun til live-øjeblikke.",
+      "en": "Signal only for live moments."
+    },
+    {
+      "chapter": "knap",
+      "kind": "dont",
+      "da": "To primære side om side.",
+      "en": "Two primaries side by side."
+    },
+    {
+      "chapter": "knap",
+      "kind": "dont",
+      "da": "Signal til navigation eller dekoration.",
+      "en": "Signal for navigation or decoration."
+    },
+    {
+      "chapter": "knap",
+      "kind": "dont",
+      "da": "Egen styling uden for de tre varianter.",
+      "en": "Custom styling outside the three variants."
+    }
+  ]
+}
