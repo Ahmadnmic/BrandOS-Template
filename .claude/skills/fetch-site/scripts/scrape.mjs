@@ -117,6 +117,42 @@ async function fcFetch(url, opts = {}, tries = 3) {
   throw new Error("firecrawl request exhausted retries");
 }
 
+// Credit preflight: polling credit usage is free. Never start a paid batch
+// that will die mid-run and leave a partial corpus; stop and ask instead.
+// Already-captured pages are safe: a re-run skips them at 0 credits.
+async function creditPreflight(needed) {
+  if (cfg.args["ignore-credit-check"]) return true;
+  for (const base of [API, "https://api.firecrawl.dev/v1"]) {
+    try {
+      const r = await fcFetch(`${base}/team/credit-usage`);
+      const remaining = r?.data?.remainingCredits ?? r?.remainingCredits;
+      if (typeof remaining !== "number") continue;
+      console.log(
+        `[scrape] credits: ${remaining} remaining, ~${needed} needed`,
+      );
+      if (remaining < needed) {
+        console.error(
+          `[scrape] STOP: not enough Firecrawl credits (${remaining} < ~${needed}).\n` +
+            `  Top up, lower --max-pages, or re-run with --ignore-credit-check.\n` +
+            `  Everything captured so far is saved and will be skipped for free on re-run.`,
+        );
+        writeJSON(cfg.meta("scrape-manifest.json"), manifest);
+        process.exit(1);
+      }
+      return true;
+    } catch {
+      /* endpoint unavailable on this version; try next, else proceed */
+    }
+  }
+  return true;
+}
+
+function isCreditError(res) {
+  return /insufficient|credit|payment required/i.test(
+    JSON.stringify(res ?? ""),
+  );
+}
+
 async function firecrawlBatch(list) {
   const CHUNK = 100;
   const jobs = [];
@@ -140,6 +176,14 @@ async function firecrawlBatch(list) {
       );
       jobs.push({ id: sub.id, chunk });
     } else {
+      if (isCreditError(sub)) {
+        console.error(
+          "[scrape] STOP: Firecrawl reports insufficient credits mid-run.\n" +
+            "  Everything captured so far is saved; a re-run after top-up skips it for free.",
+        );
+        writeJSON(cfg.meta("scrape-manifest.json"), manifest);
+        process.exit(1);
+      }
       console.log(
         "[scrape] fc submit failed:",
         JSON.stringify(sub).slice(0, 200),
@@ -211,6 +255,7 @@ if (!FRESH) {
 
 if (FORCE_FC) {
   console.log(`[scrape] force-firecrawl: ${todo.length} pages billed`);
+  await creditPreflight(todo.length);
   await firecrawlBatch(todo);
 } else {
   // ---- 2. free pass: plain HTTP for everything ----
@@ -245,6 +290,7 @@ if (FORCE_FC) {
     console.log(
       `[scrape] escalating ${escalate.length}/${todo.length} pages to Firecrawl (~${escalate.length} credits)`,
     );
+    await creditPreflight(escalate.length);
     await firecrawlBatch(escalate);
   } else if (DIRECT) {
     console.log("[scrape] direct mode: no Firecrawl calls made");

@@ -63,12 +63,23 @@ with it, they share rate limits), launch the full stratified crawl with
 spread so every page type is represented in proportion. Never 150 of one
 type, never the map's first N. It runs while you build. Record strata and
 counts for both passes in the audit trail.
+BLOCKED-FETCH LADDER when a public site throttles or blocks: (1) plain
+fetch → (2) Firecrawl's proxies → (3) browser-context capture: load the
+public page in a real browser and save its same-origin resources (CSS,
+fonts, logos), which is what any visitor's browser does and costs no
+credits. HARD BOUNDARY: never bypass logins, paywalls or CAPTCHAs, and
+never automate around explicit bot checks; if the ladder is exhausted,
+ask the user. Save fetched evidence artifacts (e.g. production CSS) into
+intake/ so decisions stay reproducible.
 CREDIT POSTURE: the scrape stage is hybrid by default. Free plain-HTTP
 fetch first, Firecrawl only for pages that prove they need JS rendering,
 already-captured pages never re-billed, dead URLs never escalated. Never
 use Firecrawl's json format, PDF parsing or prompt-injection check (all
 surcharged); extraction happens locally. Report the credit estimate the
-scrape stage prints in your capture summary. Output: the offline mirror, full-res `assets/`,
+scrape stage prints in your capture summary. The stage checks remaining
+credits (a free endpoint) before any paid batch and STOPS with a clear
+message rather than dying mid-run; on a stop, ask the user to top up or
+lower the cap; never continue on a partial corpus without saying so. Output: the offline mirror, full-res `assets/`,
 `components.json` (real HTML+CSS per component), `brand.json` (root vars,
 fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
@@ -95,17 +106,32 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    an element, ask the builder, "should I use this element from the site or
    from the guide?", showing both values and the evidence for each (how
    consistently the site uses it across pages; how explicit and recent the
-   guide is). Exception: with OVERWHELMING evidence against one side (e.g. a
-   value used consistently across hundreds of live pages while the guide's
-   variant appears nowhere in production, or a guide that explicitly
-   supersedes the old site), you may decide yourself. Either way, record
-   every conflict, the evidence weights, and who decided in
-   `intake/reconciliation.md`. Never decide silently.
-   Also produce `intake/cvi-rules.json`, every rule in the CVI as
-   {id, verbatim rule, assigned chapter}, so the coverage check in step 5
-   is mechanical, not self-assessed. reconciliation.md,
-   components-inventory.md and cvi-rules.json ARE committed (they are the
-   audit trail); the bulk capture and the CVI files are not.
+   guide is).
+   EVIDENCE QUALITY LADDER (rank evidence by what actually paints UI):
+   1. computed/painted values: production CSS custom properties in :root,
+      computed styles of real rendered elements, hex frequency in the
+      shipped stylesheets;
+   2. authored content: markup attributes, actual copy;
+   3. head/meta tags LAST: <meta name="theme-color"> tints browser chrome
+      and paints no UI; counting how many pages carry a tag is NOT evidence
+      of UI usage. Before opening a conflict, verify the two values truly
+      disagree at the same tier; a meta tag vs a stylesheet value is often
+      no conflict at all. Beware third-party values in the bundle (payment
+      SDKs, cookie banners, chat widgets ship their own palettes): a hex
+      being frequent does not make it the brand's. Exception: with OVERWHELMING evidence against one side (e.g. a
+      value used consistently across hundreds of live pages while the guide's
+      variant appears nowhere in production, or a guide that explicitly
+      supersedes the old site), you may decide yourself. Either way, record
+      every conflict, the evidence weights, and who decided in
+      `intake/reconciliation.md`. Never decide silently.
+      reconciliation.md is APPEND-ONLY: a closed decision may be reversed
+      only on new evidence, recorded as a NEW entry referencing the old
+      one. Never rewrite or delete a past entry.
+      Also produce `intake/cvi-rules.json`, every rule in the CVI as
+      {id, verbatim rule, assigned chapter}, so the coverage check in step 5
+      is mechanical, not self-assessed. reconciliation.md,
+      components-inventory.md and cvi-rules.json ARE committed (they are the
+      audit trail); the bulk capture and the CVI files are not.
 
 2. **Generate the theme.** Derive the personality profile from the brand
    platform (skarp/blød · tæt/luftig · teknisk/menneskelig · rolig/kinetisk ·

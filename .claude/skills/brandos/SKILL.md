@@ -94,3 +94,10 @@ against the full inventory, update the stamp) → report.
 Finish with: what was built, the reconciliation decisions made, validation
 results, and the preview/build location. Never claim green checks you did not
 run.
+
+Serving rules: BEFORE starting or reporting any dev server, confirm the
+repo you are serving is the client's build (check the `name` in
+brand.config.ts), not the template or another brand on the same machine.
+Run servers in the background and read their log file; never pipe a
+long-running server through `head`/`tail` in the foreground, the closed
+pipe kills the process.
