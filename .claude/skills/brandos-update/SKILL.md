@@ -61,16 +61,36 @@ machinery, keep what is brand):
 5. Walk the conflict-prone files with diffs; merge machinery by hand,
    keep brand content. When unsure, ask, one question with both diffs.
 6. `npm install` if package.json changed.
-7. Update `templateVersion` in brand.config.ts to the new template
-   version and add a changelog line.
-8. Run the full gate: `npm run build`, `npm run validate` (must be
+7. MIGRATION PASS, the part the overlay cannot do: the brand's own
+   config, sections and routes must move to the new template APIs.
+   Read `docs/MIGRATIONS.md` from the fetched template and apply every
+   entry between the repo's templateVersion and the target, oldest
+   first, to the BRAND-OWNED files. That means actually rewriting them:
+   wire new components and hooks in (Rules, useTx, GuidePage), add new
+   config and token fields with brand-correct values (sys.theme.default
+   judged from the identity, gated slugs into gated.config.ts), and
+   replace deprecated patterns the entry names. Two hard rules inside
+   the pass:
+   - Never invent brand content: a migration wires mechanisms. Where it
+     needs content that does not exist (translations, new token
+     values), use the documented fallback and LIST every such item in
+     the handover for the brand owner.
+   - The typecheck is the first migration net: run it after each entry;
+     a brand file that no longer compiles against the new template is
+     exactly the file the entry must rewrite.
+8. Update `templateVersion` in brand.config.ts to the new template
+   version and add a changelog line naming the migrations applied.
+9. Run the full gate: `npm run build`, `npm run validate` (must be
    green, BLOCKED only where it was BLOCKED before), then the browser
-   verification loop from AGENTS.md step 6.7 against the served output.
-   A check the old portal passed may never fail after the upgrade; fix
-   or revert path by path until the loop is clean.
-9. Commit on the branch: "Template upgrade to <version>", listing the
-   overlaid paths and every manual merge decision. Merge to the brand's
-   working branch when the user says go.
+   verification loop from AGENTS.md step 6.7 against the served output,
+   including the features the migrations added (new theme states,
+   language switch, site-wide search). A check the old portal passed
+   may never fail after the upgrade; fix or revert path by path until
+   the loop is clean.
+10. Commit on the branch: "Template upgrade to <version>", listing the
+    overlaid paths, every migration applied and every manual merge
+    decision. Merge to the brand's working branch when the user says
+    go.
 
 ## Hard rules
 

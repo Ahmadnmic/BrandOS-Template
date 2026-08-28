@@ -117,14 +117,21 @@ plus Cursor Pro.
 ### Updating an existing brand portal
 
 `/brandos-update` in the brand repo pulls the latest template from this
-GitHub repository and applies it automatically: template-owned machinery
-(scripts, shell, guide components, skills, the contract) is overlaid,
+GitHub repository and applies it automatically, in two passes. First
+the overlay: template-owned machinery (scripts, shell, guide
+components, skills, the contract) is replaced with the latest;
 everything brand-owned (tokens, chapters, sections, intake, the
-per-brand skill) is left alone, conflict-prone files are merged with
-their diffs shown, and the full gate plus the browser verification loop
-run before anything is committed. `npm run validate` tells you when a
-repo is behind the template. In Codex, say "run the brandos-update
-skill".
+per-brand skill) is left alone, and conflict-prone files are merged
+with their diffs shown. Then the migration: the agent reads the
+template's [docs/MIGRATIONS.md](docs/MIGRATIONS.md) and rewrites the
+brand's own config, sections and routes to the new APIs, so new
+functions actually reach the portal (new theme states, the language
+layer, site-wide search) and changed or removed ones are replaced. It
+never invents brand content: anything needing new content (like
+translations) gets the documented fallback and a list in the handover.
+The full gate plus the browser verification loop run before anything
+is committed. `npm run validate` tells you when a repo is behind the
+template. In Codex, say "run the brandos-update skill".
 
 The template's own skills follow the open Agent Skills layout, so a
 client team can pull them into any agent with

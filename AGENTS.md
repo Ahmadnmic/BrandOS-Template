@@ -587,6 +587,14 @@ provisional handover. When the deep crawl lands: deep verification
     exempt: it is a tool surface, not brand content.
 - Builds are reproducible from the committed lockfile: never update
   dependencies during a brand build; `engines`/.nvmrc pin Node.
+- MIGRATIONS LEDGER: any template commit that changes a brand-facing
+  API (component props, config shape, token contract, theme/lens/lang
+  types, validate expectations) MUST add an entry to
+  `docs/MIGRATIONS.md` saying what brand-owned files must do about it,
+  and bump `templateVersion` in the seed config together with
+  `TEMPLATE_VERSION` in scripts/validate.mjs. /brandos-update applies
+  those entries to brand repos; an API change without an entry strands
+  every deployed portal on the old behavior.
 - The template is versioned: `brand.config.ts` carries `templateVersion`;
   template upgrades happen only via `npm run upgrade-template` (overlays
   src/ + scripts/, runs migrations, re-runs validate), never by hand-editing
