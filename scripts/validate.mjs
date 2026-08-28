@@ -227,6 +227,80 @@ function rel(p) {
   }
 }
 
+// C7: licensed manifest. Every file dropped into intake/licensed/ must
+// have a line in LICENSES.md; expiring licenses warn 30 days out.
+{
+  const licDir = path.join(root, "intake", "licensed");
+  if (!fs.existsSync(licDir)) {
+    report("PASS", "licensed manifest", "no licensed material handed over");
+  } else {
+    const manifestPath = path.join(licDir, "LICENSES.md");
+    const files = walk(licDir, [""]).filter(
+      (f) => path.basename(f) !== "LICENSES.md",
+    );
+    if (!files.length) {
+      report(
+        "PASS",
+        "licensed manifest",
+        "folder scaffolded, nothing dropped yet",
+      );
+    } else if (!fs.existsSync(manifestPath)) {
+      report(
+        "FAIL",
+        "licensed manifest",
+        `${files.length} licensed file(s) but no LICENSES.md`,
+      );
+    } else {
+      const manifest = fs.readFileSync(manifestPath, "utf8");
+      const unlisted = files
+        .filter((f) => !manifest.includes(path.basename(f)))
+        .map(rel);
+      if (unlisted.length) {
+        report(
+          "FAIL",
+          "licensed manifest",
+          "unmanifested: " + unlisted.slice(0, 6).join(", "),
+        );
+      } else {
+        // Only expiry-labeled dates count; purchase dates must not trip this.
+        const expiryDates = [
+          ...manifest.matchAll(
+            /(?:expiry|udløber)[^\d\n]{0,12}(\d{4}-\d{2}-\d{2})/gi,
+          ),
+        ]
+          .map((m) => new Date(m[1]))
+          .filter((d) => !Number.isNaN(d.getTime()));
+        const soon = expiryDates.filter(
+          (d) =>
+            d.getTime() - Date.now() < 30 * 86400000 &&
+            d.getTime() > Date.now() - 86400000,
+        );
+        const expired = expiryDates.filter(
+          (d) => d.getTime() < Date.now() - 86400000,
+        );
+        if (expired.length)
+          report(
+            "FAIL",
+            "licensed manifest",
+            `${expired.length} license date(s) in the past`,
+          );
+        else if (soon.length)
+          report(
+            "PASS",
+            "licensed manifest",
+            `all ${files.length} manifested; WARNING: ${soon.length} expiry within 30 days`,
+          );
+        else
+          report(
+            "PASS",
+            "licensed manifest",
+            `all ${files.length} file(s) manifested`,
+          );
+      }
+    }
+  }
+}
+
 const fails = results.filter((r) => r.status === "FAIL");
 const blocked = results.filter((r) => r.status === "BLOCKED");
 for (const r of results) {

@@ -370,7 +370,7 @@ Every design decision in BrandOS follows from a handful of rules:
 .claude/skills/brandos/     the /brandos startup command
 .claude/skills/fetch-site/  bundled intake engine (map → scrape → assets →
                             components → brand → offline mirror → AI index)
-intake/                     per-client inputs: crawl/ + cvi/ or cvi-site/ (gitignored)
+intake/                     per-client inputs: crawl/ + cvi/ or cvi-site/ + licensed/ (gitignored)
 brand/                      ── REBRAND SURFACE ── tokens.json · brand.config.ts ·
                             voice.md · assets/
 content/                    ── REBRAND SURFACE ── one MDX per chapter

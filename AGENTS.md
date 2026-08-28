@@ -50,6 +50,25 @@ and RECOMMEND ROTATION regardless: "probably never left the machine" is
 not a guarantee. No key? Static/SSR sites run keyless in the fetch-site
 skill's direct mode, never hand-scrape.
 
+**LICENSED MATERIAL, offered with Q1, never blocking.** At the start of
+every build say: "If the brand has licensed material (bought fonts,
+image packs, purchased templates, licensed logo artwork), drop it into
+`intake/licensed/` now or any time before step 3, and give each item a
+line in `intake/licensed/LICENSES.md`." Scaffold the folder and a
+manifest header (item · licensor · license type · scope · expiry) when
+you offer it. Rules:
+
+- The build never waits for this; binding happens at step 3 with
+  whatever is there.
+- Licensed binaries live ONLY under `intake/licensed/` (gitignored) and
+  the surfaces their license allows; licensed fonts serve from the
+  gated area unless the license is explicitly open (OFL/Apache). The
+  manifest is the tracked audit artifact; the binaries never are.
+- Every file dropped there MUST have a manifest line; validate fails on
+  unmanifested licensed files and warns 30 days before an expiry.
+- This is where foundry-CDN fonts land legally: the crawl records them
+  licensed-elsewhere, the user supplies their licensed copies here.
+
 **Q1, immediately**, "What is the client's site URL?"
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
 to `intake/crawl/`. THE SCRAPE RUNS IN TWO STAGES:
@@ -176,7 +195,10 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    composition) into `brand/tokens.json`. Keep AA pairs. Review the `/theme`
    route before moving on.
 
-3. **Bind identity.** Fonts + logos into `brand/assets/`; fill
+3. **Bind identity.** Fonts + logos into `brand/assets/`, taking
+   licensed items from `intake/licensed/` (each carried with its
+   LICENSES.md line: license type, scope, expiry; licensed fonts to the
+   gated area unless explicitly open); fill
    `brand.config.ts` (chapters on/off, gated-chapter list, version "1.0",
    role-alias contacts, langs, campaign overlays). The partner access
    allowlist (external emails = PII) goes in the gitignored
@@ -265,6 +287,10 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
      deprecated assets flagged, not silently served; NO font binary in
      public output unless its license is explicitly open (OFL/Apache),
      licensed font packs default to the gated area
+   - LICENSED MANIFEST: every file under `intake/licensed/` has a line
+     in `intake/licensed/LICENSES.md` (item, licensor, license type,
+     scope, expiry); unmanifested files FAIL, expiries within 30 days
+     warn (the template gate's licensed-manifest check)
    - applications: every scenario in Ch.10 (deck, offer, signature, SoMe
      formats, OOH) has a matching downloadable native template in Ch.13
      (with its `{name}.instructions.md` sidecar) AND a generated in-situ

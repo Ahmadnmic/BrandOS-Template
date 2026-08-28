@@ -37,6 +37,14 @@ intake input.**
 
 ### 1. Q1, the site
 
+- With Q1, offer the licensed drop (never wait for it): "If the brand
+  has licensed material (bought fonts, image packs, purchased
+  templates), drop it into `intake/licensed/` any time before step 3
+  and give each item a line in `intake/licensed/LICENSES.md`."
+  Scaffold the folder and the manifest header when offering:
+  `| Item | Licensor | License | Scope | Udløber |`. Licensed binaries
+  never get committed; the manifest does (audit trail). Validate's
+  licensed-manifest check enforces one line per dropped file.
 - If `$ARGUMENTS` contains a URL, use it. Otherwise ask exactly:
   "What is the client's site URL?"
 - Run the bundled **fetch-site** skill (`.claude/skills/fetch-site/`) against

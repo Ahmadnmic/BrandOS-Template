@@ -42,7 +42,8 @@ Turns any public website into:
    themselves; NEVER export it on a shell command line (shell commands are logged) and never
    write it into output files. Only extend `--asset-hosts` to hosts the client confirms they
    own/control, and never harvest font binaries from foundry CDNs (Adobe Fonts/Typekit etc.)
-   , record those as licensed-elsewhere instead. Without a key the pipeline still works via direct fetch,
+   , record those as licensed-elsewhere instead and point the user to `intake/licensed/`:
+   they drop their own licensed copies there with a line each in `LICENSES.md`. Without a key the pipeline still works via direct fetch,
    but **only for SSR/static sites**, a client-rendered SPA will yield empty shells, so check
    the first page's HTML and warn the user if it has no real content.
 

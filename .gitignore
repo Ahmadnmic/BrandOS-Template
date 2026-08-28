@@ -10,6 +10,10 @@ intake/*
 !intake/reconciliation.md
 !intake/components-inventory.md
 !intake/cvi-rules.json
+# licensed binaries stay untracked; the rights manifest is audit trail
+!intake/licensed/
+intake/licensed/*
+!intake/licensed/LICENSES.md
 molslinjen/
 
 # per-client access allowlist (PII — provisioned to the edge, never committed)

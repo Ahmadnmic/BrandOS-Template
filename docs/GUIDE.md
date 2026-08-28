@@ -8,11 +8,12 @@ make the calls.
 
 You need exactly two things:
 
-| Input                          | What it is                                          | Where it goes                                        |
-| ------------------------------ | --------------------------------------------------- | ---------------------------------------------------- |
-| The client's site URL          | Their live website, evidence of reality             | captured automatically into `intake/crawl/`          |
-| The official CVI / brand guide | PDF, deck or files, the law                         | `intake/cvi/` (you hand it over when asked)          |
-| ...or a live guide site        | designguide subdomain, Frontify, Corebook, Brandpad | give the URL; it is captured into `intake/cvi-site/` |
+| Input                          | What it is                                          | Where it goes                                                                   |
+| ------------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------- |
+| The client's site URL          | Their live website, evidence of reality             | captured automatically into `intake/crawl/`                                     |
+| The official CVI / brand guide | PDF, deck or files, the law                         | `intake/cvi/` (you hand it over when asked)                                     |
+| ...or a live guide site        | designguide subdomain, Frontify, Corebook, Brandpad | give the URL; it is captured into `intake/cvi-site/`                            |
+| Licensed material (optional)   | bought fonts, image packs, purchased templates      | `intake/licensed/` + one line per item in `LICENSES.md`, any time before step 3 |
 
 And once per machine: copy `.env.example` to `.env` and paste your Firecrawl
 API key into the file yourself (`FIRECRAWL_API_KEY=fc-…`). The key stays in
