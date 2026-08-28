@@ -106,7 +106,10 @@ plus Cursor Pro.
 
 1. Clone, then copy `.env.example` to `.env` and paste your Firecrawl API
    key (optional, static/SSR sites work keyless in direct mode). The key
-   never leaves `.env`.
+   never leaves `.env`. Note for macOS: dotfiles are hidden in Finder and
+   plain `ls`, so `.env.example` looks missing when it isn't. Use
+   `cp .env.example .env` in Terminal (or `Cmd+Shift+.` in Finder to show
+   hidden files).
 2. `/brandos https://client.dk` (or "rebuild for a new brand").
 3. Hand over the CVI when asked; decide any reconciliation conflicts the
    agent surfaces. Done.
