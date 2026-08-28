@@ -120,9 +120,16 @@ export function PageNav() {
 
   function goTo(n: number): void {
     const clamped = Math.max(1, Math.min(total, n));
-    document
-      .querySelector(`[data-page="${clamped}"]`)
-      ?.scrollIntoView({ behavior: "smooth" });
+    const el = document.querySelector<HTMLElement>(`[data-page="${clamped}"]`);
+    if (!el) return;
+    // Update the status immediately; the observer confirms it as the
+    // scroll settles.
+    setPage(clamped);
+    setMeta({
+      label: el.dataset.label ?? "",
+      chapter: el.dataset.chapter ?? "",
+    });
+    el.scrollIntoView({ behavior: "smooth" });
   }
 
   const paged = total > 1;
