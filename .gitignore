@@ -3,10 +3,10 @@
 .env.*
 !.env.example
 
-# per-client intake bulk (site captures + CVI documents) — but KEEP the
-# audit trail: reconciliation decisions, component inventory, cvi rule map
-intake/crawl/
-intake/cvi/
+# per-client intake bulk (ALL captures, any folder name: crawl/, crawl-b2b/,
+# cvi/ ...) but KEEP the audit-trail files at intake root. Near-miss lesson:
+# enumerating folder names let a second capture dir (crawl-b2b) go untracked.
+intake/*
 !intake/reconciliation.md
 !intake/components-inventory.md
 !intake/cvi-rules.json

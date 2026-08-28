@@ -84,6 +84,15 @@ ${dark.map((l) => "  " + l).join("\n")}
 `;
 
 fs.writeFileSync(path.join(root, "brand", "tokens.css"), css);
+
+// Real downloadable exports, served from /exports/ in dev and in the build.
+const exportsDir = path.join(root, "public", "exports");
+fs.mkdirSync(exportsDir, { recursive: true });
+fs.writeFileSync(path.join(exportsDir, "tokens.css"), css);
+fs.copyFileSync(
+  path.join(root, "brand", "tokens.json"),
+  path.join(exportsDir, "tokens.json"),
+);
 console.log(
   "tokens.css written:",
   theme.length,

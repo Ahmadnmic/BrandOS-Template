@@ -1,0 +1,84 @@
+/* GENERATED from brand/tokens.json. Do not edit by hand: npm run build:tokens.
+   Theming contract: :root = light; [data-theme="dark"] overrides;
+   prefers-color-scheme dark applies when no explicit choice is stamped. */
+@theme inline {
+  --color-*: initial;
+  --font-*: initial;
+  --color-surface: var(--sys-surface);
+  --color-panel: var(--sys-panel);
+  --color-ink: var(--sys-ink);
+  --color-dim: var(--sys-dim);
+  --color-line: var(--sys-line);
+  --color-action: var(--sys-action);
+  --color-on-action: var(--sys-on-action);
+  --color-accent: var(--sys-accent);
+  --color-signal: var(--sys-signal);
+  --color-on-signal: var(--sys-on-signal);
+  --font-display: var(--sys-font-display);
+  --font-body: var(--sys-font-body);
+  --font-mono: var(--sys-font-mono);
+  --radius-sm: var(--sys-radius-sm);
+  --radius-md: var(--sys-radius-md);
+  --radius-lg: var(--sys-radius-lg);
+  --ease-out: var(--sys-ease-out);
+  --ease-in: var(--sys-ease-in);
+  --ease-in-out: var(--sys-ease-in-out);
+  --ease-emphasized: var(--sys-ease-emphasized);
+}
+:root {
+  --sys-surface: #F4F7FB;
+  --sys-panel: #FFFFFF;
+  --sys-ink: #0A1526;
+  --sys-dim: #5E7292;
+  --sys-line: #D6E0EC;
+  --sys-action: #0A1526;
+  --sys-on-action: #F4F7FB;
+  --sys-accent: #12335C;
+  --sys-signal: #8A6407;
+  --sys-on-signal: #F4F7FB;
+  --sys-font-display: 'JetBrains Mono Variable', 'JetBrains Mono', Consolas, monospace;
+  --sys-font-body: 'Public Sans', 'Segoe UI', Arial, sans-serif;
+  --sys-font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', Consolas, monospace;
+  --sys-radius-sm: 3px;
+  --sys-radius-md: 6px;
+  --sys-radius-lg: 8px;
+  --sys-tracking-display: 0.08em;
+  --sys-tracking-label: 0.16em;
+  --sys-case-display: uppercase;
+  --sys-duration-instant: 80ms;
+  --sys-duration-fast: 140ms;
+  --sys-duration-base: 220ms;
+  --sys-duration-slow: 360ms;
+  --sys-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --sys-ease-in: cubic-bezier(0.55, 0, 0.85, 0.36);
+  --sys-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --sys-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --sys-distance-sm: 6px;
+  --sys-distance-md: 14px;
+}
+:root[data-theme="dark"] {
+  --sys-surface: #0A1526;
+  --sys-panel: #0E1E36;
+  --sys-ink: #F2F6FC;
+  --sys-dim: #6C82A3;
+  --sys-line: #1D3050;
+  --sys-action: #BFD9F2;
+  --sys-on-action: #0A1526;
+  --sys-accent: #BFD9F2;
+  --sys-signal: #E8B84B;
+  --sys-on-signal: #0A1526;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sys-surface: #0A1526;
+    --sys-panel: #0E1E36;
+    --sys-ink: #F2F6FC;
+    --sys-dim: #6C82A3;
+    --sys-line: #1D3050;
+    --sys-action: #BFD9F2;
+    --sys-on-action: #0A1526;
+    --sys-accent: #BFD9F2;
+    --sys-signal: #E8B84B;
+    --sys-on-signal: #0A1526;
+  }
+}

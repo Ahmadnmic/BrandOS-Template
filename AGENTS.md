@@ -42,8 +42,13 @@ your Firecrawl key into it yourself (`FIRECRAWL_API_KEY=fc-…`), then tell me
 export or log it, you only verify the file exists; you never read the value
 aloud. Key hygiene, non-negotiable: the key lives ONLY in `.env`, never in
 code, `brand.config.ts`, chat output, logs, or commits. Before any git
-commit, verify `.env` is untracked. No key? Static/SSR sites run keyless in
-the fetch-site skill's direct mode, never hand-scrape.
+commit, verify `.env` is untracked AND scan every tracked file for
+key-shaped strings (pattern `fc-[A-Za-z0-9]{8,}`); users sometimes paste
+the key into `.env.example` by mistake. If a real key ever lands in a
+tracked file or a transcript, move it to `.env`, restore the placeholder,
+and RECOMMEND ROTATION regardless: "probably never left the machine" is
+not a guarantee. No key? Static/SSR sites run keyless in the fetch-site
+skill's direct mode, never hand-scrape.
 
 **Q1, immediately**, "What is the client's site URL?"
 → run the bundled fetch-site skill (`.claude/skills/fetch-site/`) with output
@@ -85,7 +90,16 @@ fonts, color counts), `pages.json`, `manifest.json`. Scaffold
 `intake/components-inventory.md` from `components.json`.
 
 **Q2, when intake completes**, "Hand me the CVI / brand guide."
-→ place it in `intake/cvi/`. From here run steps 1-7 AUTONOMOUSLY, the only
+→ place it in `intake/cvi/`.
+NO-CVI MODE: if the user states there is no CVI ("go off the site only"),
+proceed with the crawl as the primary source. Then: unverified chapters
+carry only the status stamp UDKAST · AFVENTER GODKENDELSE in the chapter
+header, nothing more (see THE GUIDE SPEAKS AS THE BRAND); chapters whose
+content cannot be derived from a site (Anvendelse templates, co-branding,
+print variants) are NOT built (no data, no section); print truth and
+CVI-rule coverage report BLOCKED in validate, and BLOCKED is never a pass;
+voice.md rules cite their site evidence IN THE AUDIT TRAIL. Say all of
+this in the handover, never in the guide. From here run steps 1-7 AUTONOMOUSLY, the only
 permitted stops are: (a) a reconciliation conflict, (b) the ask-when-unsure
 doctrine above, (c) the one-time personality-profile confirmation in step 2.
 
@@ -160,9 +174,18 @@ doctrine above, (c) the one-time personality-profile confirmation in step 2.
    The inverse rule: if you evaluate that the GUIDE is missing a standard
    chapter (no motion rules, no co-branding, no imagery direction), build
    it ONLY when the intake data supports it (site evidence, generated
-   tokens), and label it "derived from site evidence, not in the official
-   guide, pending client sign-off". No supporting data means NO new
-   section. Never pad with speculative content.
+   tokens), stamped UDKAST · AFVENTER GODKENDELSE in its header; the
+   provenance goes in the audit trail, not the chapter. No supporting data
+   means NO new section. Never pad with speculative content.
+   THE GUIDE SPEAKS AS THE BRAND, never about its own making. No process
+   narration in chapter content: no "derived from", "extracted", "the
+   crawl showed", "sitet bruger", no mention of AI, agents, scraping,
+   builds, evidence counts or this repo. Rules are stated as the brand's
+   law ("Signal bruges kun til handling"), not as observations. Provenance
+   and method live in reconciliation.md, cvi-rules.json and the handover;
+   draft status is the one stamp in the header, never a paragraph. A
+   reader must not be able to tell from the guide's prose that an AI
+   built it.
    Follow each chapter's REQUIRED
    blocks (Princip → Regler → Eksempler → Misbrug → Downloads). Rules must be
    testable: exact values, ratios, approved phrases, never adjectives. Write
@@ -353,6 +376,12 @@ provisional handover. When the deep crawl lands: deep verification
   template upgrades happen only via `npm run upgrade-template` (overlays
   src/ + scripts/, runs migrations, re-runs validate), never by hand-editing
   src/ in a brand repo.
+- MISSING-MACHINERY EXCEPTION: if template machinery a build needs does not
+  exist yet or is broken (a validate check, a build script, a gating
+  mechanism), the build agent MAY add or fix it, but MUST list every such
+  change under "Template drift" in the handover so it can be upstreamed
+  into the template repo. Silent template edits in a brand repo are the
+  drift this rule exists to catch.
 
 ## Repo map
 

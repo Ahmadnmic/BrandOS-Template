@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { ChapterHead, CodeBlock, TokenTable } from "../components/guide/Guide";
+import { useEffect, useState } from "react";
+import {
+  ChapterHead,
+  CodeBlock,
+  TokenTable,
+  DownloadChip,
+} from "../components/guide/Guide";
+import { Button } from "../components/ui/Button";
 import { useLens } from "../lens";
 
 export function meta() {
@@ -16,12 +22,18 @@ const BUTTON_CSS = `.btn-primary {
 
 export default function Knap() {
   const { lens } = useLens();
-  const [tab, setTab] = useState<(typeof TABS)[number]>(
-    lens === "dev" ? "KODE" : "ANVENDELSE",
-  );
+  const [tab, setTab] = useState<(typeof TABS)[number]>("ANVENDELSE");
+
+  // The lens re-weights the page: Dev opens on code, Design on specs,
+  // Generel and HR on usage.
+  useEffect(() => {
+    if (lens === "dev") setTab("KODE");
+    else if (lens === "design") setTab("SPECS");
+    else setTab("ANVENDELSE");
+  }, [lens]);
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-3xl">
       <ChapterHead num="11" title="Knap" steps="KOMPONENTER" />
       <div className="mb-5 flex gap-1 border-b border-line" role="tablist">
         {TABS.map((t) => (
@@ -52,30 +64,21 @@ export default function Knap() {
 
       {(tab === "ANVENDELSE" || tab === "KODE" || tab === "SPECS") && (
         <div className="mt-5 flex min-h-36 flex-wrap items-center justify-center gap-3 border border-line p-6">
-          <button
-            type="button"
-            className="btn-demo rounded-md bg-action px-4.5 py-2.5 text-on-action"
-          >
-            KØB BILLET
-          </button>
-          <button
-            type="button"
-            className="btn-demo rounded-md border border-line px-4.5 py-2.5 text-accent"
-          >
-            SE KAMPPROGRAM
-          </button>
-          <button
-            type="button"
-            className="btn-demo rounded-md bg-signal px-4.5 py-2.5 text-on-signal"
-          >
-            LIVE NU
-          </button>
+          <Button>KØB BILLET</Button>
+          <Button variant="sekundaer">SE KAMPPROGRAM</Button>
+          <Button variant="signal">LIVE NU</Button>
         </div>
       )}
 
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
+        <DownloadChip label="KNAP.TSX" href="/exports/knap.tsx" />
+        <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
+        <DownloadChip label="FIGMA-KIT" />
+      </div>
+
       {(tab === "KODE" || tab === "SPECS") && (
-        <div className="mt-5 space-y-5">
-          <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
+        <div className="mt-6">
           <TokenTable
             rows={[
               {

@@ -3,6 +3,8 @@ import {
   Palette,
   RatioBar,
   CopyValue,
+  DownloadChip,
+  TokenTable,
 } from "../components/guide/Guide";
 
 export function meta() {
@@ -58,10 +60,44 @@ export default function Farver() {
           ]}
         />
       </div>
-      <div className="mt-8 border-t border-line pt-4">
+      <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-line pt-4">
         <CopyValue
           value="#0A1526 #BFD9F2 #F4F7FB #E8B84B"
           label="KOPIÉR HELE PALETTEN"
+        />
+        <DownloadChip label="TOKENS.CSS" href="/exports/tokens.css" />
+        <DownloadChip label="TOKENS.JSON" href="/exports/tokens.json" />
+        <DownloadChip label="FARVER.ASE" />
+        <DownloadChip label="FIGMA-VARIABLER" />
+      </div>
+      <div className="mt-8">
+        <TokenTable
+          rows={[
+            {
+              token: "--sys-surface",
+              role: "Flade",
+              light: "#F4F7FB",
+              dark: "#0A1526",
+            },
+            {
+              token: "--sys-ink",
+              role: "Tekst",
+              light: "#0A1526",
+              dark: "#F2F6FC",
+            },
+            {
+              token: "--sys-action",
+              role: "Primær handling",
+              light: "#0A1526",
+              dark: "#BFD9F2",
+            },
+            {
+              token: "--sys-signal",
+              role: "Signal",
+              light: "#8A6407",
+              dark: "#E8B84B",
+            },
+          ]}
         />
       </div>
     </div>

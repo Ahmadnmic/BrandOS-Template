@@ -129,9 +129,42 @@ export function RatioBar(props: {
   );
 }
 
+// Download affordance. Real artifacts get an href; promised-but-unbuilt
+// artifacts render muted with a FASE 2 tag, never a dead button.
+export function DownloadChip(props: { label: string; href?: string }) {
+  if (!props.href)
+    return (
+      <span className="label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-[9px] opacity-45">
+        {props.label} · FASE 2
+      </span>
+    );
+  return (
+    <a
+      href={props.href}
+      download
+      className="label inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-[9px] text-accent hover:border-accent"
+    >
+      ⇩ {props.label}
+    </a>
+  );
+}
+
 export function TokenTable(props: {
   rows: { token: string; role: string; light: string; dark: string }[];
 }) {
+  const { lens } = useLens();
+  const [open, setOpen] = useState(false);
+  // Dev lens: always expanded inline. Every other lens: one click away.
+  if (lens !== "dev" && !open)
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="label border-t border-line py-3 text-left text-[9px] hover:text-accent"
+      >
+        VIS TOKEN-TABEL ▸
+      </button>
+    );
   return (
     <div className="overflow-x-auto">
       <table className="w-full font-mono text-[11px]">
@@ -212,6 +245,9 @@ export function TypeSpecimen(props: {
   sample: string;
   children?: ReactNode;
 }) {
+  const { lens } = useLens();
+  const size =
+    lens === "design" ? "text-6xl md:text-8xl" : "text-5xl md:text-6xl";
   return (
     <div
       className={
@@ -221,7 +257,7 @@ export function TypeSpecimen(props: {
       }
     >
       <div className="label mb-4 text-[9px]">{props.face}</div>
-      <div className="display text-5xl font-bold leading-tight md:text-6xl">
+      <div className={"display font-bold leading-tight " + size}>
         {props.sample}
       </div>
       {props.children}
