@@ -41,26 +41,23 @@ function EasingDemo(props: { name: string; value: string }) {
     <button
       type="button"
       onClick={() => setRun((r) => r + 1)}
-      className="w-full rounded-md border border-line bg-panel p-4 text-left hover:border-accent"
+      className="group grid w-full grid-cols-[10rem_1fr_auto] items-center gap-6 border-t border-line py-4 text-left"
       title="Klik for at afspille"
     >
-      <div className="mb-3 flex items-center justify-between">
-        <span className="font-mono text-[11px] tracking-wider">
-          --sys-{props.name}
-        </span>
-        <span className="label text-[8.5px]">AFSPIL ▸</span>
-      </div>
-      <div className="relative h-2 rounded-full bg-line/40">
+      <span className="font-mono text-[11px] tracking-wider group-hover:text-accent">
+        {props.name}
+      </span>
+      <span className="relative block h-px bg-line">
         <span
           key={run}
-          className="motion-ball absolute top-1/2 size-4 -translate-y-1/2 rounded-full bg-signal"
+          className="motion-ball absolute top-1/2 size-3 -translate-y-1/2 rounded-full bg-signal"
           style={{
             animationTimingFunction: props.value,
             animationPlayState: run > 0 ? "running" : "paused",
           }}
         />
-      </div>
-      <div className="mt-3 font-mono text-[9.5px] text-dim">{props.value}</div>
+      </span>
+      <span className="font-mono text-[9.5px] text-dim">{props.value}</span>
     </button>
   );
 }
@@ -80,10 +77,10 @@ export default function Motion() {
         prefers-reduced-motion.
       </p>
 
-      <div className="label mb-3 text-[9px]">
+      <div className="label mb-1 text-[9px]">
         EASINGS · KLIK FOR AT AFSPILLE
       </div>
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="border-b border-line">
         {EASINGS.map((e) => (
           <EasingDemo key={e.name} name={e.name} value={e.value} />
         ))}

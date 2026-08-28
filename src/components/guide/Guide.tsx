@@ -1,15 +1,30 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { useLens } from "../../lens";
+import tokens from "../../../brand/tokens.json";
 
-export function ChapterHead(props: { num: string; title: string; steps?: string }) {
+// The brand's containment idiom drives how every guide component renders.
+// "ruled": hairlines and whitespace, square, flush-left (editorial brands).
+// "boxed": contained cards (only for brands whose own material is carded).
+export const CONTAINMENT: "ruled" | "boxed" | "open" =
+  (tokens.sys?.composition?.containment?.$value as
+    "ruled" | "boxed" | "open") ?? "ruled";
+
+const ruled = CONTAINMENT !== "boxed";
+
+export function ChapterHead(props: {
+  num: string;
+  title: string;
+  steps?: string;
+}) {
   return (
-    <div className="mb-6 border-b border-line pb-4">
-      <div className="label mb-2 text-[10px]">
-        {props.num} · <span className="text-accent">{props.title.toUpperCase()}</span>
+    <div className="mb-10 border-b border-line pb-5">
+      <div className="label mb-3 text-[10px]">
+        {props.num} ·{" "}
+        <span className="text-accent">{props.title.toUpperCase()}</span>
         {props.steps ? <span> · {props.steps}</span> : null}
       </div>
-      <h1 className="display text-3xl font-bold">{props.title}</h1>
+      <h1 className="display text-4xl font-bold md:text-5xl">{props.title}</h1>
     </div>
   );
 }
@@ -37,38 +52,69 @@ export function CopyValue(props: { value: string; label?: string }) {
   );
 }
 
-export function ColorSwatch(props: {
-  name: string;
-  hex: string;
-  cmyk?: string;
-  pms?: string;
-  onDark?: boolean;
+// Color as composed fields: one continuous strip the way printed brand
+// guides paint palettes, values in a ruled table below. Never chips in cards.
+export function Palette(props: {
+  colors: {
+    name: string;
+    hex: string;
+    onHex: string;
+    cmyk?: string;
+    pms?: string;
+  }[];
 }) {
   return (
-    <div className="overflow-hidden rounded-md border border-line">
-      <div className="h-20" style={{ background: props.hex }} />
-      <div className="space-y-1 bg-panel px-3 py-2.5">
-        <div className="flex items-center justify-between font-mono text-[11px] tracking-wider">
-          <span>{props.name.toUpperCase()}</span>
-          <CopyValue value={props.hex} label="⧉" />
-        </div>
-        <div className="font-mono text-[9.5px] leading-relaxed text-dim">
-          HEX {props.hex}
-          {props.cmyk ? <br /> : null}
-          {props.cmyk ? "CMYK " + props.cmyk : null}
-          {props.pms ? <br /> : null}
-          {props.pms ? "PMS " + props.pms : null}
-        </div>
+    <div>
+      <div
+        className="grid"
+        style={{ gridTemplateColumns: `repeat(${props.colors.length}, 1fr)` }}
+      >
+        {props.colors.map((c) => (
+          <div
+            key={c.name}
+            className="relative h-32 md:h-40"
+            style={{ background: c.hex }}
+          >
+            <span
+              className="absolute bottom-3 left-3 font-mono text-[10px] tracking-widest"
+              style={{ color: c.onHex }}
+            >
+              {c.name.toUpperCase()}
+            </span>
+          </div>
+        ))}
       </div>
+      <table className="w-full">
+        <tbody>
+          {props.colors.map((c) => (
+            <tr key={c.name} className="border-b border-line">
+              <td className="py-2.5 pr-4 font-mono text-[11px] tracking-widest">
+                {c.name.toUpperCase()}
+              </td>
+              <td className="py-2.5 pr-4 font-mono text-[11px]">
+                <CopyValue value={c.hex} label={"HEX " + c.hex} />
+              </td>
+              <td className="hidden py-2.5 pr-4 font-mono text-[11px] text-dim sm:table-cell">
+                {c.cmyk ? "CMYK " + c.cmyk : ""}
+              </td>
+              <td className="hidden py-2.5 font-mono text-[11px] text-dim md:table-cell">
+                {c.pms ? "PMS " + c.pms : ""}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export function RatioBar(props: { parts: { name: string; pct: number; bg: string; fg: string }[] }) {
+export function RatioBar(props: {
+  parts: { name: string; pct: number; bg: string; fg: string }[];
+}) {
   return (
     <div>
       <div className="label mb-2 text-[9px]">VÆGTNING I FLADEN</div>
-      <div className="flex h-7 overflow-hidden rounded-md border border-line">
+      <div className="flex h-8">
         {props.parts.map((p) => (
           <span
             key={p.name}
@@ -87,12 +133,15 @@ export function TokenTable(props: {
   rows: { token: string; role: string; light: string; dark: string }[];
 }) {
   return (
-    <div className="overflow-x-auto rounded-md border border-line">
-      <table className="w-full font-mono text-[10.5px]">
+    <div className="overflow-x-auto">
+      <table className="w-full font-mono text-[11px]">
         <thead>
-          <tr className="bg-panel text-left">
+          <tr className="border-b border-line text-left">
             {["TOKEN", "ROLLE", "LYS", "MØRK"].map((h) => (
-              <th key={h} className="label whitespace-nowrap px-3 py-2 text-[8.5px]">
+              <th
+                key={h}
+                className="label whitespace-nowrap py-2 pr-4 text-[8.5px] font-normal"
+              >
                 {h}
               </th>
             ))}
@@ -100,16 +149,16 @@ export function TokenTable(props: {
         </thead>
         <tbody>
           {props.rows.map((r) => (
-            <tr key={r.token} className="border-t border-line">
-              <td className="whitespace-nowrap px-3 py-1.5">
+            <tr key={r.token} className="border-b border-line">
+              <td className="whitespace-nowrap py-2 pr-4">
                 <CopyValue value={r.token} label={r.token} />
               </td>
-              <td className="whitespace-nowrap px-3 py-1.5 text-dim">{r.role}</td>
+              <td className="whitespace-nowrap py-2 pr-4 text-dim">{r.role}</td>
               {[r.light, r.dark].map((v, i) => (
-                <td key={i} className="whitespace-nowrap px-3 py-1.5">
+                <td key={i} className="whitespace-nowrap py-2 pr-4">
                   {/^#/.test(v) ? (
                     <span
-                      className="mr-1.5 inline-block size-2.5 rounded-xs border border-line align-[-1px]"
+                      className="mr-2 inline-block size-3 align-[-2px]"
                       style={{ background: v }}
                     />
                   ) : null}
@@ -128,12 +177,14 @@ export function CodeBlock(props: { title: string; code: string }) {
   const { lens } = useLens();
   const [open, setOpen] = useState(false);
   const block = (
-    <div className="relative rounded-md border border-line bg-panel">
-      <div className="flex items-center justify-between border-b border-line px-3.5 py-2">
+    <div className="border-l-2 border-accent bg-panel">
+      <div className="flex items-center justify-between border-b border-line px-4 py-2">
         <span className="label text-[8.5px]">{props.title}</span>
         <CopyValue value={props.code} label="KOPIÉR" />
       </div>
-      <pre className="overflow-x-auto px-3.5 py-3 font-mono text-[11px] leading-relaxed">{props.code}</pre>
+      <pre className="overflow-x-auto px-4 py-3 font-mono text-[11px] leading-relaxed">
+        {props.code}
+      </pre>
     </div>
   );
   if (lens === "dev") return block;
@@ -147,17 +198,67 @@ export function CodeBlock(props: { title: string; code: string }) {
       >
         {"</>"} KODE
       </button>
-      {open ? <div className="absolute left-0 top-full z-10 mt-2 w-80 shadow-xl">{block}</div> : null}
+      {open ? (
+        <div className="absolute left-0 top-full z-10 mt-2 w-80 shadow-xl">
+          {block}
+        </div>
+      ) : null}
     </div>
   );
 }
 
-export function TypeSpecimen(props: { face: string; sample: string; children?: ReactNode }) {
+export function TypeSpecimen(props: {
+  face: string;
+  sample: string;
+  children?: ReactNode;
+}) {
   return (
-    <div className="rounded-md border border-line bg-panel p-5">
-      <div className="label mb-3 text-[9px]">{props.face}</div>
-      <div className="display text-4xl font-bold leading-tight">{props.sample}</div>
+    <div
+      className={
+        ruled
+          ? "border-t border-line pt-5"
+          : "rounded-md border border-line bg-panel p-5"
+      }
+    >
+      <div className="label mb-4 text-[9px]">{props.face}</div>
+      <div className="display text-5xl font-bold leading-tight md:text-6xl">
+        {props.sample}
+      </div>
       {props.children}
+    </div>
+  );
+}
+
+// A ruled index row: the Brandpad-style numbered TOC line. The default way
+// this template lists things; card grids exist only for boxed brands.
+export function IndexRow(props: {
+  num?: string;
+  title: string;
+  meta?: string;
+  muted?: boolean;
+}) {
+  return (
+    <div
+      className={
+        "group flex items-baseline gap-5 border-t border-line py-4 " +
+        (props.muted ? "opacity-45" : "")
+      }
+    >
+      {props.num ? (
+        <span className="w-8 shrink-0 font-mono text-[11px] text-dim">
+          {props.num}
+        </span>
+      ) : null}
+      <span className="display text-lg font-bold md:text-xl">
+        {props.title}
+      </span>
+      {props.meta ? (
+        <span className="label ml-auto shrink-0 text-[9px]">{props.meta}</span>
+      ) : (
+        <span className="ml-auto font-mono text-dim opacity-0 transition-opacity group-hover:opacity-100">
+          →
+        </span>
+      )}
     </div>
   );
 }

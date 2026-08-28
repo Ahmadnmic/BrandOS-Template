@@ -16,7 +16,9 @@ const BUTTON_CSS = `.btn-primary {
 
 export default function Knap() {
   const { lens } = useLens();
-  const [tab, setTab] = useState<(typeof TABS)[number]>(lens === "dev" ? "KODE" : "ANVENDELSE");
+  const [tab, setTab] = useState<(typeof TABS)[number]>(
+    lens === "dev" ? "KODE" : "ANVENDELSE",
+  );
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -31,7 +33,9 @@ export default function Knap() {
             onClick={() => setTab(t)}
             className={
               "border-b-2 px-3.5 py-2 font-mono text-[10px] tracking-wider " +
-              (tab === t ? "border-signal text-accent" : "border-transparent text-dim hover:text-ink")
+              (tab === t
+                ? "border-signal text-accent"
+                : "border-transparent text-dim hover:text-ink")
             }
           >
             {t}
@@ -41,20 +45,29 @@ export default function Knap() {
 
       {tab === "ANVENDELSE" && (
         <p className="max-w-xl text-sm text-dim">
-          Én primær knap pr. flade. Tekst i versaler, maks. to ord. Signal bruges kun til
-          live-situationer, aldrig til navigation.
+          Én primær knap pr. flade. Tekst i versaler, maks. to ord. Signal
+          bruges kun til live-situationer, aldrig til navigation.
         </p>
       )}
 
       {(tab === "ANVENDELSE" || tab === "KODE" || tab === "SPECS") && (
-        <div className="mt-5 flex min-h-36 flex-wrap items-center justify-center gap-3 rounded-md border border-line bg-panel p-6">
-          <button type="button" className="btn-demo rounded-md bg-action px-4.5 py-2.5 text-on-action">
+        <div className="mt-5 flex min-h-36 flex-wrap items-center justify-center gap-3 border border-line p-6">
+          <button
+            type="button"
+            className="btn-demo rounded-md bg-action px-4.5 py-2.5 text-on-action"
+          >
             KØB BILLET
           </button>
-          <button type="button" className="btn-demo rounded-md border border-line px-4.5 py-2.5 text-accent">
+          <button
+            type="button"
+            className="btn-demo rounded-md border border-line px-4.5 py-2.5 text-accent"
+          >
             SE KAMPPROGRAM
           </button>
-          <button type="button" className="btn-demo rounded-md bg-signal px-4.5 py-2.5 text-on-signal">
+          <button
+            type="button"
+            className="btn-demo rounded-md bg-signal px-4.5 py-2.5 text-on-signal"
+          >
             LIVE NU
           </button>
         </div>
@@ -65,9 +78,24 @@ export default function Knap() {
           <CodeBlock title="KODE · KNAP · PRIMÆR" code={BUTTON_CSS} />
           <TokenTable
             rows={[
-              { token: "--sys-action", role: "Primær handling", light: "#0A1526", dark: "#BFD9F2" },
-              { token: "--sys-on-action", role: "Tekst på handling", light: "#F4F7FB", dark: "#0A1526" },
-              { token: "--sys-radius-md", role: "Hjørner", light: "6px", dark: "6px" },
+              {
+                token: "--sys-action",
+                role: "Primær handling",
+                light: "#0A1526",
+                dark: "#BFD9F2",
+              },
+              {
+                token: "--sys-on-action",
+                role: "Tekst på handling",
+                light: "#F4F7FB",
+                dark: "#0A1526",
+              },
+              {
+                token: "--sys-radius-md",
+                role: "Hjørner",
+                light: "6px",
+                dark: "6px",
+              },
             ]}
           />
         </div>
@@ -75,9 +103,18 @@ export default function Knap() {
 
       {tab === "TILGÆNGELIGHED" && (
         <div className="max-w-xl space-y-3 text-sm text-dim">
-          <p>Tastatur: Tab fokuserer, Enter/Space aktiverer. Fokusring følger --sys-accent.</p>
-          <p>Minimum målflade 44×44 px. Kontrast på alle tilstande er AA-checket i validate.</p>
-          <p>Reduceret bevægelse: hover-overgange slås fra ved prefers-reduced-motion.</p>
+          <p>
+            Tastatur: Tab fokuserer, Enter/Space aktiverer. Fokusring følger
+            --sys-accent.
+          </p>
+          <p>
+            Minimum målflade 44×44 px. Kontrast på alle tilstande er AA-checket
+            i validate.
+          </p>
+          <p>
+            Reduceret bevægelse: hover-overgange slås fra ved
+            prefers-reduced-motion.
+          </p>
         </div>
       )}
     </div>

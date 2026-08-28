@@ -325,6 +325,24 @@ provisional handover. When the deep crawl lands: deep verification
   alignment must cite evidence from `intake/` (the `sys.composition`
   profile). A brand that boxes nothing gets a portal that boxes nothing,
   default to rules and whitespace, not cards.
+- PORTAL LAYOUT RULES, per brand, enforced on every content page:
+  - Guide components render through the containment idiom in
+    `sys.composition` (ruled | boxed | open). "boxed" is permitted ONLY
+    when the brand's own material demonstrably uses carded containment;
+    when evidence is ambiguous, use ruled or open, never boxed.
+  - Lists and tables of contents are NUMBERED RULED INDEXES (hairline
+    rows, flush-left, mono numbers), never grids of bordered cards.
+  - Color is shown as COMPOSED FIELDS (continuous painted bands with
+    values in a ruled table), never chips inside cards.
+  - Specimens sit free on the page: type set large over a hairline,
+    components on a plain hairline stage. The thing itself is the
+    presentation; a box around it is noise.
+  - The same bordered container repeated as page structure is the tell.
+    If two adjacent sections wear identical boxes, remove the boxes.
+  - Corner radius comes only from `sys.radius` tokens and belongs to
+    interactive elements (buttons, inputs), not to layout containers.
+  - Workspace chrome (sidebar, settings panel, code console) is exempt:
+    it is a tool surface, not brand content.
 - Builds are reproducible from the committed lockfile: never update
   dependencies during a brand build; `engines`/.nvmrc pin Node.
 - The template is versioned: `brand.config.ts` carries `templateVersion`;
