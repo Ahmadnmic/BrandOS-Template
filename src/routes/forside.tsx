@@ -13,6 +13,8 @@ import {
   KomponentBadge,
   KomponentFelt,
   KomponentBanner,
+  KomponentVaelger,
+  KomponentDialog,
 } from "../sections/Komponenter";
 import { Tokens } from "../sections/Tokens";
 
@@ -111,6 +113,16 @@ const PAGES: PageDef[] = [
     chapter: "11",
     label: { da: "Banner", en: "Banner" },
     render: () => <KomponentBanner />,
+  },
+  {
+    chapter: "11",
+    label: { da: "Vælger", en: "Selector" },
+    render: () => <KomponentVaelger />,
+  },
+  {
+    chapter: "11",
+    label: { da: "Dialog", en: "Dialog" },
+    render: () => <KomponentDialog />,
   },
   {
     chapter: "12",

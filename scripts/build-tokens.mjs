@@ -123,6 +123,8 @@ const UI_EXPORTS = {
   "Badge.tsx": "badge.tsx",
   "Felt.tsx": "felt.tsx",
   "Banner.tsx": "banner.tsx",
+  "Vaelger.tsx": "vaelger.tsx",
+  "Dialog.tsx": "dialog.tsx",
 };
 const uiDir = path.join(root, "src", "components", "ui");
 for (const [src, out] of Object.entries(UI_EXPORTS)) {

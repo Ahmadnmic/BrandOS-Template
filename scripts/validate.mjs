@@ -536,7 +536,7 @@ function rel(p) {
 // C9: template version. A field clone cannot know it is stale unless the
 // gate tells it. Bump TEMPLATE_VERSION together with templateVersion in
 // the seed brand.config.ts on machinery changes.
-const TEMPLATE_VERSION = "0.7.0";
+const TEMPLATE_VERSION = "0.8.0";
 {
   const config = fs.readFileSync(
     path.join(root, "brand", "brand.config.ts"),

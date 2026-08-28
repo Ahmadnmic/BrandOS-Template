@@ -9,6 +9,9 @@ import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
 import { Felt } from "../components/ui/Felt";
 import { Banner } from "../components/ui/Banner";
+import { Vaelger } from "../components/ui/Vaelger";
+import { Dialog } from "../components/ui/Dialog";
+import { useState } from "react";
 import { useTx } from "../lens";
 
 const BUTTON_CSS = `.btn-primary {
@@ -33,6 +36,21 @@ const FELT_CSS = `.felt input {
 const BANNER_CSS = `.banner {
   border-top: 1px solid var(--sys-line);
   border-bottom: 1px solid var(--sys-line);
+}`;
+
+const VAELGER_CSS = `.vaelger ul {
+  animation: pop var(--sys-duration-base) var(--sys-ease-out) both;
+  border: 1px solid var(--sys-line);
+  background: var(--sys-panel);
+}`;
+
+const DIALOG_CSS = `.dialog-backdrop {
+  animation: fade var(--sys-duration-fast) var(--sys-ease-out) both;
+}
+.dialog {
+  animation: pop var(--sys-duration-base) var(--sys-ease-out) both;
+  border: 1px solid var(--sys-line);
+  background: var(--sys-panel);
 }`;
 
 export function Komponenter() {
@@ -168,6 +186,96 @@ export function KomponentBanner() {
             code={BANNER_CSS}
           />
           <DownloadChip label="BANNER.TSX" href="/exports/banner.tsx" />
+        </div>
+      </section>
+    </>
+  );
+}
+
+export function KomponentVaelger() {
+  const tx = useTx();
+  return (
+    <>
+      <section className="border-t border-line pt-4">
+        <h3 className="display text-xl font-bold">
+          {tx({ da: "Vælger", en: "Selector" })}
+        </h3>
+        <p className="mt-2 max-w-xl text-sm text-dim">
+          {tx({
+            da: "Åbner med brandets indslag, lukker på Esc og klik udenfor. Prøv den.",
+            en: "Opens with the brand's entrance motion, closes on Esc and outside click. Try it.",
+          })}
+        </p>
+        <div className="mt-4 flex min-h-36 flex-wrap items-start justify-center gap-6 border border-line p-6">
+          <Vaelger
+            label={tx({ da: "SÆSON", en: "SEASON" })}
+            options={["2026/27", "2025/26", "2024/25"]}
+          />
+          <Vaelger
+            label={tx({ da: "HJEMMEBANE", en: "HOME COURT" })}
+            options={[
+              tx({ da: "Odense Idrætshal", en: "Odense Arena" }),
+              tx({ da: "Udebane", en: "Away" }),
+            ]}
+          />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <CodeBlock
+            title={tx({ da: "KODE · VÆLGER", en: "CODE · SELECTOR" })}
+            code={VAELGER_CSS}
+          />
+          <DownloadChip label="VAELGER.TSX" href="/exports/vaelger.tsx" />
+        </div>
+      </section>
+    </>
+  );
+}
+
+export function KomponentDialog() {
+  const tx = useTx();
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <section className="border-t border-line pt-4">
+        <h3 className="display text-xl font-bold">Dialog</h3>
+        <p className="mt-2 max-w-xl text-sm text-dim">
+          {tx({
+            da: "Bagtæppe, indslag, Esc og kryds lukker. Vinduet handler aldrig; det viser bevægelsen.",
+            en: "Backdrop, entrance, Esc and the cross close it. The window never acts; it shows the motion.",
+          })}
+        </p>
+        <div className="mt-4 flex min-h-24 items-center justify-center border border-line p-6">
+          <Button onClick={() => setOpen(true)}>
+            {tx({ da: "KØB SÆSONKORT", en: "BUY SEASON PASS" })}
+          </Button>
+        </div>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          title={tx({ da: "SÆSONKORT", en: "SEASON PASS" })}
+          closeLabel={tx({ da: "Luk", en: "Close" })}
+        >
+          <p className="text-dim">
+            {tx({
+              da: "Et demo-vindue: indhold, bevægelse og lukning er ægte, men intet sendes nogen steder hen.",
+              en: "A demo window: content, motion and closing are real, but nothing is sent anywhere.",
+            })}
+          </p>
+          <div className="mt-4 flex justify-end gap-2">
+            <Button variant="sekundaer" onClick={() => setOpen(false)}>
+              {tx({ da: "FORTRYD", en: "CANCEL" })}
+            </Button>
+            <Button onClick={() => setOpen(false)}>
+              {tx({ da: "BEKRÆFT", en: "CONFIRM" })}
+            </Button>
+          </div>
+        </Dialog>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <CodeBlock
+            title={tx({ da: "KODE · DIALOG", en: "CODE · DIALOG" })}
+            code={DIALOG_CSS}
+          />
+          <DownloadChip label="DIALOG.TSX" href="/exports/dialog.tsx" />
         </div>
       </section>
     </>

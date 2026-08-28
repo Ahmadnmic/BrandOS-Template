@@ -119,3 +119,14 @@ migration.
 2. **Site-evidence chapters.** Brand-expression categories the crawl
    reveals (sponsors, sub-brands, campaign styles, press kits) get
    chapters automatically, UDKAST-stamped when the CVI is silent.
+
+## 0.7.0 to 0.8.0
+
+1. **Pressables behave.** Demo components are fully working (press and
+   focus states on buttons, dropdowns that open/select/close, dialogs
+   with backdrop and entrance motion, Esc handling) but NEVER navigate
+   or submit: the behavior shows the brand's motion, nothing else. New
+   ui components Vaelger and Dialog, animation utilities .anim-pop and
+   .anim-fade driven by the motion tokens, all off under
+   prefers-reduced-motion. Rebuild brand component demos to the same
+   convention.

@@ -88,7 +88,9 @@ html {
     transform: none;
     transition: none;
   }
-  .search-flash {
+  .search-flash,
+  .anim-pop,
+  .anim-fade {
     animation: none;
   }
   .motion-ball {
@@ -102,10 +104,39 @@ html {
     font-family: var(--sys-font-mono);
     font-size: 11px;
     letter-spacing: 0.12em;
-    transition: opacity var(--sys-duration-fast);
+    transition:
+      opacity var(--sys-duration-fast),
+      transform var(--sys-duration-instant) var(--sys-ease-out);
   }
   .btn-demo:hover {
     opacity: 0.85;
+  }
+  .btn-demo:active {
+    transform: translateY(1px) scale(0.99);
+  }
+  .btn-demo:focus-visible {
+    outline: 2px solid var(--sys-accent);
+    outline-offset: 2px;
+  }
+
+  /* Entrance animations for openable components (dropdowns, dialogs),
+     driven by the brand's motion tokens. */
+  .anim-pop {
+    animation: anim-pop var(--sys-duration-base) var(--sys-ease-out) both;
+  }
+  .anim-fade {
+    animation: anim-fade var(--sys-duration-fast) var(--sys-ease-out) both;
+  }
+}
+@keyframes anim-pop {
+  from {
+    opacity: 0;
+    transform: translateY(var(--sys-distance-sm));
+  }
+}
+@keyframes anim-fade {
+  from {
+    opacity: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {
